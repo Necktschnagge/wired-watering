@@ -60,7 +60,7 @@ steps:
     mkdir -p build
     cd ./build/
     tree
-    cmake -DCMAKE_TOOLCHAIN_FILE=./avr-toolchain/generic-gcc-avr.cmake ./avr-toolchain/example
+    cmake -DCMAKE_TOOLCHAIN_FILE=../avr-toolchain/generic-gcc-avr.cmake ../avr-toolchain/example
     tree
     make
     tree
