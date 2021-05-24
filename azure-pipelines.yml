@@ -54,6 +54,17 @@ steps:
  - script: git submodule update --init --recursive
    displayName: "Init Git Submodules"
    condition: succeeded()
+ - script: git clone git@github.com:mkleemann/cmake-avr.git ./avr-toolchain/
+   displayName: "Get Tools"
+ - script: |
+    mkdir -p build
+    cd ./build/
+    tree
+    cmake -DCMAKE_TOOLCHAIN_FILE=./avr-toolchain/generic-gcc-avr.cmake ./avr-toolchain/example
+    tree
+    make
+    tree
+   displayName: "Run"
 # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
 #   displayName: "Create and deploy #include dependency graph"
 #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
@@ -66,6 +77,7 @@ steps:
  - script: cmake --build ./build
    displayName: "CMake: Compile and Link"
    condition: succeeded()
+
 # - script: ./build/test/TEST-Mona-Controller
 #   displayName: "Run Tests on Linux / Mac OS"
 #   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
