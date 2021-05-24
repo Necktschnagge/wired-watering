@@ -54,7 +54,7 @@ steps:
  - script: git submodule update --init --recursive
    displayName: "Init Git Submodules"
    condition: succeeded()
- - script: git clone git@github.com:mkleemann/cmake-avr.git ./avr-toolchain/
+ - script: git clone https://github.com/mkleemann/cmake-avr.git ./avr-toolchain/
    displayName: "Get Tools"
  - script: |
     mkdir -p build
