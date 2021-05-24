@@ -22,11 +22,9 @@ inline void set_safe_on_led(bool on){
 	PORTC = (PORTC & ~0b10000) | (on * 0b10000);
 }
 
-static constexpr uint32_t PUBISH_TIME{ 3000 };
+static constexpr uint32_t PUBLISH_TIME{ 3000 };
 
-inline void publish(uint8_t led_code){ set_led(led_code); sleep(PUBISH_TIME); }
-
-
+inline void publish(uint8_t led_code){ set_led(led_code); sleep(PUBLISH_TIME); }
 
 
 #endif /* DISPLAY_H_ */
