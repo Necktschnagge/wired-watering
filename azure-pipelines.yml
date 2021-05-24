@@ -57,6 +57,7 @@ steps:
  - script: git clone https://github.com/mkleemann/cmake-avr.git ./avr-toolchain/
    displayName: "Get Tools"
  - script: |
+    sudo apt-get install binutils gcc-avr avr-libc
     mkdir -p build
     cd ./build/
     tree
