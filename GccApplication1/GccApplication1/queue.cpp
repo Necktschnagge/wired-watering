@@ -15,7 +15,7 @@ queue the_queue;
 
 void queue::add(uint8_t ventile, uint8_t minutes)
 {
-	if (valid_items == 6) return; // buffer full;
+	if (full()) return; // buffer full;
 
 	if (!running){
 		++the_pump.requiries;

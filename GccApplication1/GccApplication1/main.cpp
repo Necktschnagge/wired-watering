@@ -133,67 +133,70 @@ void manual_queue_entry(){
 }
 
 void config_change(){
-	constexpr uint8_t entry_button { 0 };
-	//constexpr uint8_t abort_buttons{ 0b11101000 };
-	
-	auto confirm_blink = []{
-		for (uint8_t i = 0; i < 16; ++i){
-			set_led(0xFF * (i%2));
-			sleep(250);
-		}	
-	};
-	const auto exit_delta = human_clock::SECOND * 20;
-	
-	auto confirm2 = [](human_clock::time_type& auto_exit){
-		for (uint8_t i = 1; i < 9; ++i){
-			set_led((uint16_t(1) << i) - 1);
-			sleep(100);
-		}
+	constexpr uint8_t exit_buttons { 0b10000100 };
+	const auto exit_delta = human_clock::SECOND * 25;
+	const uint16_t push_down_time_ms{ 3000 };
+
+	auto reset_auto_exit = [](human_clock::time_type& auto_exit){
 		auto_exit = the_clock.now() + exit_delta;
 	};
 	
-	auto menu = [&]{
-		bool& global_timer_enable { timer::global_timer_enable };
-		bool& the_2_hr_reactivate{ pump::recovery_enable };
-		human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
-		while (true){
-			// refresh led
-			uint8_t status{
-				(0b00000111 * global_timer_enable) | 
-				(0b00111000 * the_2_hr_reactivate) |
-				(0b10000000)
-				};
-			status = status * (the_clock.now() % 2);
-			set_led(status);
-			// capture input
-			if (get_button(0)){
-				global_timer_enable = !global_timer_enable;
-				confirm2(auto_exit);
-			}
-			if (get_button(1)){
-				the_2_hr_reactivate = !the_2_hr_reactivate;
-				confirm2(auto_exit);
-			}
-			if (get_button(7) || auto_exit < the_clock.now() ){
-				confirm_blink();
-				return;
-			}
+	auto all_on_off_8_times = []{
+		for (uint8_t i = 0; i < 16; ++i){
+			set_led(0xFF * (i%2));
+			sleep(250);
 		}
 	};
-	
-	uint8_t ticks{ 8 };
-	while (get_button(entry_button)){
-		set_led(0xFF & ( (1ul << ticks) - 1));
-		if (ticks == 0) {
-			confirm_blink(); // confirm!
-			// enter config menu.
-			return menu();
-		}
-		sleep(400);
-		--ticks;
-	}
-	return; // abort
 
+	auto right_to_left_blink = [reset_auto_exit](human_clock::time_type& auto_exit){
+		for (uint8_t i = 1; i < 9; ++i){
+			set_led((uint16_t(1) << i) - 1);
+			sleep(250);
+		}
+		reset_auto_exit(auto_exit);
+	};
+	
+	auto check_long_push_down = [reset_auto_exit, right_to_left_blink](uint8_t button, bool& flag_to_change, human_clock::time_type& auto_exit){
+		uint16_t already_waited_ms = 0;
+		while(already_waited_ms < push_down_time_ms){
+			if (!get_button(button)) return;
+			sleep(30);
+			already_waited_ms += 30;
+			reset_auto_exit(auto_exit);
+		}
+		flag_to_change = !flag_to_change;
+		right_to_left_blink(auto_exit);
+	};
+
+	
+	bool& global_timer_enable { timer::global_timer_enable };
+	bool& the_2_hr_reactivate{ pump::recovery_enable };
+	human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
+	
+	right_to_left_blink(auto_exit);
+	while (true){
+		// refresh led
+		uint8_t status{
+			static_cast<uint8_t>(
+			(0b00000111 * global_timer_enable) |
+			(0b00111000 * the_2_hr_reactivate)
+			)
+		};
+		const auto now{ the_clock.now()};
+		status = (status * ( now % 2)) |
+		(0b10000000 * !(now % 2));
+		set_led(status);
+		
+		// capture input
+		check_long_push_down(0,global_timer_enable,auto_exit);
+		check_long_push_down(1,the_2_hr_reactivate,auto_exit);
+		
+		// check exit
+		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
+			all_on_off_8_times();
+			return;
+		}
+	}
 }
 
 void check_manual_terminal(){
@@ -264,39 +267,48 @@ int main(void)
 	
 	// cucumber
 	all_timers[0].ventile = 0;
-	//all_timers[1].ventile = 0;
-	all_timers[2].ventile = 0;
 	all_timers[0].minutes = 15;
-	//all_timers[1].minutes = 12;
-	all_timers[2].minutes = 10;
 	all_timers[0].minute_at_day = 7 * 60 + 0; // 7:00
+
+	//all_timers[1].ventile = 0;
+	//all_timers[1].minutes = 12;
 	//all_timers[1].minute_at_day = 12 * 60 + 0;
+	
+	all_timers[2].ventile = 0;
+	all_timers[2].minutes = 10;
 	all_timers[2].minute_at_day = 18 * 60 + 0; // 18:00
-	
-	// salad
+
+	// peas
 	all_timers[3].ventile = 2;
-	all_timers[4].ventile = 2;
-	all_timers[5].ventile = 2;
-	all_timers[6].ventile = 2;
-	all_timers[3].minutes = 5;
-	all_timers[4].minutes = 5;
-	all_timers[5].minutes = 5;
-	all_timers[6].minutes = 5;
-	all_timers[3].minute_at_day = 7 * 60;
-	all_timers[4].minute_at_day = 12 * 60;
-	all_timers[5].minute_at_day = 15 * 60;
-	all_timers[6].minute_at_day = 18 * 60;
+	all_timers[3].minutes = 10;
+	all_timers[3].minute_at_day = 7 * 60 + 1; // 7:01
 	
+	//all_timers[4].ventile = 2;
+	//all_timers[4].minutes = 5;
+	//all_timers[4].minute_at_day = 12 * 60;
+	
+	//all_timers[5].ventile = 2;
+	//all_timers[5].minutes = 5;
+	//all_timers[5].minute_at_day = 15 * 60;
+	
+	all_timers[6].ventile = 2;
+	all_timers[6].minutes = 5;
+	all_timers[6].minute_at_day = 18 * 60 + 1; // 18:01
+	
+
 	// night drain / blue berries:
-	/*all_timers[7].ventile = the_pump.drain_ventile;
+
+	/*
+	all_timers[7].ventile = the_pump.drain_ventile;
 	all_timers[7].minute_at_day = 24 * 60;
 	all_timers[7].minutes = 10;
 	
 	all_timers[8].ventile = the_pump.drain_ventile;
-	all_timers[9].ventile = the_pump.drain_ventile;
 	all_timers[8].minute_at_day = 21 * 60;
-	all_timers[9].minute_at_day = 3 * 60 + 30;
 	all_timers[8].minutes = 1;
+	
+	all_timers[9].ventile = the_pump.drain_ventile;
+	all_timers[9].minute_at_day = 3 * 60 + 30;
 	all_timers[9].minutes = 1;
 	*/
 	

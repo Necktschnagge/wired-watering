@@ -10,4 +10,4 @@
 
 pump the_pump;
 
-bool pump::recovery_enable{ true };
+bool pump::recovery_enable{ false };
