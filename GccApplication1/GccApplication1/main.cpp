@@ -67,8 +67,8 @@ class timer {
 		// 11 bit minute at day			10:00
 		return
 		(static_cast<uint32_t>(minutes) << 16) +
-		(get_two_bit_ventile_code() << 14) +
-		static_cast<uint32_t>(minute_at_day);
+		(static_cast<uint32_t>(get_two_bit_ventile_code()) << 14) +
+		static_cast<uint32_t>(minute_at_day & 0x7FF);
 	}
 	
 	void load_from_eeprom_data(uint32_t bit_code){
@@ -98,8 +98,10 @@ constexpr uint8_t* get_eeprom_address_for_timer(uint8_t timer_index){
 }
 
 uint32_t get_bit_code_for_timer_at(const uint8_t* eeprom_address){
-	uint32_t dword = eeprom_read_dword(reinterpret_cast<const uint32_t*>(eeprom_address));
-	return dword & 0x00FFFFFF;
+	uint8_t byte0 = eeprom_read_byte(eeprom_address);
+	uint8_t byte1 = eeprom_read_byte(eeprom_address+1);
+	uint8_t byte2 = eeprom_read_byte(eeprom_address+2);
+	return uint32_t(byte0) + (uint32_t(byte1) << 8) + (uint32_t(byte2) << 16);
 }
 
 void load_all_timers_from_eeprom(){
@@ -152,6 +154,8 @@ bool has_any_timer_changes_to_eeprom(){
 void init_timers(){
 	for (uint8_t i = 0; i < NUM_TIMERS; ++i){
 		all_timers[i].ventile = 255;
+		all_timers[i].minute_at_day = 0;
+		all_timers[i].minutes = 0;
 	}
 }
 
@@ -231,13 +235,6 @@ void config_change(){
 		auto_exit = the_clock.now() + exit_delta;
 	};
 	
-	auto all_on_off_8_times = []{
-		for (uint8_t i = 0; i < 16; ++i){
-			set_led(0xFF * (i%2));
-			sleep(250);
-		}
-	};
-
 	auto right_to_left_blink = [reset_auto_exit](human_clock::time_type& auto_exit){
 		for (uint8_t i = 1; i < 9; ++i){
 			set_led((uint16_t(1) << i) - 1);
@@ -283,7 +280,7 @@ void config_change(){
 		
 		// check exit
 		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
-			all_on_off_8_times();
+			all_blink(8,250);
 			return;
 		}
 	}
@@ -380,20 +377,6 @@ void edit_specific_timer(uint8_t index_timer_selected){
 			continue;
 		}
 		
-		if (get_button(3)){ // SAVE to eeprom
-			require_key_pressed_for_ds(3);
-			save_timer_to_eeprom_ui();
-			reset_auto_exit();
-			continue;
-		}
-		
-		if (get_button(4)){ // LOAD from eeprom
-			require_key_pressed_for_ds(4);
-			load_all_timers_from_eeprom_ui();
-			reset_auto_exit();
-			continue;
-		}
-		
 		// check exit
 		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
 			all_blink(8,200);
@@ -412,8 +395,12 @@ void edit_timers(){
 			all_blink(10, 100);
 			return;
 		}
+		sleep(250);
 		set_led((uint16_t(1) << i)-1);
 	}
+	set_led(0xFF);
+	while(get_buttons()){}
+	left_to_right_blink();
 	
 	human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
 
@@ -459,17 +446,18 @@ void edit_timers(){
 		}
 		
 		if (get_button(3)){ // SAVE to eeprom
+			if (!require_key_pressed_for_ds(3)) continue;;
 			save_timer_to_eeprom_ui();
 			reset_auto_exit();
 			continue;
 		}
 		
 		if (get_button(4)){ // LOAD from eeprom
+			if (!require_key_pressed_for_ds(4)) continue;;
 			load_all_timers_from_eeprom_ui();
 			reset_auto_exit();
 			continue;
-		}
-		
+		}		
 		// check exit
 		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
 			all_blink(8,200);
@@ -486,7 +474,7 @@ void edit_timers(){
 void check_manual_terminal(){
 	static uint8_t test_ventile{ 0 };
 	
-	if (get_buttons() & 0b00100001){ // S key + UP key -> edit timers
+	if ((get_buttons() & 0b00100001) == 0b00100001){ // S key + UP key -> edit timers
 		return edit_timers();
 	}
 	
