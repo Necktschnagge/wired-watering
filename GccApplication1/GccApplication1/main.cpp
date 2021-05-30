@@ -5,7 +5,9 @@
 #include "time_utilities.h"
 #include "queue.h"
 #include "pump.h"
+#include "ui_utility.h"
 
+#include <avr/eeprom.h>
 /******
 CURRENT PIN USAGE:::
 
@@ -30,7 +32,11 @@ human_clock& the_clock{ human_clock::instance() };
 
 
 class timer {
+	static constexpr uint8_t START_TIME_WINDOW_MINUTES{ 15 };
+	static constexpr uint16_t MINUTES_OF_A_DAY{ 12*60 };
+
 	public:
+	
 	static bool global_timer_enable;
 	uint8_t ventile{ 255 }; // 255 for invalid.
 	uint8_t minutes{ 1 };
@@ -42,22 +48,106 @@ class timer {
 	void execute(){
 		if (!global_timer_enable) return;
 		if (invalid()) return;
-		bool enable = (the_clock.minute_of_day() == minute_at_day) && (the_clock.now() > last_executed);
+		bool enable = ((MINUTES_OF_A_DAY + the_clock.minute_of_day() - minute_at_day) % MINUTES_OF_A_DAY < START_TIME_WINDOW_MINUTES) && (the_clock.now() > last_executed);
 		if (!enable) return;
 		
 		the_queue.add(ventile, minutes);
-		last_executed = the_clock.now() + human_clock::MINUTE * 8;
+		last_executed = the_clock.now() + human_clock::MINUTE * (START_TIME_WINDOW_MINUTES + 1);
+	}
+	
+	
+	uint8_t get_two_bit_ventile_code() const {
+		return ventile<3 ? ventile : 3;
+	}
+	
+	uint32_t compressed_eeprom_data() const {
+		// 8 bit duration				23:16
+		// 2 bit ventile				15:14
+		// 3 bit unused					13:11
+		// 11 bit minute at day			10:00
+		return
+		(static_cast<uint32_t>(minutes) << 16) +
+		(get_two_bit_ventile_code() << 14) +
+		static_cast<uint32_t>(minute_at_day);
+	}
+	
+	void load_from_eeprom_data(uint32_t bit_code){
+		minutes = (bit_code & 0x00FF0000) >> 16;
+		ventile = (bit_code & 0x0000C000) >> 14;
+		if (ventile > 2) ventile = 255;
+		minute_at_day = (bit_code & 0x000007FF);
+		if (minute_at_day >= 12*60) minute_at_day = 0;
+		
+		last_executed = the_clock.now() + human_clock::MINUTE * (START_TIME_WINDOW_MINUTES + 1);
 	}
 	
 };
 
 bool timer::global_timer_enable{ true };
 
-constexpr uint8_t NUM_TIMERS { 20 };
+constexpr uint8_t NUM_TIMERS { 30 };
 
 using timer_array = timer[NUM_TIMERS];
 
 timer_array all_timers;
+
+// little endian saving
+constexpr uint8_t* get_eeprom_address_for_timer(uint8_t timer_index){
+	return reinterpret_cast<uint8_t*>(uint16_t(0) + uint16_t(3) * timer_index);
+	static_assert(sizeof(void*)==2,"error");
+}
+
+uint32_t get_bit_code_for_timer_at(const uint8_t* eeprom_address){
+	uint32_t dword = eeprom_read_dword(reinterpret_cast<const uint32_t*>(eeprom_address));
+	return dword & 0x00FFFFFF;
+}
+
+void load_all_timers_from_eeprom(){
+	for(uint8_t i = 0; i < NUM_TIMERS; ++i){
+		all_timers[i].load_from_eeprom_data(get_bit_code_for_timer_at(get_eeprom_address_for_timer(i)));
+	}
+}
+
+void eeprom_write_byte_if_changed(uint8_t* eeprom_address, uint8_t value){
+	const uint8_t old = eeprom_read_byte(eeprom_address);
+	if (value == old) return;
+	eeprom_write_byte(eeprom_address, value);
+}
+
+void save_timer_to_eeprom(const timer& t, uint8_t* eeprom_address){
+	const uint32_t bit_code = t.compressed_eeprom_data();
+	const uint8_t byte0 = (bit_code & 0x0000FF);
+	const uint8_t byte1 = (bit_code & 0x00FF00) >> 8;
+	const uint8_t byte2 = (bit_code & 0xFF0000) >> 16;
+	eeprom_write_byte_if_changed(eeprom_address, byte0);
+	eeprom_write_byte_if_changed(eeprom_address + 1, byte1);
+	eeprom_write_byte_if_changed(eeprom_address + 2, byte2);
+}
+
+bool timer_to_eeprom_has_changes(const timer& t, uint8_t* eeprom_address){
+	const uint32_t bit_code = t.compressed_eeprom_data();
+	const uint8_t byte0 = (bit_code & 0x0000FF);
+	const uint8_t byte1 = (bit_code & 0x00FF00) >> 8;
+	const uint8_t byte2 = (bit_code & 0xFF0000) >> 16;
+	return !(eeprom_read_byte(eeprom_address) == byte0 &&
+	eeprom_read_byte(eeprom_address + 1) == byte1 &&
+	eeprom_read_byte(eeprom_address + 2) == byte2);
+}
+
+
+void save_all_timers_to_eeprom(){
+	for(uint8_t i = 0; i < NUM_TIMERS; ++i){
+		save_timer_to_eeprom(all_timers[i],get_eeprom_address_for_timer(i));
+	}
+}
+
+bool has_any_timer_changes_to_eeprom(){
+	for(uint8_t i = 0; i < NUM_TIMERS; ++i){
+		if (timer_to_eeprom_has_changes(all_timers[i],get_eeprom_address_for_timer(i))) return true;
+	}
+	return false;
+}
+
 
 void init_timers(){
 	for (uint8_t i = 0; i < NUM_TIMERS; ++i){
@@ -137,7 +227,7 @@ void config_change(){
 	const auto exit_delta = human_clock::SECOND * 25;
 	const uint16_t push_down_time_ms{ 3000 };
 
-	auto reset_auto_exit = [](human_clock::time_type& auto_exit){
+	auto reset_auto_exit = [&](human_clock::time_type& auto_exit){
 		auto_exit = the_clock.now() + exit_delta;
 	};
 	
@@ -199,8 +289,206 @@ void config_change(){
 	}
 }
 
+void save_timer_to_eeprom_ui(){
+	const bool ch = has_any_timer_changes_to_eeprom();
+	set_led(0x80 | (7 << (3 * ch)));
+	save_all_timers_to_eeprom();
+	sleep(2000);
+	left_to_right_blink();
+}
+
+void load_all_timers_from_eeprom_ui(){
+	set_led(0b10111);
+	load_all_timers_from_eeprom();
+	sleep(2000);
+	left_to_right_blink();
+}
+
+void edit_specific_timer(uint8_t index_timer_selected){
+	const uint8_t edit_ventile{ 0b11100000 };
+	const uint8_t edit_hours{ 0b00011000};
+	const uint8_t edit_quartile{ 0b00000110};
+	const uint8_t edit_minutes{ 0b11 };
+	
+	const uint8_t exit_buttons{ 0b10000000 };
+	
+	const auto exit_delta = human_clock::SECOND * 25;
+	human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
+	
+	auto reset_auto_exit = [&auto_exit](){
+		auto_exit = the_clock.now() + exit_delta;
+	};
+	
+	uint8_t edit_select{ 0 };
+	
+	const auto update_led = [&](){
+		switch (edit_select) {
+			case 0: set_led(edit_ventile); break;
+			case 1: set_led(edit_hours); break;
+			case 2: set_led(edit_quartile); break;
+			case 3: set_led(edit_minutes); break;
+		}
+	};
+	
+	while (true){
+		update_led();
+		
+		//check button
+		if(get_button(0)){ // UP
+			edit_select = (edit_select + 1) % 4;
+			update_led(); sleep(500);
+			reset_auto_exit();
+			continue;
+		}
+		if(get_button(1)){ // DOWN
+			edit_select = (edit_select + 3) % 4;
+			update_led(); sleep(500);
+			reset_auto_exit();
+			continue;
+		}
+		if(get_button(2)){ // OK
+			set_led(0xFF); sleep(800);
+			if(edit_select == 0){
+				uint8_t v{ all_timers[index_timer_selected].ventile };
+				get_number(v,1,0,0);
+				all_timers[index_timer_selected].ventile = v < 3 ? v : 0xFF;
+			}
+			if(edit_select == 1){
+				uint8_t h = all_timers[index_timer_selected].minute_at_day / 60;
+				get_number(h,1,0,0);
+				if (h>23) h=0;
+				all_timers[index_timer_selected].minute_at_day = (all_timers[index_timer_selected].minute_at_day % 60) + uint16_t(60) * h;
+			}
+			if(edit_select == 2){
+				uint8_t q = (all_timers[index_timer_selected].minute_at_day % 60) / 15;
+				get_number(q,1,0,0);
+				if (q>3) q=0;
+				all_timers[index_timer_selected].minute_at_day =
+				(all_timers[index_timer_selected].minute_at_day % 15) +
+				(all_timers[index_timer_selected].minute_at_day / 60) * 60 +
+				uint16_t(15) * q;
+			}
+			if(edit_select == 3){
+				uint8_t m = all_timers[index_timer_selected].minute_at_day % 15;
+				get_number(m,1,0,0);
+				if (m>14) m=0;
+				all_timers[index_timer_selected].minute_at_day =
+				(all_timers[index_timer_selected].minute_at_day / 15) * 15 + m;
+			}
+			left_to_right_blink();
+			reset_auto_exit();
+			continue;
+		}
+		
+		if (get_button(3)){ // SAVE to eeprom
+			require_key_pressed_for_ds(3);
+			save_timer_to_eeprom_ui();
+			reset_auto_exit();
+			continue;
+		}
+		
+		if (get_button(4)){ // LOAD from eeprom
+			require_key_pressed_for_ds(4);
+			load_all_timers_from_eeprom_ui();
+			reset_auto_exit();
+			continue;
+		}
+		
+		// check exit
+		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
+			all_blink(8,200);
+			return;
+		}
+	}
+}
+
+void edit_timers(){
+	const uint8_t entry_button = 0;
+	const uint8_t exit_buttons = 0b10000000;
+	const auto exit_delta = human_clock::SECOND * 25;
+
+	for(uint8_t i = 0; i < 9; ++i){
+		if (!get_button(entry_button)){
+			all_blink(10, 100);
+			return;
+		}
+		set_led((uint16_t(1) << i)-1);
+	}
+	
+	human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
+
+	auto reset_auto_exit = [&]{
+		auto_exit = the_clock.now() + exit_delta;
+	};
+
+	uint8_t index_timer_selected{ 0 };
+	// UP DOWN
+	
+	// OK -> edit
+	// ventile
+	// time
+	
+	const auto update_led = [&](){
+		timer& current_timer = all_timers[index_timer_selected];
+		uint8_t ventile_code = current_timer.invalid() ? 0xE0 :(1 << (7-current_timer.ventile));
+		set_led(index_timer_selected + 1 + ventile_code);
+	};
+	
+	while(true){
+		//update led
+		update_led();
+		
+		//check button
+		if(get_button(0)){ // UP
+			index_timer_selected = (index_timer_selected + 1) % NUM_TIMERS;
+			update_led(); sleep(500);
+			reset_auto_exit();
+			continue;
+		}
+		if(get_button(1)){ // DOWN
+			index_timer_selected = (index_timer_selected + NUM_TIMERS - 1) % NUM_TIMERS;
+			update_led(); sleep(500);
+			reset_auto_exit();
+			continue;
+		}
+		if(get_button(2)){ // OK
+			set_led(0xFF); sleep(800);
+			edit_specific_timer(index_timer_selected);
+			reset_auto_exit();
+			continue;
+		}
+		
+		if (get_button(3)){ // SAVE to eeprom
+			save_timer_to_eeprom_ui();
+			reset_auto_exit();
+			continue;
+		}
+		
+		if (get_button(4)){ // LOAD from eeprom
+			load_all_timers_from_eeprom_ui();
+			reset_auto_exit();
+			continue;
+		}
+		
+		// check exit
+		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
+			all_blink(8,200);
+			return;
+		}
+		
+	}
+	
+	// entered successfully.
+	
+	
+}
+
 void check_manual_terminal(){
 	static uint8_t test_ventile{ 0 };
+	
+	if (get_buttons() & 0b00100001){ // S key + UP key -> edit timers
+		return edit_timers();
+	}
 	
 	if (get_button(7)){ // off
 		the_pump.manual(false);
@@ -229,7 +517,7 @@ void check_manual_terminal(){
 		return;
 	}
 	
-	if (get_button(3)){
+	if (get_button(3)){ // F key for custom queue entry.
 		return manual_queue_entry();
 	}
 	
@@ -254,16 +542,8 @@ void update_led(){
 	set_led((now_hour << 3) | part_of_hour);
 }
 
-int main(void)
-{
-	
-	pin_init();
-	init_timers();
-	the_clock.set();
-	
-	/*
-	pre-configured timers:
-	*/
+
+void apply_preconfigured_timers(){
 	
 	// cucumber
 	all_timers[0].ventile = 0;
@@ -311,6 +591,38 @@ int main(void)
 	all_timers[9].minute_at_day = 3 * 60 + 30;
 	all_timers[9].minutes = 1;
 	*/
+
+}
+
+void super_init_timers(){
+	init_timers();
+	
+	left_to_right_blink();
+	const bool skip_load_eeprom = get_buttons();
+	
+	if (skip_load_eeprom){
+		set_led(0b11000000);
+		apply_preconfigured_timers();
+		} else {
+		set_led(0b00000111);
+		load_all_timers_from_eeprom();
+	}
+	set_safe_on_led(true);
+	sleep(3000);
+	set_safe_on_led(false);
+	set_led(0xFF);
+	sleep(3000);
+	set_led(0);
+}
+
+
+int main(void)
+{
+	
+	pin_init();
+	super_init_timers();
+	the_clock.set();
+	
 	
 	while (true)
 	{
