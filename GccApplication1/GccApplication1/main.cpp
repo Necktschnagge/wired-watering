@@ -306,6 +306,7 @@ void edit_specific_timer(uint8_t index_timer_selected){
 	const uint8_t edit_hours{ 0b00011000};
 	const uint8_t edit_quartile{ 0b00000110};
 	const uint8_t edit_minutes{ 0b11 };
+	const uint8_t edit_duration_minutes{ 0b10100101 };
 	
 	const uint8_t exit_buttons{ 0b10000000 };
 	
@@ -324,6 +325,7 @@ void edit_specific_timer(uint8_t index_timer_selected){
 			case 1: set_led(edit_hours); break;
 			case 2: set_led(edit_quartile); break;
 			case 3: set_led(edit_minutes); break;
+			case 4: set_led(edit_duration_minutes); break;
 		}
 	};
 	
@@ -332,13 +334,13 @@ void edit_specific_timer(uint8_t index_timer_selected){
 		
 		//check button
 		if(get_button(0)){ // UP
-			edit_select = (edit_select + 1) % 4;
+			edit_select = (edit_select + 1) % 5;
 			update_led(); sleep(500);
 			reset_auto_exit();
 			continue;
 		}
 		if(get_button(1)){ // DOWN
-			edit_select = (edit_select + 3) % 4;
+			edit_select = (edit_select + 4) % 5;
 			update_led(); sleep(500);
 			reset_auto_exit();
 			continue;
@@ -371,6 +373,11 @@ void edit_specific_timer(uint8_t index_timer_selected){
 				if (m>14) m=0;
 				all_timers[index_timer_selected].minute_at_day =
 				(all_timers[index_timer_selected].minute_at_day / 15) * 15 + m;
+			}
+			if (edit_select ==4){
+				uint8_t d = all_timers[index_timer_selected].minutes;
+				get_number(d,1,0,0);
+				all_timers[index_timer_selected].minutes = d;
 			}
 			left_to_right_blink();
 			reset_auto_exit();
