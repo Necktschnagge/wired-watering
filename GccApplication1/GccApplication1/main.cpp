@@ -553,9 +553,9 @@ void apply_preconfigured_timers(){
 	all_timers[2].minutes = 10;
 	all_timers[2].minute_at_day = 18 * 60 + 0; // 18:00
 
-	// peas
+	// peas / bohnen
 	all_timers[3].ventile = 2;
-	all_timers[3].minutes = 10;
+	all_timers[3].minutes = 15;
 	all_timers[3].minute_at_day = 7 * 60 + 1; // 7:01
 	
 	//all_timers[4].ventile = 2;
@@ -566,10 +566,17 @@ void apply_preconfigured_timers(){
 	//all_timers[5].minutes = 5;
 	//all_timers[5].minute_at_day = 15 * 60;
 	
-	all_timers[6].ventile = 2;
-	all_timers[6].minutes = 5;
-	all_timers[6].minute_at_day = 18 * 60 + 1; // 18:01
+	//all_timers[6].ventile = 2;
+	//all_timers[6].minutes = 5;
+	//all_timers[6].minute_at_day = 18 * 60 + 1; // 18:01
 	
+    // erdbeeren
+	all_timers[7].ventile = 1;
+	all_timers[7].minutes = 20;
+	all_timers[7].minute_at_day = 7 * 60 + 10; // 07:10
+
+
+
 
 	// night drain / blue berries:
 

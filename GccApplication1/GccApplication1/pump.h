@@ -111,7 +111,7 @@ class pump {
 		// if requiries, turn on, otherwise turn off.
 		if (requiries && (!is_pump_relay_on_raw())){
 			turn_on_ventile(drain_ventile);
-			on_boot_pending_switches = 7;
+			on_boot_pending_switches = 2;
 			on_boot_seconds_at_next_switch = (human_clock::instance().now() + 80 - 22) % 80;
 			return;
 		}
