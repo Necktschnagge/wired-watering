@@ -33,7 +33,7 @@ human_clock& the_clock{ human_clock::instance() };
 
 class timer {
 	static constexpr uint8_t START_TIME_WINDOW_MINUTES{ 15 };
-	static constexpr uint16_t MINUTES_OF_A_DAY{ 12*60 };
+	static constexpr uint16_t MINUTES_OF_A_DAY{ 24*60 };
 
 	public:
 	
@@ -45,14 +45,14 @@ class timer {
 	
 	inline bool invalid(){ return ventile == 255; }
 	
-	void execute(){
-		if (!global_timer_enable) return;
-		if (invalid()) return;
+	bool execute(){
+		if (!global_timer_enable) return false;
+		if (invalid()) return false;
 		bool enable = ((MINUTES_OF_A_DAY + the_clock.minute_of_day() - minute_at_day) % MINUTES_OF_A_DAY < START_TIME_WINDOW_MINUTES) && (the_clock.now() > last_executed);
-		if (!enable) return;
-		
+		if (!enable) return false;
 		the_queue.add(ventile, minutes);
 		last_executed = the_clock.now() + human_clock::MINUTE * (START_TIME_WINDOW_MINUTES + 1);
+		return true;
 	}
 	
 	
@@ -76,9 +76,10 @@ class timer {
 		ventile = (bit_code & 0x0000C000) >> 14;
 		if (ventile > 2) ventile = 255;
 		minute_at_day = (bit_code & 0x000007FF);
-		if (minute_at_day >= 12*60) minute_at_day = 0;
+		if (minute_at_day >= 24*60) minute_at_day = 0;
 		
 		last_executed = the_clock.now() + human_clock::MINUTE * (START_TIME_WINDOW_MINUTES + 1);
+		///### last executed is set before the clock is configured. So it does not take any effect on startup.
 	}
 	
 };
@@ -162,7 +163,14 @@ void init_timers(){
 void execute_timers(){
 	for (uint8_t i = 0; i < NUM_TIMERS; ++i)
 	{
-		all_timers[i].execute();
+		bool happened = all_timers[i].execute();
+		if (happened){
+			set_led(i);
+			for(uint8_t i = 0; i < 41; ++i){
+				set_safe_on_led(i%2);
+				sleep(125);
+			}		
+		}
 	}
 }
 
@@ -464,7 +472,7 @@ void edit_timers(){
 			load_all_timers_from_eeprom_ui();
 			reset_auto_exit();
 			continue;
-		}		
+		}
 		// check exit
 		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
 			all_blink(8,200);
@@ -543,11 +551,11 @@ void apply_preconfigured_timers(){
 	// cucumber
 	all_timers[0].ventile = 0;
 	all_timers[0].minutes = 15;
-	all_timers[0].minute_at_day = 7 * 60 + 0; // 7:00
+	all_timers[0].minute_at_day = 6 * 60 + 50; // 6:50
 
-	//all_timers[1].ventile = 0;
-	//all_timers[1].minutes = 12;
-	//all_timers[1].minute_at_day = 12 * 60 + 0;
+	all_timers[1].ventile = 0;
+	all_timers[1].minutes = 15;
+	all_timers[1].minute_at_day = 10 * 60 + 0; // 10:00
 	
 	all_timers[2].ventile = 0;
 	all_timers[2].minutes = 10;
@@ -557,7 +565,7 @@ void apply_preconfigured_timers(){
 	all_timers[3].ventile = 2;
 	all_timers[3].minutes = 15;
 	all_timers[3].minute_at_day = 7 * 60 + 1; // 7:01
-	
+
 	//all_timers[4].ventile = 2;
 	//all_timers[4].minutes = 5;
 	//all_timers[4].minute_at_day = 12 * 60;
@@ -566,15 +574,18 @@ void apply_preconfigured_timers(){
 	//all_timers[5].minutes = 5;
 	//all_timers[5].minute_at_day = 15 * 60;
 	
-	//all_timers[6].ventile = 2;
-	//all_timers[6].minutes = 5;
-	//all_timers[6].minute_at_day = 18 * 60 + 1; // 18:01
+	all_timers[6].ventile = 2;
+	all_timers[6].minutes = 10;
+	all_timers[6].minute_at_day = 18 * 60 + 1; // 18:01
 	
-    // erdbeeren
+	// erdbeeren
 	all_timers[7].ventile = 1;
 	all_timers[7].minutes = 20;
 	all_timers[7].minute_at_day = 7 * 60 + 10; // 07:10
 
+	all_timers[8].ventile = 1;
+	all_timers[8].minute_at_day = 18 * 60 + 2; // 18:02
+	all_timers[8].minutes = 10;
 
 
 
