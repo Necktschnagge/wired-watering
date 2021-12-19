@@ -17,15 +17,19 @@ PB: + led mixed: 7seg + single led
 ******/
 
 void pin_init(){
-	DDRC |=  0b00011111; // safe_on led : relay: ventile2, ventile1, ventile0
+	//DDRC |=  0b00011111; // safe_on led : relay: ventile2, ventile1, ventile0
 	//DDRC &= ~0b00000100;
-	PORTC = 0;
+	//PORTC = 0;
 
-	DDRD &= ~0b11111111; // in button
-	PORTD = 0b11111111; // pull-up internal on.
+	DDRC &= ~0b0011'1000; // buttons
+	PORTC |= 0b0011'1000; // buttons pull-up
 
-	DDRB = 0b11111111; // single leds.
-	PORTB = 0;
+
+	// arc out
+	PORTD = 0b0000'0000; // out arc 0.
+	PORTB &= ~0b0000'0001;
+	DDRD = 0b11111111; // out arc
+	DDRB |= 0b00000001; //
 }
 
 human_clock& the_clock{ human_clock::instance() };
@@ -169,7 +173,7 @@ void execute_timers(){
 			for(uint8_t i = 0; i < 41; ++i){
 				set_safe_on_led(i%2);
 				sleep(125);
-			}		
+			}
 		}
 	}
 }
@@ -629,23 +633,361 @@ void super_init_timers(){
 }
 
 
+struct brightness {
+	
+	uint16_t values[5]{ 0, 0, 0, 0, 0 };
+	uint32_t repeat{ 0 };
+	
+	brightness(){};
+	
+	brightness& operator = (const brightness& another){
+		for (uint8_t i = 0; i < 5; ++i)
+		values[i] = another.values[i];
+		repeat = another.repeat;
+		return *this;
+	}
+};
+
+template<uint8_t _Buffer_Size>
+struct brightness_buffer {
+	static_assert(_Buffer_Size > 0, "Size 0 buffer not allowed.");
+	brightness _buffer[_Buffer_Size]{};
+	
+	uint8_t next_read{0};
+	uint8_t next_write{0};
+	uint8_t filled{0};
+	
+	private:
+	
+	inline bool unsafe_empty() const {
+		return filled == 0;
+	}
+	inline bool unsafe_full() const {
+		return filled == _Buffer_Size;
+	}
+	public:
+	bool empty() const {
+		auto lock = fsl::hw::simple_atomic();
+		return unsafe_empty();
+	}
+	bool full() const {
+		fsl::hw::simple_atomic lock;
+		return unsafe_full();
+	}
+	
+	bool write(const brightness& element){
+		fsl::hw::simple_atomic lock;
+		if (unsafe_full()) return false;
+		_buffer[next_write++] = element;
+		++filled;
+		next_write %= _Buffer_Size;
+		return true;
+	}
+	/*
+	bool read(brightness& destination){
+	auto lock = fsl::hw::simple_atomic();
+	if (unsafe_empty()) return false;
+	destination = _buffer[next_read];
+	if (--repeat )
+	--filled;
+	++next_read;
+	next_read %= _Buffer_Size;
+	
+	return true;
+	}
+	*/
+	bool unsafe_uninterrupted_read_ptr(const brightness*& ptr){
+		if (unsafe_empty()) return false;
+		ptr = &_buffer[next_read];
+		if (_buffer[next_read].repeat == 0){
+			--filled;
+			++next_read;
+			next_read %= _Buffer_Size;
+		}
+		else {
+			--_buffer[next_read].repeat;
+		}
+		return true;
+	}
+	
+};
+
+struct bulb
+{
+	static const uint8_t fast_map[32];
+	
+	static brightness_buffer<10> buffer;
+	
+};
+
+brightness_buffer<10> bulb::buffer;
+
+const uint8_t bulb::fast_map[32]{
+	0,
+	1,
+	0,
+	2,
+	0,
+	1,
+	0,
+	3,
+	0,
+	1,
+	0,
+	2,
+	0,
+	1,
+	0,
+	4,
+	0,
+	1,
+	0,
+	2,
+	0,
+	1,
+	0,
+	3,
+	0,
+	1,
+	0,
+	2,
+	0,
+	1,
+	0,
+	0
+};
+
+void update_arc(){
+	static uint8_t circle_position{0};
+	circle_position +=1;
+	circle_position %= 32;
+	
+	const brightness* br;
+	bool success = bulb::buffer.unsafe_uninterrupted_read_ptr(br);
+	if (!success) return;
+	
+	uint16_t bulb_vector { br->values[bulb::fast_map[circle_position]] };
+	
+	const uint8_t on_D { bulb_vector & 0xFF };
+	const uint8_t on_B { 0b1 & (bulb_vector >> 8) };
+	
+	//DDRD = on_D;
+	PORTD = on_D;
+	
+	//DDRB = (DDRB & ~0b1) | on_B;
+	PORTB = (PORTB & ~0b1) | on_B;
+}
+
+void set_br(brightness& b, uint16_t bulb_mask, uint8_t br){
+	for (uint8_t i = 0; i < 5; ++i){
+		b.values[i] |= (br & (1 << 4-i)) ? bulb_mask : 0;
+	}
+}
+
+void enlight_up(){
+	// all off
+	while (bulb::buffer.full());
+	brightness all_off;
+	all_off.repeat = 16000;
+	bulb::buffer.write(all_off);
+	
+	uint16_t mask[5]{
+		0b100000001,
+		0b010000010,
+		0b001000100,
+		0b000101000,
+		0b000010000
+	};
+	
+	uint8_t br_old{0};
+	uint8_t br_new{0};
+	uint8_t br_diff{1};
+	uint8_t change_br_diff{4};
+	
+	while (true) {
+		// calc next brightness
+		br_old = br_new;
+		if (br_new == 28){
+			br_new = 31;
+		}
+		else {
+			br_new += br_diff;
+			--change_br_diff;
+			if (!change_br_diff){
+				change_br_diff = 4;
+				br_diff*=2;
+			}
+		}
+		for (uint8_t height = 0; height < 5; ++height){
+			brightness x;
+			x.repeat = 1000;
+			for(uint8_t i = 0; i < height; ++i){
+				set_br(x,mask[i],br_new);
+			}
+			for(uint8_t i = height; i < 5; ++i){
+				set_br(x,mask[i],br_old);
+			}
+			while (bulb::buffer.full());
+			bulb::buffer.write(x);
+		}
+		
+		if (br_new == 31)
+		goto part_b;
+	}
+	part_b:
+	while (br_new > 0) {
+		brightness x;
+		set_br(x,0b1'1111'1111,br_new);
+		x.repeat = 1000 + br_new * 100 + 3000 * (br_new < 6);
+		while (bulb::buffer.full());
+		bulb::buffer.write(x);
+		--br_new;
+	}
+}
+
+using time_type = uint16_t;
+
+constexpr uint8_t TICKER_MAX{ 34 };
+constexpr time_type DIVIDE_TIME_LONGATION{ 22 };
+constexpr time_type DIVIDE{ DIVIDE_TIME_LONGATION * 5};
+constexpr uint8_t br_table_max_index{ 8 };
+
+template <uint8_t I>
+constexpr time_type n_th_DIVIDE_TIME_LONGATION(){
+	return I * DIVIDE_TIME_LONGATION;
+}
+
+constexpr time_type T_MAX{ br_table_max_index * DIVIDE - n_th_DIVIDE_TIME_LONGATION<4>() };
+
+time_type func(const time_type& value){
+	return value * value;
+}
+
+const uint8_t br_table[br_table_max_index]{
+	0,
+	//1,
+	1,
+	3,
+	//3,
+	7,
+	10,
+	16,
+	//16,
+	22,
+	35
+};
+
+void blink_test_8394782(){
+	while(true){
+		uint8_t ticker{ 0 };
+		time_type time{ 0 };
+		constexpr uint16_t LEVEL_0{ 0b1'0000'0001 };
+		constexpr uint16_t LEVEL_1{ 0b0'1000'0010 };
+		constexpr uint16_t LEVEL_2{ 0b0'0100'0100 };
+		constexpr uint16_t LEVEL_3{ 0b0'0010'1000 };
+		constexpr uint16_t LEVEL_4{ 0b0'0001'0000 };
+
+		while (time != T_MAX){
+			ticker += 7;
+			ticker %= TICKER_MAX;
+			time += (ticker == 0);
+			//time %= T_MAX;
+			uint16_t bulbs =
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<4>()) / DIVIDE ]) * LEVEL_0 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<3>()) / DIVIDE ]) * LEVEL_1 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<2>()) / DIVIDE ]) * LEVEL_2 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<1>()) / DIVIDE ]) * LEVEL_3 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<0>()) / DIVIDE ]) * LEVEL_4;
+			PORTD = bulbs & 0xFF;
+			PORTB = (PORTB & ~0b1) | (0b1 & (bulbs >> 8));
+			//while (time == 30){}
+		}
+		PORTD = 0xFF;
+		PORTB |= 0b1;
+		for (uint32_t wait=0; wait < 100000ull; ++wait) /* wait */;
+		for (uint8_t br = 255; br != 0; --br){
+			for (uint16_t i = 0; i < 5; ++i){
+				for(uint8_t pwm = 0; pwm < 255; ++pwm){
+					if (pwm < br){
+						PORTD = 0xFF;
+						PORTB |= 0b1;
+						} else {
+						PORTD = 0;
+						PORTB &= ~0b1;
+					}
+				}
+			}
+		}
+		PORTD = 0;
+		PORTB &= ~0b1;
+		for (uint32_t wait=0; wait < 100000ull; ++wait) /* wait */;
+	}
+}
+
 int main(void)
 {
+	auto& all{ bulb::buffer };
 	
 	pin_init();
-	super_init_timers();
-	the_clock.set();
 	
+	blink_test_8394782();
+	//super_init_timers();
+	//the_clock.set();
+	
+	// brightness callibration
+	
+	reset_timer_1();
+	activate_timer1_compare_match_interrupt_A(50, update_arc, true);
+	
+	start_timer1_prescaler_1();
 	
 	while (true)
 	{
-		the_pump.execute();
-		the_queue.execute();
-		execute_timers();
-		check_manual_terminal();
-		update_led();
+		enlight_up();
+	}
+
+	uint8_t br{ 0 };
+	while (true) {
+		while (bulb::buffer.full());
+		brightness x;
+		x.repeat = 8000;
+		for (uint8_t i = 0; i < 5; ++i){
+			x.values[i] = (br & (1 << 4-i)) ? 0xFFFF : 0;
+		}
+		bulb::buffer.write(x);
+		/*
+		while (bulb::buffer.full());
+		brightness y;
+		y.repeat = 1600;
+		for (uint8_t i = 0; i < 5; ++i){
+		y.values[i] = 0;
+		}
+		bulb::buffer.write(y);
+		*/
+		
+		
+		++br;
+		br %= 32;
+	}
+	while (!(PINC & 0b1000)){
+		// wait
+	}
+	sleep(100);
+	while ((PINC & 0b1000)){
+		// wait
 	}
 	
+	
+	
+	/*while (true)
+	{
+	the_pump.execute();
+	the_queue.execute();
+	execute_timers();
+	check_manual_terminal();
+	update_led();
+	}
+	*/
 	
 	
 }

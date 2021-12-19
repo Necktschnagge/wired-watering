@@ -15,6 +15,8 @@ using procedure = void (*)();
 
 extern procedure TCNT0_COMPARE_A;
 
+// stop running timer (prescaler selection is set to disabled)
+// set counter register to 0
 inline void reset_timer_0(){ // 8-bit timer
 	TCCR0B &= 0b11111000;
 	TCNT0 = 0;
@@ -44,6 +46,8 @@ inline void reset_timer_1(){
 }
 
 inline void start_timer1_prescaler_64(){	TCCR1B |= 0b00000011;	}
+
+inline void start_timer1_prescaler_1(){	TCCR1B |= 0b00000001;	}
 
 inline void start_timer1_prescaler_1024(){	TCCR1B |= 0b00000101;	}
 
