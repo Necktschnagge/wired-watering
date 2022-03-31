@@ -1,5 +1,6 @@
 sdkconfig
 sdkconfig.old
+main/config.h
 
 .vs/
 build/
