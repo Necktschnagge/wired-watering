@@ -19,21 +19,31 @@
 #include "protocol_examples_common.h"
 #include "nvs.h"
 #include "nvs_flash.h"
-
 #include <esp_http_server.h>
-
+#include "driver/gpio.h"
+#include <string.h>
 #include "config.h"
 
+static const char* string_on = "on";
+static const char* string_off = "off";
+static const char* string_server_name = "pump-relay-mayson";
 
 static const char *TAG="valve-server";
 
-static const char* custom_answer = "Replaced hello world";
+//static const char* custom_answer = "Replaced hello world";
+
+static bool pump_system = true;
+static bool pump_manual = false;
+static bool pump_auto = false;
+
+static bool wifi_connected = false;
 
 /* An HTTP GET handler */
-esp_err_t hello_get_handler(httpd_req_t *req)
+esp_err_t status_get_handler(httpd_req_t *req)
 {
     char*  buf;
     size_t buf_len;
+    bool abort_on_wrong_target_name = false;
 
     /* Get header value string length and allocate memory for length + 1,
      * extra byte for null termination */
@@ -47,22 +57,36 @@ esp_err_t hello_get_handler(httpd_req_t *req)
         free(buf);
     }
 
-    buf_len = httpd_req_get_hdr_value_len(req, "Test-Header-2") + 1;
+    buf_len = httpd_req_get_hdr_value_len(req, "target-name") + 1;
     if (buf_len > 1) {
         buf = malloc(buf_len);
-        if (httpd_req_get_hdr_value_str(req, "Test-Header-2", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Test-Header-2: %s", buf);
+        if (httpd_req_get_hdr_value_str(req, "target-name", buf, buf_len) == ESP_OK) {
+            ESP_LOGI(TAG, "Found header => target-name: %s", buf);
+            if (strcmp(buf, string_server_name) != 0) {
+                ESP_LOGI(TAG, "Header target-name does not match \"pump-relay-mayson\". Ignoring request");
+                abort_on_wrong_target_name = true;
+            }
         }
         free(buf);
     }
 
-    buf_len = httpd_req_get_hdr_value_len(req, "Test-Header-1") + 1;
-    if (buf_len > 1) {
-        buf = malloc(buf_len);
-        if (httpd_req_get_hdr_value_str(req, "Test-Header-1", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Test-Header-1: %s", buf);
+    if (abort_on_wrong_target_name) {
+        /* Set some custom headers */
+        //httpd_resp_set_hdr(req, "Custom-Header-1", "Custom-Value-1");
+        //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+
+        /* Send response with custom headers and body set as the
+         * string passed in user context*/
+        const char* resp_str = "{\n \"error\":\"wrong target name\"\n}";
+        httpd_resp_send(req, resp_str, strlen(resp_str));
+
+        /* After sending the HTTP response the old HTTP request
+         * headers are lost. Check if HTTP request headers can be read now. */
+        /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+            ESP_LOGI(TAG, "Request headers lost");
         }
-        free(buf);
+        */
+        return ESP_OK;
     }
 
     /* Read URL query string length and allocate memory for length + 1,
@@ -74,121 +98,62 @@ esp_err_t hello_get_handler(httpd_req_t *req)
             ESP_LOGI(TAG, "Found URL query => %s", buf);
             char param[32];
             /* Get value of expected key from query string */
-            if (httpd_query_key_value(buf, "valve", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => valve=%s", param);
+            if (httpd_query_key_value(buf, "manual", param, sizeof(param)) == ESP_OK) {
+                if (strcmp(param, string_on) == 0) {
+                    pump_manual = true;
+                }
+                if (strcmp(param, string_off) == 0) {
+                    pump_manual = false;
+                }
+                ESP_LOGI(TAG, "Keep / set manual =%s", pump_manual ? string_on : string_off);
             }
-            if (httpd_query_key_value(buf, "time", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => time=%s", param);
+            if (httpd_query_key_value(buf, "auto", param, sizeof(param)) == ESP_OK) {
+                if (strcmp(param, string_on) == 0) {
+                    pump_auto = true;
+                }
+                if (strcmp(param, string_off) == 0) {
+                    pump_auto = false;
+                }
+                ESP_LOGI(TAG, "Keep / set auto =%s", pump_manual ? string_on : string_off);
             }
-            if (httpd_query_key_value(buf, "all_off", param, sizeof(param)) == ESP_OK) {
-                ESP_LOGI(TAG, "Found URL query parameter => all_off=%s", param);
+            if (httpd_query_key_value(buf, "system", param, sizeof(param)) == ESP_OK) {
+                if (strcmp(param, string_on) == 0) {
+                    pump_system = true;
+                }
+                if (strcmp(param, string_off) == 0) {
+                    pump_system = false;
+                }
+                ESP_LOGI(TAG, "Keep / set system =%s", pump_manual ? string_on : string_off);
             }
+            free(buf);
         }
-        free(buf);
     }
 
     /* Set some custom headers */
-    httpd_resp_set_hdr(req, "Custom-Header-1", "Custom-Value-1");
-    httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+    httpd_resp_set_hdr(req, "server-name", string_server_name);
+    //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
 
     /* Send response with custom headers and body set as the
      * string passed in user context*/
-    const char* resp_str = (const char*) custom_answer;
+    const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
+        //(const char*) custom_answer;
     httpd_resp_send(req, resp_str, strlen(resp_str));
 
     /* After sending the HTTP response the old HTTP request
      * headers are lost. Check if HTTP request headers can be read now. */
-    if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+    /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
         ESP_LOGI(TAG, "Request headers lost");
-    }
+    }*/
     return ESP_OK;
 }
 
-httpd_uri_t hello = {
-    .uri       = "/hello",
+
+httpd_uri_t status_uri = {
+    .uri       = "/status",
     .method    = HTTP_GET,
-    .handler   = hello_get_handler,
-    /* Let's pass response string in user
-     * context to demonstrate it's usage */
-    .user_ctx  = "Hello World!"
-};
-
-/* An HTTP POST handler */
-esp_err_t echo_post_handler(httpd_req_t *req)
-{
-    char buf[100];
-    int ret, remaining = req->content_len;
-
-    while (remaining > 0) {
-        /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf,
-                        MIN(remaining, sizeof(buf)))) <= 0) {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
-                /* Retry receiving if timeout occurred */
-                continue;
-            }
-            return ESP_FAIL;
-        }
-
-        /* Send back the same data */
-        httpd_resp_send_chunk(req, buf, ret);
-        remaining -= ret;
-
-        /* Log data received */
-        ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
-        ESP_LOGI(TAG, "%.*s", ret, buf);
-        ESP_LOGI(TAG, "====================================");
-    }
-
-    // End response
-    httpd_resp_send_chunk(req, NULL, 0);
-    return ESP_OK;
-}
-
-httpd_uri_t echo = {
-    .uri       = "/echo",
-    .method    = HTTP_POST,
-    .handler   = echo_post_handler,
-    .user_ctx  = NULL
-};
-
-/* An HTTP PUT handler. This demonstrates realtime
- * registration and deregistration of URI handlers
- */
-esp_err_t ctrl_put_handler(httpd_req_t *req)
-{
-    char buf;
-    int ret;
-
-    if ((ret = httpd_req_recv(req, &buf, 1)) <= 0) {
-        if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
-            httpd_resp_send_408(req);
-        }
-        return ESP_FAIL;
-    }
-
-    if (buf == '0') {
-        /* Handler can be unregistered using the uri string */
-        ESP_LOGI(TAG, "Unregistering /hello and /echo URIs");
-        httpd_unregister_uri(req->handle, "/hello");
-        httpd_unregister_uri(req->handle, "/echo");
-    }
-    else {
-        ESP_LOGI(TAG, "Registering /hello and /echo URIs");
-        httpd_register_uri_handler(req->handle, &hello);
-        httpd_register_uri_handler(req->handle, &echo);
-    }
-
-    /* Respond with empty body */
-    httpd_resp_send(req, NULL, 0);
-    return ESP_OK;
-}
-
-httpd_uri_t ctrl = {
-    .uri       = "/ctrl",
-    .method    = HTTP_PUT,
-    .handler   = ctrl_put_handler,
-    .user_ctx  = NULL
+    .handler   = status_get_handler,
+    // Let's pass response string in user context to demonstrate it's usage 
+    //.user_ctx  = "Hello World!"
 };
 
 httpd_handle_t start_webserver(void)
@@ -201,9 +166,9 @@ httpd_handle_t start_webserver(void)
     if (httpd_start(&server, &config) == ESP_OK) {
         // Set URI handlers
         ESP_LOGI(TAG, "Registering URI handlers");
-        httpd_register_uri_handler(server, &hello);
-        httpd_register_uri_handler(server, &echo);
-        httpd_register_uri_handler(server, &ctrl);
+        httpd_register_uri_handler(server, &status_uri);
+        //httpd_register_uri_handler(server, &echo);
+        //httpd_register_uri_handler(server, &ctrl);
         return server;
     }
 
@@ -258,6 +223,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         esp_wifi_connect();
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
+        wifi_connected = false;
         if (s_retry_num < WIFI_CONNECT_MAX_RETRY) {
             esp_wifi_connect();
             s_retry_num++;
@@ -270,6 +236,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*)event_data;
+        wifi_connected = true;
         ESP_LOGI(TAG, "got ip:%s",
             ip4addr_ntoa(&event->ip_info.ip));
         s_retry_num = 0;
@@ -343,6 +310,7 @@ void connect_wifi(void) {
     /* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
      * happened. */
     if (bits & WIFI_CONNECTED_BIT) {
+        wifi_connected = true;
         ESP_LOGI(TAG, "connected to ap SSID:%s",
             WIFI_SSID);
     }
@@ -361,6 +329,83 @@ void connect_wifi(void) {
     */
 }
 
+
+#define PIN_D0 16
+// led system
+#define PIN_D1 5
+// led wifi
+#define PIN_D2 4
+
+// button
+#define PIN_D3 0
+// button
+#define PIN_D4 2
+
+// led auto
+#define PIN_D5 14
+// led manual
+#define PIN_D6 12
+// led pump relay
+#define PIN_D7 13
+
+#define GPIO_INPUT_BUTTONS ((1ULL<<PIN_D3) | (1ULL<<PIN_D4)) 
+
+#define GPIO_OUTPUT_LEDS ((1ULL<<PIN_D1) | (1ULL<<PIN_D2) | (1ULL<<PIN_D0) | (1ULL<<PIN_D6) | (1ULL<<PIN_D7))
+
+void gpio_actor(void) {
+
+    gpio_config_t led_conf;
+    //disable interrupt
+    led_conf.intr_type = GPIO_INTR_DISABLE;
+    //set as output mode
+    led_conf.mode = GPIO_MODE_OUTPUT;
+    //bit mask of the pins that you want to set,e.g.GPIO15/16
+    led_conf.pin_bit_mask = GPIO_OUTPUT_LEDS;
+    //disable pull-down mode
+    led_conf.pull_down_en = 0;
+    //disable pull-up mode
+    led_conf.pull_up_en = 0;
+    //configure GPIO with the given settings
+    gpio_config(&led_conf);
+
+    gpio_config_t button_conf;
+    //disable interrupt
+    button_conf.intr_type = GPIO_INTR_DISABLE;
+    //set as input mode
+    button_conf.mode = GPIO_MODE_INPUT;
+    //bit mask of the pins that you want to set,e.g.GPIO15/16
+    button_conf.pin_bit_mask = GPIO_INPUT_BUTTONS;
+    //disable pull-down mode
+    button_conf.pull_down_en = 0;
+    //enable pull-up mode
+    button_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    //configure GPIO with the given settings
+    gpio_config(&button_conf);
+
+    unsigned int cnt = 0;
+    while (1) {
+        vTaskDelay(1000 / portTICK_RATE_MS);
+        int x = gpio_get_level(PIN_D3);
+        int y = gpio_get_level(PIN_D4);
+        if (!x) {
+            pump_system = !pump_system;
+        }
+        if (!y) {
+            pump_manual = !pump_manual;
+        }
+        gpio_set_level(PIN_D1, pump_system);
+        gpio_set_level(PIN_D2, wifi_connected); // wifi
+        gpio_set_level(PIN_D0, pump_auto);
+        gpio_set_level(PIN_D6, pump_manual);
+        gpio_set_level(PIN_D7, pump_system && (pump_auto || pump_manual)); // relay
+        if (!x || !y) {
+            vTaskDelay(2000 / portTICK_RATE_MS);
+        }
+        ++cnt;
+    }
+
+}
+
 void app_main()
 {
     ESP_LOGI(TAG, "calling nvs_flash_init...");
@@ -372,5 +417,10 @@ void app_main()
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &server));
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &server));
 
+    ESP_LOGI(TAG, "starting http server...");
     server = start_webserver();
+
+    ESP_LOGI(TAG, "setting / getting gpio permanently...");
+    gpio_actor();
+
 }
