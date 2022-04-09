@@ -114,7 +114,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 if (strcmp(param, string_off) == 0) {
                     pump_auto = false;
                 }
-                ESP_LOGI(TAG, "Keep / set auto =%s", pump_manual ? string_on : string_off);
+                ESP_LOGI(TAG, "Keep / set auto =%s", pump_auto ? string_on : string_off);
             }
             if (httpd_query_key_value(buf, "system", param, sizeof(param)) == ESP_OK) {
                 if (strcmp(param, string_on) == 0) {
@@ -123,7 +123,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 if (strcmp(param, string_off) == 0) {
                     pump_system = false;
                 }
-                ESP_LOGI(TAG, "Keep / set system =%s", pump_manual ? string_on : string_off);
+                ESP_LOGI(TAG, "Keep / set system =%s", pump_system ? string_on : string_off);
             }
             free(buf);
         }
@@ -233,6 +233,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
             xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
         }
         ESP_LOGI(TAG, "connect to the AP fail");
+        //##### handle the case where it does not reconnect anymore !!!
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*)event_data;
@@ -329,7 +330,7 @@ void connect_wifi(void) {
     */
 }
 
-
+// led auto
 #define PIN_D0 16
 // led system
 #define PIN_D1 5
@@ -341,7 +342,7 @@ void connect_wifi(void) {
 // button
 #define PIN_D4 2
 
-// led auto
+// led: do not use it prevents from boot and flashing when pulled down via led.
 #define PIN_D5 14
 // led manual
 #define PIN_D6 12
