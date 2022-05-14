@@ -734,23 +734,33 @@ void update_bulbs(){
 }
 
 struct pattern {
-		static constexpr uint16_t LEVEL_0{ 0b1'0000'0001 };
-		static constexpr uint16_t LEVEL_1{ 0b0'1000'0010 };
-		static constexpr uint16_t LEVEL_2{ 0b0'0100'0100 };
-		static constexpr uint16_t LEVEL_3{ 0b0'0010'1000 };
-		static constexpr uint16_t LEVEL_4{ 0b0'0001'0000 };
-	};
-
-
-struct brightness_config 
-{
-	using divider_type = uint8_t;
-	static constexpr divider_type divide_size = 50;
+	static constexpr uint16_t LEVEL_0{ 0b1'0000'0001 };
+	static constexpr uint16_t LEVEL_1{ 0b0'1000'0010 };
+	static constexpr uint16_t LEVEL_2{ 0b0'0100'0100 };
+	static constexpr uint16_t LEVEL_3{ 0b0'0010'1000 };
+	static constexpr uint16_t LEVEL_4{ 0b0'0001'0000 };
 };
 
-template<class... T>
-void add_buffer(const T&... pattern){
-	//const bulb_buffer::reg_pair&;
+
+struct brightness_config
+{
+	using divider_type = uint8_t;
+	using divider_array = divider_type[9];
+	static constexpr divider_type divide_size = 50;
+	
+	using bulb_position = uint8_t[9];
+};
+
+void add_buffer(brightness_config::divider_type divide_size, const brightness_config::divider_array& bulb_brightness_ascending, const brightness_config::bulb_position& positions){
+	uint16_t reg{ 0x1FF };
+	uint8_t next_bulb{ 0 };
+	for(brightness_config::divider_type i = 0; i < divide_size; ++i){
+		while (next_bulb < 9 && i >= bulb_brightness_ascending[next_bulb]){
+			reg &= ~(static_cast<uint16_t>(1) << positions[next_bulb]);
+			++next_bulb;
+		}
+		// write reg to buffer if not buffer full.
+	}
 }
 
 void fill_buffer_blink_001(){
