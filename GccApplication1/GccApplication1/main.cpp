@@ -3,8 +3,6 @@
 #include "display.h"
 #include "input.h"
 #include "time_utilities.h"
-#include "queue.h"
-#include "pump.h"
 #include "ui_utility.h"
 
 #include <avr/eeprom.h>
@@ -54,7 +52,7 @@ class timer {
 		if (invalid()) return false;
 		bool enable = ((MINUTES_OF_A_DAY + the_clock.minute_of_day() - minute_at_day) % MINUTES_OF_A_DAY < START_TIME_WINDOW_MINUTES) && (the_clock.now() > last_executed);
 		if (!enable) return false;
-		the_queue.add(ventile, minutes);
+		//the_queue.add(ventile, minutes);
 		last_executed = the_clock.now() + human_clock::MINUTE * (START_TIME_WINDOW_MINUTES + 1);
 		return true;
 	}
@@ -178,125 +176,6 @@ void execute_timers(){
 	}
 }
 
-
-
-void manual_queue_entry(){
-	constexpr uint8_t abort_buttons{ 0b11101000 };
-	
-	auto abort_blink = []{
-		for (uint8_t i = 0; i < 16; ++i){
-			set_led(0xFF * (i%2));
-			sleep(250);
-		}
-		
-	};
-	
-	uint8_t ticks{ 8 };
-	while (get_button(3)){
-		set_led(0xFF & ( (1ul << ticks) - 1));
-		if (ticks == 0) {
-			abort_blink();
-			the_queue.switch_off_time = the_clock.now();
-			return;
-		}
-		sleep(400);
-		--ticks;
-	}
-	
-	sleep(300);
-	//{ if (get_buttons() & abort_buttons) return; }
-	if (the_queue.full()){
-		abort_blink();
-		return; // abort
-	}
-	
-	// choose ventile
-	for (uint8_t i = 0; i < 10; ++i){
-		set_led(0b11100000 * (i%2));
-		sleep(300);
-		{ if (get_buttons() & abort_buttons) return; }
-	}
-	uint8_t ventile{ 0 };
-	if (!get_number(ventile, 1, abort_buttons, 30)) return;
-	
-	if (ventile > 2){
-		abort_blink();
-		return; // abort
-	}
-
-	// choose time
-	for (uint8_t i = 0; i < 8; ++i){
-		set_led(1 << ((3*i) % 8));
-		sleep(300);
-		{ if (get_buttons() & abort_buttons) return; }
-	}
-	uint8_t time{ 15 };
-	if (!get_number(time, 1, abort_buttons, 30)) return;
-	
-	the_queue.add(ventile, time);
-	set_led(0xFF);
-	sleep(2000);
-}
-
-void config_change(){
-	constexpr uint8_t exit_buttons { 0b10000100 };
-	const auto exit_delta = human_clock::SECOND * 25;
-	const uint16_t push_down_time_ms{ 3000 };
-
-	auto reset_auto_exit = [&](human_clock::time_type& auto_exit){
-		auto_exit = the_clock.now() + exit_delta;
-	};
-	
-	auto right_to_left_blink = [reset_auto_exit](human_clock::time_type& auto_exit){
-		for (uint8_t i = 1; i < 9; ++i){
-			set_led((uint16_t(1) << i) - 1);
-			sleep(250);
-		}
-		reset_auto_exit(auto_exit);
-	};
-	
-	auto check_long_push_down = [reset_auto_exit, right_to_left_blink](uint8_t button, bool& flag_to_change, human_clock::time_type& auto_exit){
-		uint16_t already_waited_ms = 0;
-		while(already_waited_ms < push_down_time_ms){
-			if (!get_button(button)) return;
-			sleep(30);
-			already_waited_ms += 30;
-			reset_auto_exit(auto_exit);
-		}
-		flag_to_change = !flag_to_change;
-		right_to_left_blink(auto_exit);
-	};
-
-	
-	bool& global_timer_enable { timer::global_timer_enable };
-	bool& the_2_hr_reactivate{ pump::recovery_enable };
-	human_clock::time_type auto_exit{ the_clock.now() + exit_delta };
-	
-	right_to_left_blink(auto_exit);
-	while (true){
-		// refresh led
-		uint8_t status{
-			static_cast<uint8_t>(
-			(0b00000111 * global_timer_enable) |
-			(0b00111000 * the_2_hr_reactivate)
-			)
-		};
-		const auto now{ the_clock.now()};
-		status = (status * ( now % 2)) |
-		(0b10000000 * !(now % 2));
-		set_led(status);
-		
-		// capture input
-		check_long_push_down(0,global_timer_enable,auto_exit);
-		check_long_push_down(1,the_2_hr_reactivate,auto_exit);
-		
-		// check exit
-		if ((get_buttons() & exit_buttons) || auto_exit < the_clock.now() ){
-			all_blink(8,250);
-			return;
-		}
-	}
-}
 
 void save_timer_to_eeprom_ui(){
 	const bool ch = has_any_timer_changes_to_eeprom();
@@ -488,65 +367,6 @@ void edit_timers(){
 	// entered successfully.
 	
 	
-}
-
-void check_manual_terminal(){
-	static uint8_t test_ventile{ 0 };
-	
-	if ((get_buttons() & 0b00100001) == 0b00100001){ // S key + UP key -> edit timers
-		return edit_timers();
-	}
-	
-	if (get_button(7)){ // off
-		the_pump.manual(false);
-		return;
-	}
-	if (get_button(6)){ // on
-		the_pump.manual(true);
-		return;
-	}
-	if (get_button(5)){ // unsafe-on
-		the_pump.manual_unsafe_on();
-		return;
-	}
-	
-	if (get_button(4)){ // ventile test
-		if (the_queue.running) return;
-		
-		++test_ventile;
-		test_ventile %= 6;
-		turn_off_ventiles();
-		if (test_ventile % 2){
-			turn_on_ventile(test_ventile / 2);
-			the_queue.switch_off_time = the_clock.now() + 1 * human_clock::MINUTE;
-		}
-		sleep(700);
-		return;
-	}
-	
-	if (get_button(3)){ // F key for custom queue entry.
-		return manual_queue_entry();
-	}
-	
-	if (get_button(2)){ // prog config menu
-		return config_change();
-	}
-}
-
-void update_led(){
-
-	uint64_t now = the_clock.now();
-
-	bool pump_status_safe = (the_pump.safe_on && the_pump.manual_on) || (the_pump.booting() && (now % 0b10)) || (the_pump.safe_on && (!the_pump.manual_on) && (now % 0b100));
-	set_safe_on_led(pump_status_safe);
-
-	now %= human_clock::DAY;
-	uint8_t now_hour = now / human_clock::HOUR;
-	uint8_t part_of_hour = (now % human_clock::HOUR) / (human_clock::HOUR / 8);
-	if (part_of_hour > 7) part_of_hour = 7;
-	if (now_hour > 23) now_hour = 24;
-
-	set_led((now_hour << 3) | part_of_hour);
 }
 
 
@@ -877,15 +697,67 @@ const uint8_t br_table[br_table_max_index]{
 	35
 };
 
-void blink_test_8394782(){
+
+struct bulb_buffer{
+	using buffer_size_type = uint8_t;
+	static constexpr buffer_size_type BUFFER_SIZE{ 255 };
+	using reg_pair = uint8_t[2];
+	using buffer = reg_pair[BUFFER_SIZE];
+	
+	buffer _array;
+
+	reg_pair* const begin{ &_array[0] };
+	reg_pair* const end{ begin + BUFFER_SIZE };
+
+	reg_pair* next_read{ begin };
+	reg_pair* next_write{ begin };
+	
+	bulb_buffer(){
+		for(auto iter = begin; iter != end; ++iter){
+			(*iter)[0] = 0;
+			(*iter)[1] = 0;
+		}
+	}
+	
+	
+};
+
+bulb_buffer global_bulb_buffer;
+
+void update_bulbs(){
+	PORTB = (PORTB & ~0b1) | (0b1 & (*global_bulb_buffer.next_read)[1]);
+	PORTD = (*global_bulb_buffer.next_read)[0];
+	++global_bulb_buffer.next_read;
+	if (global_bulb_buffer.next_read == global_bulb_buffer.end){
+		global_bulb_buffer.next_read = global_bulb_buffer.begin;
+	}
+}
+
+struct pattern {
+		static constexpr uint16_t LEVEL_0{ 0b1'0000'0001 };
+		static constexpr uint16_t LEVEL_1{ 0b0'1000'0010 };
+		static constexpr uint16_t LEVEL_2{ 0b0'0100'0100 };
+		static constexpr uint16_t LEVEL_3{ 0b0'0010'1000 };
+		static constexpr uint16_t LEVEL_4{ 0b0'0001'0000 };
+	};
+
+
+struct brightness_config 
+{
+	using divider_type = uint8_t;
+	static constexpr divider_type divide_size = 50;
+};
+
+template<class... T>
+void add_buffer(const T&... pattern){
+	//const bulb_buffer::reg_pair&;
+}
+
+void fill_buffer_blink_001(){
 	while(true){
 		uint8_t ticker{ 0 };
 		time_type time{ 0 };
-		constexpr uint16_t LEVEL_0{ 0b1'0000'0001 };
-		constexpr uint16_t LEVEL_1{ 0b0'1000'0010 };
-		constexpr uint16_t LEVEL_2{ 0b0'0100'0100 };
-		constexpr uint16_t LEVEL_3{ 0b0'0010'1000 };
-		constexpr uint16_t LEVEL_4{ 0b0'0001'0000 };
+		
 
 		while (time != T_MAX){
 			ticker += 7;
@@ -893,11 +765,11 @@ void blink_test_8394782(){
 			time += (ticker == 0);
 			//time %= T_MAX;
 			uint16_t bulbs =
-			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<4>()) / DIVIDE ]) * LEVEL_0 |
-			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<3>()) / DIVIDE ]) * LEVEL_1 |
-			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<2>()) / DIVIDE ]) * LEVEL_2 |
-			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<1>()) / DIVIDE ]) * LEVEL_3 |
-			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<0>()) / DIVIDE ]) * LEVEL_4;
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<4>()) / DIVIDE ]) * pattern::LEVEL_0 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<3>()) / DIVIDE ]) * pattern::LEVEL_1 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<2>()) / DIVIDE ]) * pattern::LEVEL_2 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<1>()) / DIVIDE ]) * pattern::LEVEL_3 |
+			(ticker < br_table[(time + n_th_DIVIDE_TIME_LONGATION<0>()) / DIVIDE ]) * pattern::LEVEL_4;
 			PORTD = bulbs & 0xFF;
 			PORTB = (PORTB & ~0b1) | (0b1 & (bulbs >> 8));
 			//while (time == 30){}
@@ -924,70 +796,25 @@ void blink_test_8394782(){
 	}
 }
 
+
 int main(void)
 {
 	auto& all{ bulb::buffer };
 	
 	pin_init();
 	
-	blink_test_8394782();
 	//super_init_timers();
 	//the_clock.set();
 	
 	// brightness callibration
 	
 	reset_timer_1();
-	activate_timer1_compare_match_interrupt_A(50, update_arc, true);
+	activate_timer1_compare_match_interrupt_A(50, update_bulbs, true);
 	
 	start_timer1_prescaler_1();
 	
 	while (true)
 	{
-		enlight_up();
+		fill_buffer_blink_001();
 	}
-
-	uint8_t br{ 0 };
-	while (true) {
-		while (bulb::buffer.full());
-		brightness x;
-		x.repeat = 8000;
-		for (uint8_t i = 0; i < 5; ++i){
-			x.values[i] = (br & (1 << 4-i)) ? 0xFFFF : 0;
-		}
-		bulb::buffer.write(x);
-		/*
-		while (bulb::buffer.full());
-		brightness y;
-		y.repeat = 1600;
-		for (uint8_t i = 0; i < 5; ++i){
-		y.values[i] = 0;
-		}
-		bulb::buffer.write(y);
-		*/
-		
-		
-		++br;
-		br %= 32;
-	}
-	while (!(PINC & 0b1000)){
-		// wait
-	}
-	sleep(100);
-	while ((PINC & 0b1000)){
-		// wait
-	}
-	
-	
-	
-	/*while (true)
-	{
-	the_pump.execute();
-	the_queue.execute();
-	execute_timers();
-	check_manual_terminal();
-	update_led();
-	}
-	*/
-	
-	
 }

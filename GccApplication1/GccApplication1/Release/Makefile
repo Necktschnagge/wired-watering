@@ -40,8 +40,6 @@ C_SRCS +=  \
 ../hardware_entities.cpp \
 ../input.cpp \
 ../main.cpp \
-../pump.cpp \
-../queue.cpp \
 ../timer0.cpp \
 ../time_utilities.cpp
 
@@ -56,8 +54,6 @@ OBJS +=  \
 hardware_entities.o \
 input.o \
 main.o \
-pump.o \
-queue.o \
 timer0.o \
 time_utilities.o
 
@@ -65,8 +61,6 @@ OBJS_AS_ARGS +=  \
 hardware_entities.o \
 input.o \
 main.o \
-pump.o \
-queue.o \
 timer0.o \
 time_utilities.o
 
@@ -74,8 +68,6 @@ C_DEPS +=  \
 hardware_entities.d \
 input.d \
 main.d \
-pump.d \
-queue.d \
 timer0.d \
 time_utilities.d
 
@@ -83,8 +75,6 @@ C_DEPS_AS_ARGS +=  \
 hardware_entities.d \
 input.d \
 main.d \
-pump.d \
-queue.d \
 timer0.d \
 time_utilities.d
 
@@ -117,20 +107,6 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./main.o: .././main.cpp
-	@echo Building file: $<
-	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DNDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\include"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\gcc\dev\atmega328p" -c -std=c++14 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./pump.o: .././pump.cpp
-	@echo Building file: $<
-	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DNDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\include"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\gcc\dev\atmega328p" -c -std=c++14 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-./queue.o: .././queue.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DNDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\include"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.2.209\gcc\dev\atmega328p" -c -std=c++14 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -8,10 +8,6 @@ input.cpp
 
 main.cpp
 
-pump.cpp
-
-queue.cpp
-
 timer0.cpp
 
 time_utilities.cpp

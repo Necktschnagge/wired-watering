@@ -187,18 +187,6 @@
     <Compile Include="main.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="pump.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="pump.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="queue.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="queue.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="timer0.cpp">
       <SubType>compile</SubType>
     </Compile>
