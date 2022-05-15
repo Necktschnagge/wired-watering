@@ -17,15 +17,15 @@ PB: + led mixed: 7seg + single led
 ******/
 
 void pin_init(){
-	DDRC |=  0b00011111; // safe_on led : relay: ventile2, ventile1, ventile0
+	//DDRC |=  0b00011111; // safe_on led : relay: ventile2, ventile1, ventile0
 	//DDRC &= ~0b00000100;
-	PORTC = 0;
+	//PORTC = 0;
 
-	DDRD &= ~0b11111111; // in button
-	PORTD = 0b11111111; // pull-up internal on.
+	DDRD = 0b11111111; // out valves
+	PORTD = 0b00000000; // all valves closed
 
-	DDRB = 0b11111111; // single leds.
-	PORTB = 0;
+	DDRB  = 0b00011000; // communication to master : X X X : CLOCK : DATA : SYNC : CLOCK : DATA
+	PORTB = 0b00000111; // pull-up resistors for input lanes.
 }
 
 human_clock& the_clock{ human_clock::instance() };
@@ -169,7 +169,7 @@ void execute_timers(){
 			for(uint8_t i = 0; i < 41; ++i){
 				set_safe_on_led(i%2);
 				sleep(125);
-			}		
+			}
 		}
 	}
 }
@@ -629,12 +629,110 @@ void super_init_timers(){
 }
 
 
+bool is_sync_input_lane_active(){
+	return ! (PINB & 0b100);
+}
+
+bool is_clock_input_lane_active(){
+	return ! (PINB & 0b010);
+}
+
+bool is_data_input_lane_active(){
+	return ! (PINB & 0b001);
+}
+
+void set_clock_output_lane(bool b){
+	PORTB = (PORTB & (~0b00010000)) | (b ? 0b00010000 : 0b0);
+}
+
+void set_data_output_lane(bool b){
+	PORTB = (PORTB & (~0b00001000)) | (b ? 0b00001000 : 0b0);
+}
+
 int main(void)
 {
 	
 	pin_init();
-	super_init_timers();
-	the_clock.set();
+	
+	again_sync:
+	set_data_output_lane(false);
+	set_clock_output_lane(false);
+	while (!is_sync_input_lane_active() || is_data_input_lane_active() || is_clock_input_lane_active()){
+		//wait for sync begin
+	}
+	while (!is_clock_input_lane_active())
+	{
+		// wait for clock up
+		if (!is_sync_input_lane_active() || is_data_input_lane_active()){
+			goto again_sync;
+		}
+	}
+	set_clock_output_lane(true);
+	while (is_clock_input_lane_active())
+	{
+		// wait for clock down
+		if (is_data_input_lane_active()){
+			goto again_sync;
+		}
+	}
+	if (is_sync_input_lane_active()) {
+		goto again_sync;
+	}
+	set_clock_output_lane(false);
+	// sync done.
+	
+	uint8_t read_bits = 4;
+	uint64_t read_buffer = 0;
+	uint8_t opcode = 0;
+	uint8_t mode = 0; // read opcode
+	// 1 read data
+	
+	while (true){
+		// read one bit:
+		while (read_bits)
+		{
+			while(!is_clock_input_lane_active()){
+				if (is_sync_input_lane_active()){
+					goto again_sync;
+				}
+			}
+			bool bit = is_data_input_lane_active();
+			--read_bits;
+			read_buffer |=  (1 << read_bits) * bit;
+			set_clock_output_lane(true);
+			while (is_clock_input_lane_active()){
+				if (is_sync_input_lane_active()){
+					goto again_sync;
+				}
+			}
+			set_clock_output_lane(false);
+			
+		}
+		if (mode == 0){
+			opcode = read_buffer & 0b1111;
+			
+			mode = 1;
+			read_bits = 8; // check correct opcode here #####
+			read_buffer = 0;
+			continue;
+		}
+
+		if (mode == 1){
+			uint8_t valves = read_buffer & 0b11111111;
+			
+			PORTD = valves;
+			
+			mode = 0;
+			read_bits = 4;
+			read_buffer = 0;
+			continue;
+		}
+		
+		
+	}
+	
+	//super_init_timers();
+	//the_clock.set();
 	
 	
 	while (true)
