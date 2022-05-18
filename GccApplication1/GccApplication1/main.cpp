@@ -607,26 +607,6 @@ void apply_preconfigured_timers(){
 
 }
 
-void super_init_timers(){
-	init_timers();
-	
-	left_to_right_blink();
-	const bool skip_load_eeprom = get_buttons();
-	
-	if (skip_load_eeprom){
-		set_led(0b11000000);
-		apply_preconfigured_timers();
-		} else {
-		set_led(0b00000111);
-		load_all_timers_from_eeprom();
-	}
-	set_safe_on_led(true);
-	sleep(3000);
-	set_safe_on_led(false);
-	set_led(0xFF);
-	sleep(3000);
-	set_led(0);
-}
 
 
 bool is_sync_input_lane_active(){
@@ -655,11 +635,11 @@ int main(void)
 	pin_init();
 	
 	again_sync:
-	set_data_output_lane(false);
-	set_clock_output_lane(false);
 	while (!is_sync_input_lane_active() || is_data_input_lane_active() || is_clock_input_lane_active()){
 		//wait for sync begin
 	}
+	set_data_output_lane(false);
+	set_clock_output_lane(false);
 	while (!is_clock_input_lane_active())
 	{
 		// wait for clock up
@@ -698,7 +678,7 @@ int main(void)
 			}
 			bool bit = is_data_input_lane_active();
 			--read_bits;
-			read_buffer |=  (1 << read_bits) * bit;
+			read_buffer |=  (static_cast<decltype(read_buffer)>(1) << read_bits) * bit;
 			set_clock_output_lane(true);
 			while (is_clock_input_lane_active()){
 				if (is_sync_input_lane_active()){
@@ -711,10 +691,14 @@ int main(void)
 		if (mode == 0){
 			opcode = read_buffer & 0b1111;
 			
-			mode = 1;
-			read_bits = 8; // check correct opcode here #####
-			read_buffer = 0;
-			continue;
+			if (opcode == 0b0001){
+				mode = 1;
+				read_bits = 8; // check correct opcode here #####
+				read_buffer = 0;
+				continue;
+			}
+			
+			goto again_sync; // no valid opcode
 		}
 
 		if (mode == 1){
@@ -734,16 +718,10 @@ int main(void)
 	//super_init_timers();
 	//the_clock.set();
 	
-	
+	PORTD = 0;
+
 	while (true)
 	{
-		the_pump.execute();
-		the_queue.execute();
-		execute_timers();
-		check_manual_terminal();
-		update_led();
 	}
-	
-	
 	
 }
