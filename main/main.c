@@ -22,19 +22,25 @@
 #include <esp_http_server.h>
 #include "driver/gpio.h"
 #include <string.h>
+
+
 #include "config.h"
+#include "server_c_connector.h"
 
 static const char* string_on = "on";
 static const char* string_off = "off";
-static const char* string_server_name = "pump-relay-mayson";
 
-static const char *TAG="valve-server";
 
-//static const char* custom_answer = "Replaced hello world";
-
+#ifdef PUMP_RELAY_MAYSON
 static bool pump_system = true;
 static bool pump_manual = false;
 static bool pump_auto = false;
+#endif // PUMP_RELAY_MAYSON
+
+#ifdef VALVE_SERVER_JAMES
+static unsigned long global_valve_state = 0;
+#endif // VALVE_SERVER_JAMES
+
 
 static bool wifi_connected = false;
 
@@ -63,7 +69,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
         if (httpd_req_get_hdr_value_str(req, "target-name", buf, buf_len) == ESP_OK) {
             ESP_LOGI(TAG, "Found header => target-name: %s", buf);
             if (strcmp(buf, string_server_name) != 0) {
-                ESP_LOGI(TAG, "Header target-name does not match \"pump-relay-mayson\". Ignoring request");
+                ESP_LOGI(TAG, "Header target-name does not match device name \"%s\". Ignoring request.", string_server_name);
                 abort_on_wrong_target_name = true;
             }
         }
@@ -98,6 +104,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
             ESP_LOGI(TAG, "Found URL query => %s", buf);
             char param[32];
             /* Get value of expected key from query string */
+#ifdef PUMP_RELAY_MAYSON
             if (httpd_query_key_value(buf, "manual", param, sizeof(param)) == ESP_OK) {
                 if (strcmp(param, string_on) == 0) {
                     pump_manual = true;
@@ -125,6 +132,18 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 }
                 ESP_LOGI(TAG, "Keep / set system =%s", pump_system ? string_on : string_off);
             }
+#endif // PUMP_RELAY_MAYSON
+#ifdef VALVE_SERVER_JAMES
+            if (httpd_query_key_value(buf, "valves", param, sizeof(param)) == ESP_OK) {
+                const char* end;
+                unsigned long valve_value = strtoul(param, &end, 10);
+                global_valve_state = valve_value;
+                ESP_LOGI(TAG, "got valves =%s", param);
+            }
+#endif // VALVE_SERVER_JAMES
+
+
+
             free(buf);
         }
     }
@@ -135,8 +154,17 @@ esp_err_t status_get_handler(httpd_req_t *req)
 
     /* Send response with custom headers and body set as the
      * string passed in user context*/
-    const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
-        //(const char*) custom_answer;
+    //const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
+    char resp_str[200] = "";
+#ifdef VALVE_SERVER_JAMES
+    int okn = c_for_get_set_valve_answer(resp_str, 200);
+#endif // VALVE_SERVER_JAMES
+#ifdef PUMP_RELAY_MAYSON
+    int okn = c_for_get_relay_answer(resp_str, 200);
+#endif // PUMP_RELAY_MAYSON
+
+
+    //(const char*) custom_answer;
     httpd_resp_send(req, resp_str, strlen(resp_str));
 
     /* After sending the HTTP response the old HTTP request
@@ -214,7 +242,7 @@ static EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT      BIT1
 
-static int s_retry_num = 0;
+static int retry_delay_s = 0;
 
 static void event_handler(void* arg, esp_event_base_t event_base,
     int32_t event_id, void* event_data)
@@ -224,14 +252,16 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         wifi_connected = false;
-        if (s_retry_num < WIFI_CONNECT_MAX_RETRY) {
+        //if (retry_delay_s < WIFI_CONNECT_MAX_RETRY) {
+        ESP_LOGI(TAG, "Wait %i seconds before trying to reconnect Wifi.", retry_delay_s);
+        vTaskDelay(retry_delay_s * 1000 / portTICK_RATE_MS);
             esp_wifi_connect();
-            s_retry_num++;
+            retry_delay_s = (retry_delay_s * 49 + 60 * 2) / 50; // stabilizes on 71
             ESP_LOGI(TAG, "retry to connect to the AP");
-        }
-        else {
-            xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
-        }
+        //}
+        //else {
+        //    xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
+        //}
         ESP_LOGI(TAG, "connect to the AP fail");
         //##### handle the case where it does not reconnect anymore !!!
     }
@@ -240,7 +270,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         wifi_connected = true;
         ESP_LOGI(TAG, "got ip:%s",
             ip4addr_ntoa(&event->ip_info.ip));
-        s_retry_num = 0;
+        retry_delay_s = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
     }
 }
@@ -262,9 +292,7 @@ void connect_wifi(void) {
     ESP_LOGI(TAG, "setting static ip adresses...");
 
     /* set static ip, gateway and netmask */
-    IP4_ADDR(&sta_ip.ip, 192, 168, 178, 174);
-    IP4_ADDR(&sta_ip.gw, 192, 168, 178, 1);
-    IP4_ADDR(&sta_ip.netmask, 255, 255, 255, 0);
+    IP_CLIENT_CONFIG;
 
     ESP_ERROR_CHECK(tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA)); // stop DHCP client in order to use static ip addresses.
     ESP_ERROR_CHECK(tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip));
@@ -330,6 +358,7 @@ void connect_wifi(void) {
     */
 }
 
+#ifdef PUMP_RELAY_MAYSON
 // led auto
 #define PIN_D0 16
 // led system
@@ -349,39 +378,112 @@ void connect_wifi(void) {
 // led pump relay
 #define PIN_D7 13
 
-#define GPIO_INPUT_BUTTONS ((1ULL<<PIN_D3) | (1ULL<<PIN_D4)) 
+#define GPIO_INPUT_LANES ((1ULL<<PIN_D3) | (1ULL<<PIN_D4)) 
 
-#define GPIO_OUTPUT_LEDS ((1ULL<<PIN_D1) | (1ULL<<PIN_D2) | (1ULL<<PIN_D0) | (1ULL<<PIN_D6) | (1ULL<<PIN_D7))
+#define GPIO_OUTPUT_LANES ((1ULL<<PIN_D1) | (1ULL<<PIN_D2) | (1ULL<<PIN_D0) | (1ULL<<PIN_D6) | (1ULL<<PIN_D7))
+
+#endif // PUMP_RELAY_MAYSON
+
+#ifdef VALVE_SERVER_JAMES
+// ESP_TO_ATM_SYNC
+#define PIN_D1 5
+#define ESP_TO_ATM_SYNC PIN_D1
+
+// ESP_TO_ATM_CLOCK
+#define PIN_D2 4
+#define ESP_TO_ATM_CLOCK PIN_D2
+
+// ESP_TO_ATM_DATA
+#define PIN_D7 13
+#define ESP_TO_ATM_DATA PIN_D7
+
+// ATM_TO_ESP_DATA // blue LED on wifi board is on if pulled low.
+#define PIN_D4 2
+#define ATM_TO_ESP_DATA PIN_D4
+
+// ATM_TO_ESP_CLOCK
+#define PIN_D3 0
+#define ATM_TO_ESP_CLOCK PIN_D3
+
+#define GPIO_INPUT_LANES ((1ULL<<ATM_TO_ESP_DATA) | (1ULL<<ATM_TO_ESP_CLOCK))
+
+#define GPIO_OUTPUT_LANES ((1ULL<<ESP_TO_ATM_DATA) | (1ULL<<ESP_TO_ATM_CLOCK) | (1ULL<<ESP_TO_ATM_SYNC))
+#endif // VALVE_SERVER_JAMES
+
+
+#ifdef VALVE_SERVER_JAMES
+
+#define wait_to_not_be_busy vTaskDelay(1) /// otherwise we block other tasks and watchdog kills the whole system -> reboot(?)
+
+bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t timeout_difference) {
+    while (count_bits != 0) {
+        --count_bits;
+        
+        gpio_set_level(ESP_TO_ATM_DATA, data % 2);
+        // data set!
+        data = data / 2;
+        gpio_set_level(ESP_TO_ATM_CLOCK, 1);
+        // clock set: ready for the receiver to read data bit
+        while (gpio_get_level(ATM_TO_ESP_CLOCK) == 1) {
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(TAG, "timeout #3611133");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is LOW
+        }
+        // receiver has read
+        gpio_set_level(ESP_TO_ATM_DATA, 0);
+        gpio_set_level(ESP_TO_ATM_CLOCK, 0);
+
+        while (gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(TAG, "timeout #3731134");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is HIGH
+        }
+        // receiver has confirmed end of bit.
+    }
+    return true;
+}
+#endif // VALVE_SERVER_JAMES
+
+
 
 void gpio_actor(void) {
 
-    gpio_config_t led_conf;
+    gpio_config_t output_lanes_config;
     //disable interrupt
-    led_conf.intr_type = GPIO_INTR_DISABLE;
+    output_lanes_config.intr_type = GPIO_INTR_DISABLE;
     //set as output mode
-    led_conf.mode = GPIO_MODE_OUTPUT;
+    output_lanes_config.mode = GPIO_MODE_OUTPUT;
     //bit mask of the pins that you want to set,e.g.GPIO15/16
-    led_conf.pin_bit_mask = GPIO_OUTPUT_LEDS;
+    output_lanes_config.pin_bit_mask = GPIO_OUTPUT_LANES;
     //disable pull-down mode
-    led_conf.pull_down_en = 0;
+    output_lanes_config.pull_down_en = 0;
     //disable pull-up mode
-    led_conf.pull_up_en = 0;
+    output_lanes_config.pull_up_en = 0;
     //configure GPIO with the given settings
-    gpio_config(&led_conf);
+    gpio_config(&output_lanes_config);
 
-    gpio_config_t button_conf;
+    gpio_config_t input_lanes_config;
     //disable interrupt
-    button_conf.intr_type = GPIO_INTR_DISABLE;
+    input_lanes_config.intr_type = GPIO_INTR_DISABLE;
     //set as input mode
-    button_conf.mode = GPIO_MODE_INPUT;
+    input_lanes_config.mode = GPIO_MODE_INPUT;
     //bit mask of the pins that you want to set,e.g.GPIO15/16
-    button_conf.pin_bit_mask = GPIO_INPUT_BUTTONS;
+    input_lanes_config.pin_bit_mask = GPIO_INPUT_LANES;
     //disable pull-down mode
-    button_conf.pull_down_en = 0;
+    input_lanes_config.pull_down_en = 0;
     //enable pull-up mode
-    button_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    input_lanes_config.pull_up_en = GPIO_PULLUP_ENABLE;
     //configure GPIO with the given settings
-    gpio_config(&button_conf);
+    gpio_config(&input_lanes_config);
+
+
+#ifdef PUMP_RELAY_MAYSON
 
     unsigned int cnt = 0;
     while (1) {
@@ -404,6 +506,86 @@ void gpio_actor(void) {
         }
         ++cnt;
     }
+#endif // PUMP_RELAY_MAYSON
+#ifdef VALVE_SERVER_JAMES
+    unsigned int cnt = 0;
+
+    int got_data = gpio_get_level(ATM_TO_ESP_DATA);
+    int got_clock = gpio_get_level(ATM_TO_ESP_CLOCK);
+
+again_sync:
+    wait_to_not_be_busy;
+    TickType_t t0 = xTaskGetTickCount(); //uint32_t
+
+    // start sync
+    gpio_set_level(ESP_TO_ATM_SYNC, 0);
+    gpio_set_level(ESP_TO_ATM_CLOCK, 0);
+    gpio_set_level(ESP_TO_ATM_DATA, 0);
+
+    wait_to_not_be_busy;
+    gpio_set_level(ESP_TO_ATM_DATA, 0); // data LOW
+    gpio_set_level(ESP_TO_ATM_CLOCK, 0); // clock LOW
+    gpio_set_level(ESP_TO_ATM_SYNC, 1);
+    wait_to_not_be_busy;
+    while (gpio_get_level(ATM_TO_ESP_DATA) == 0 || gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+        //wait until data in, clock in is HIGH
+        if (xTaskGetTickCount() - t0 > 100) {
+            ESP_LOGI(TAG, "timeout #4301132");
+            goto again_sync;
+        }
+        wait_to_not_be_busy;
+    }
+    /*while (xTaskGetTickCount() - t < 100) //while 10ms not over ####might be the wrong dividend,
+    {
+        wait_to_not_be_busy;
+        if (gpio_get_level(ATM_TO_ESP_DATA) == 0 || gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+            goto again_sync;
+        }
+    }
+    */
+    gpio_set_level(ESP_TO_ATM_CLOCK, 1); // clock HIGH
+    while (gpio_get_level(ATM_TO_ESP_CLOCK) == 1) {
+        //wait until clock in is LOW
+        if (xTaskGetTickCount() - t0 > 100) {
+            ESP_LOGI(TAG, "timeout #4471132");
+            goto again_sync;
+        }
+        wait_to_not_be_busy;
+
+    }
+    gpio_set_level(ESP_TO_ATM_SYNC, 0); // sync LOW
+    gpio_set_level(ESP_TO_ATM_CLOCK, 0); // clock LOW
+    while (gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+        //wait until clock in is LOW
+        if (xTaskGetTickCount() - t0 > 100) {
+            ESP_LOGI(TAG, "timeout #4581132");
+            goto again_sync;
+        }
+        wait_to_not_be_busy;
+    }
+
+    //sync ready
+
+    while (1) {
+
+        uint8_t OPCODE_SET_VALVES = 1; //4 bit OPCODES
+
+        bool success_1 = send_bits_u8(OPCODE_SET_VALVES, 4, t0, 100); // always send LSB first
+        if (!success_1) goto again_sync;
+
+        long valve_output = global_valve_state; // make it interrupt-safe!!!
+
+        bool success_2 = send_bits_u8(valve_output, 8, t0, 100);
+        if (!success_2) goto again_sync;
+
+        ESP_LOGI(TAG, "finished sending");
+
+
+        ++cnt;
+    }
+
+#endif // VALVE_SERVER_JAMES
+
 
 }
 
