@@ -669,6 +669,7 @@ int main(void)
 	
 	while (true){
 		// read one bit:
+		int pos = 0;
 		while (read_bits)
 		{
 			while(!is_clock_input_lane_active()){
@@ -678,7 +679,8 @@ int main(void)
 			}
 			bool bit = is_data_input_lane_active();
 			--read_bits;
-			read_buffer |=  (static_cast<decltype(read_buffer)>(1) << read_bits) * bit;
+			read_buffer |=  (static_cast<decltype(read_buffer)>(1) << pos) * bit;
+			++pos;
 			set_clock_output_lane(true);
 			while (is_clock_input_lane_active()){
 				if (is_sync_input_lane_active()){
