@@ -1,12 +1,20 @@
 #!/bin/bash
 
+if [ "$(id -u)" -ne 0 ]; then
+  echo >&2 "Error: script not running as root or with sudo! Exiting..."
+  exit 1
+fi
+
 LOCAL_WORKING_BRANCH="productive-clone"
 
-BRANCH_TO_LOAD_AS_WORKING_BRANCH="productive"
+#BRANCH_TO_LOAD_AS_WORKING_BRANCH="productive"
+BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
 
+current_sleep_time_s=900
 
 run_counter=0
+
 
 
 while true
@@ -34,4 +42,10 @@ do
 	
 	
 	echo "$Finished run #{run_counter}!"
+	date
+	echo "Going to sleep..."
+	sleep 10s
+	rtcwake -m mem -s ${current_sleep_time_s}
+	echo "Waking up from sleep..."
+	date
 done
