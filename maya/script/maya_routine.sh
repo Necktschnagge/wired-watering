@@ -39,8 +39,19 @@ do
 	echo "Switching to working branch..."
 	git switch -c ${LOCAL_WORKING_BRANCH}
 	
+	./up-unix-create-project.sh
+	./ub-unix-build.sh
+	./ur-unix-run.sh
 	
 	
+	echo "Cleaning git working directory..."
+	git add -u; git add *; \
+	git status; \
+	git reset --hard; \
+	echo "Deleting local working branch..."
+	git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
+	git branch -D ${LOCAL_WORKING_BRANCH}
+
 	echo "$Finished run #{run_counter}!"
 	date
 	echo "Going to sleep..."
