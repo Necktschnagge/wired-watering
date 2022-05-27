@@ -6,7 +6,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "Installing git..."
-apt-get install git
+apt-get install -y git
 
 echo "Configuring git..."
 git config --global credential.helper store
@@ -14,7 +14,10 @@ git config --global user.name "Maya Server"
 git config --global user.email "maya.watering@gmail.com"
 
 echo "Installing CMake..."
-apt-get install cmake
+apt-get install -y cmake
+
+echo "Installing CMake..."
+apt-get install -y g++
 
 
 exit #will exit with status of last command
