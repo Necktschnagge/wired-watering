@@ -15,7 +15,7 @@ bool ping(const std::string& ip_address) {
 	std::string bash_command{ "ping -c1 -s1 " };
 	bash_command.append(ip_address);
 	bash_command.append("  > /dev/null 2>&1");
-#ifdef LINUX
+#ifdef __linux__
 	int x = system(bash_command.c_str());
 	cout << "ping on linux" << endl;
 #else
