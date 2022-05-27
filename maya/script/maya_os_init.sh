@@ -12,6 +12,7 @@ echo "Configuring git..."
 git config --global credential.helper store
 git config --global user.name "Maya Server"
 git config --global user.email "maya.watering@gmail.com"
+git config --global --add safe.directory '*'
 
 echo "Installing CMake..."
 apt-get install -y cmake
