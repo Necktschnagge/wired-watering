@@ -11,7 +11,8 @@ LOCAL_WORKING_BRANCH="productive-clone"
 BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
 
-current_sleep_time_s=900
+#current_sleep_time_s=900
+current_sleep_time_s=9
 
 run_counter=0
 
@@ -60,4 +61,6 @@ do
 	rtcwake -m mem -s ${current_sleep_time_s}
 	echo "Waking up from sleep..."
 	date
+	#debug:
+	exit
 done
