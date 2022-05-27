@@ -39,6 +39,7 @@ do
 	echo "Switching to working branch..."
 	git switch -c ${LOCAL_WORKING_BRANCH}
 	
+	git submodule update --init --recursive
 	./up-unix-create-project.sh
 	./ub-unix-build.sh
 	./ur-unix-run.sh

@@ -16,7 +16,7 @@ git config --global user.email "maya.watering@gmail.com"
 echo "Installing CMake..."
 apt-get install -y cmake
 
-echo "Installing CMake..."
+echo "Installing g++..."
 apt-get install -y g++
 
 
