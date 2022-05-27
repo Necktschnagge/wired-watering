@@ -53,7 +53,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
 ############### Libraries ###############
 include_directories(SYSTEM extern/spdlog/include)
 add_subdirectory(extern/googletest)
-
+add_subdirectory(extern/cpr)
 
 ############### Sources ###############
 add_subdirectory(src)
