@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
 	seconds /= 100;
 #endif
 	std::cout << seconds << std::endl; //two more 0 on linux
-	std::cout << seconds % (24 * 60) << std::endl; // hour of the day in UTC (we are 2 hours ahead.)
+	std::cout << (seconds / 60 )% (24 * 60) << std::endl; // hour of the day in UTC (we are 2 hours ahead.)
 
 	return 0;
 }
