@@ -20,5 +20,7 @@ apt-get install -y cmake
 echo "Installing g++..."
 apt-get install -y g++
 
+echo "Installing OpenSSL-dev"
+apt-get install -y libssl-dev
 
 exit #will exit with status of last command
