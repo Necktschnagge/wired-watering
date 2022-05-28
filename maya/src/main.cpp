@@ -52,9 +52,9 @@ int main(int argc, char** argv){
 		//cpr::Authentication{ "user", "pass", cpr::AuthMode::BASIC },
 		cpr::Parameters{ {"anon", "true"}, {"key", "value"} }
 	);
-	r.status_code;                  // 200
-	r.header["content-type"];       // application/json; charset=utf-8
-	r.text;
+	//r.status_code;                  // 200
+	//r.header["content-type"];       // application/json; charset=utf-8
+	//r.text;
 
 	std::cout << r.text << std::endl;
 	std::cout << r.status_code << std::endl;
