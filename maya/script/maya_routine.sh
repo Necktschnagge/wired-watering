@@ -39,6 +39,7 @@ do
 	) | sudo -u mayadm tee logs/01.log
 	echo "Switching to working branch..."
 	sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}
+	sleep 20s
 	
 	sudo -u mayadm git submodule update --init --recursive
 	sudo -u mayadm ./up-unix-create-project.sh
