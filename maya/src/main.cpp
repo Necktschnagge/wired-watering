@@ -6,11 +6,11 @@
 #include <iostream>
 #include <chrono>
 
-static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON { "192.168.1.10" };
-static const std::string IP_ADDRESS_VALVE_SERVER_JAMES { "192.168.1.20" };
-static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS { "192.168.1.21" };
-static const std::string IP_ADDRESS_VALVE_SERVER_FELIX { "192.168.1.22" };
-static const std::string TEST_ADRESS_PING_FAIL { "192.168.2.233" };
+static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
+static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
+static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
+static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
+static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 //static const std::string 
 
 bool ping(const std::string& ip_address) {
@@ -37,7 +37,7 @@ bool ping(const std::string& ip_address) {
 }
 
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
 
 	(void)argc;
 	(void)argv;
@@ -59,12 +59,16 @@ int main(int argc, char** argv){
 	std::cout << r.text << std::endl;
 	std::cout << r.status_code << std::endl;
 
-	
+
 	auto time_since_0 = std::chrono::system_clock::now().time_since_epoch();
-	
+
 	std::cout << time_since_0.count() << std::endl;
-	std::cout << time_since_0.count()/10000000 << std::endl;
-	std::cout << (time_since_0.count()/600000000) % (24*60)<< std::endl; // hour of the day in UTC (we are 2 hours ahead.)
+	auto seconds = time_since_0.count() / 10000000;
+#ifdef __linux__
+	seconds /= 100;
+#endif
+	std::cout << seconds << std::endl; //two more 0 on linux
+	std::cout << seconds % (24 * 60) << std::endl; // hour of the day in UTC (we are 2 hours ahead.)
 
 	return 0;
 }
