@@ -49,11 +49,17 @@ set(CMAKE_CXX_EXTENSIONS False)
 set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
 
+include(FetchContent)
+FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
+                         GIT_TAG db351ffbbadc6c4e9239daaa26e9aefa9f0ec82d) # The commit hash for 1.8.0. Replace with the latest from: https://github.com/libcpr/cpr/releases
+FetchContent_MakeAvailable(cpr)
 
 ############### Libraries ###############
 include_directories(SYSTEM extern/spdlog/include)
+#include_directories(SYSTEM extern/cpr/include)
+#include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
-add_subdirectory(extern/cpr)
+#add_subdirectory(extern/cpr)
 
 ############### Sources ###############
 add_subdirectory(src)

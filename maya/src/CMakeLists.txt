@@ -6,6 +6,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 
 ############### Libraries ###############
+target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
+
 if(LINUX)
 	target_link_libraries(${PROJECT_NAME} PUBLIC
 		pthread
@@ -13,3 +15,4 @@ if(LINUX)
 endif()
 
 add_library(${PROJECT_NAME}_lib STATIC ${SOURCES}) #for using in tests
+target_link_libraries(${PROJECT_NAME}_lib PRIVATE cpr::cpr)

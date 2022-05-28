@@ -1,4 +1,7 @@
 
+
+#include "cpr/cpr.h"
+
 #include <string>
 #include <iostream>
 
@@ -42,6 +45,9 @@ int main(int argc, char** argv){
 	ping("1.1.1.1");
 	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
 	ping(TEST_ADRESS_PING_FAIL);
+
+	cpr::Response resp;
+
 
 	return 0;
 }
