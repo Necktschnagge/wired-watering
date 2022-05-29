@@ -12,7 +12,7 @@ BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
 
 #current_sleep_time_s=900
-current_sleep_time_s=900
+current_sleep_time_s=90
 
 run_counter=0
 
@@ -41,7 +41,7 @@ do
 	sleep 10s
 	echo "Switching to working branch..."
 	sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}
-	sleep 100s #let the servers connect to wifi!
+	sleep 10s #let the servers connect to wifi!
 	
 	sudo -u mayadm git submodule update --init --recursive
 	sudo -u mayadm ./up-unix-create-project.sh

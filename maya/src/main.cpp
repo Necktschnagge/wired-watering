@@ -110,7 +110,7 @@ void apply_james(uint8_t valves_new) {
 
 	james_valves = valves_new;
 	send_james(james_valves);
-};
+}
 
 void watering(const int64_t& seconds_since_epoch) {
 	const int64_t minutes_since_epoch{ seconds_since_epoch / 60 };
