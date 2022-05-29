@@ -125,14 +125,14 @@ void watering(const int64_t& seconds_since_epoch) {
 		
 		auto start_watering_1 = get_seconds_since_epoch();
 		apply_james(0b00000011);
-		while (get_seconds_since_epoch() < start_watering_1 + 60 * 20) {
+		while (get_seconds_since_epoch() < start_watering_1 + 30) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
 		
 		auto start_watering_2 = get_seconds_since_epoch();
 		apply_james(0b00001100);
-		while (get_seconds_since_epoch() < start_watering_2 + 60 * 20) {
+		while (get_seconds_since_epoch() < start_watering_2 + 12) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
