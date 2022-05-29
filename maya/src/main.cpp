@@ -118,21 +118,21 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
 
-	if (days_since_epoch % 2) {
+	if (!(days_since_epoch % 2)) {
 		
 		//pumpe an
 		send_mayson(true);
 		
 		auto start_watering_1 = get_seconds_since_epoch();
 		apply_james(0b00000011);
-		while (get_seconds_since_epoch() < start_watering_1 + 30) {
+		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
 		
 		auto start_watering_2 = get_seconds_since_epoch();
 		apply_james(0b00001100);
-		while (get_seconds_since_epoch() < start_watering_2 + 12) {
+		while (get_seconds_since_epoch() < start_watering_2 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
@@ -193,7 +193,6 @@ int main(int argc, char** argv) {
 		&& (previous_timestamp + 3 * 60 + 1 < minutes_since_epoch) // 3 hours gone since last watering
 		)
 	{
-	} {
 		// save last timestamp:
 		std::ofstream s;
 		s.open("../../artifacts/timestamp.txt");

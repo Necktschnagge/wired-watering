@@ -12,7 +12,7 @@ BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
 
 #current_sleep_time_s=900
-current_sleep_time_s=90
+current_sleep_time_s=900
 
 run_counter=0
 
