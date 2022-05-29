@@ -12,7 +12,7 @@ BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
 
 #current_sleep_time_s=900
-current_sleep_time_s=9
+current_sleep_time_s=900
 
 run_counter=0
 
@@ -28,6 +28,7 @@ do
 		sudo -u mayadm git status; \
 		sudo -u mayadm git reset --hard; \
 		echo "Cleaning working directory   ...DONE!"; \
+		sleep 5s
 		echo "Loading and updating working branch..."; \
 		sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}; \
 		(
@@ -37,9 +38,10 @@ do
 			echo "Pulling ${BRANCH_TO_LOAD_AS_WORKING_BRANCH} failed! Resetting to last commit on local branch ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}" && git git reset --hard
 		) \
 	) | sudo -u mayadm tee logs/01.log
+	sleep 10s
 	echo "Switching to working branch..."
 	sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}
-	sleep 20s
+	sleep 100s #let the servers connect to wifi!
 	
 	sudo -u mayadm git submodule update --init --recursive
 	sudo -u mayadm ./up-unix-create-project.sh
@@ -55,13 +57,11 @@ do
 	sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 	sudo -u mayadm git branch -D ${LOCAL_WORKING_BRANCH}
 
-	echo "$Finished run #{run_counter}!"
+	echo "Finished run ${run_counter}!"
 	date
 	echo "Going to sleep..."
 	sleep 10s
 	rtcwake -m mem -s ${current_sleep_time_s}
 	echo "Waking up from sleep..."
 	date
-	#debug:
-	exit
 done
