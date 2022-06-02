@@ -13,7 +13,7 @@ BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 current_sleep_time_s=900		#standard: 900 (15min) 
 debug_step_sleep_s=15			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
-logs_path="logs"
+logs_path="logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 run_counter_file_path="../artifacts/counter.info"
 
 run_counter=0
