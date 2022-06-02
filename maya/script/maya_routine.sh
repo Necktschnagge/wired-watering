@@ -7,9 +7,8 @@ fi
 
 
 LOCAL_WORKING_BRANCH="routine-standard-branch-739"
-#BRANCH_TO_LOAD_AS_WORKING_BRANCH="productive"
-BRANCH_TO_LOAD_AS_WORKING_BRANCH="nchain"
-BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="productive-fallback"
+BRANCH_TO_LOAD_AS_WORKING_BRANCH="maya-productive"
+BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 
 current_sleep_time_s=900		#standard: 900 (15min) 
 debug_step_sleep_s=15			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
