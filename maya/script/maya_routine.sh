@@ -218,6 +218,7 @@ do
 
 		echo "Finished run ${run_counter}!"
 		date
+		echo "%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!"; \
 		echo "====================================================================================================="; \
 	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-5.log
 	
