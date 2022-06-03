@@ -33,7 +33,7 @@ do
 		echo "===     Starting with run #${run_counter}..."; \
 		echo "====================================================================================================="; \
 		echo "====================================================================================================="; \
-		echo "${run_counter_file_path}" | sudo -u mayadm tee ${run_counter_file_path}; \
+		echo "${run_counter}" | sudo -u mayadm tee ${run_counter_file_path}; \
 		date; \
 		echo "====================================================================================================="; \
 		sleep ${debug_step_sleep_s}s; \
