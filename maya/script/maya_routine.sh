@@ -105,7 +105,7 @@ do
 		echo "%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules..."; \
 
 		echo "Determining working branch name..."
-		commit_short=$(sudo -u mayadm git rev-parse HEAD | cut -c0-7); \
+		commit_short=$(sudo -u mayadm git rev-parse HEAD | cut -c1-8); \
 		seconds_since_epoch=$(date -u +%s); \
 		LOCAL_WORKING_BRANCH="routine-${commit_short}-${seconds_since_epoch}"; \
 		echo "branch name:   ${LOCAL_WORKING_BRANCH}"; \
