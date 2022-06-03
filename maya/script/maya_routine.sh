@@ -88,7 +88,7 @@ do
 			echo "Will build last commit on local branch ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"; \
 			echo "> sudo -u mayadm git reset --hard"; \
 					sudo -u mayadm git reset --hard
-		) \
+		); \
 		commit=$(sudo -u mayadm git rev-parse HEAD); \
 		echo "Last commit is:   ${commit}"
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!"; \
