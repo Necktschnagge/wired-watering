@@ -118,7 +118,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
 
-	if (!(days_since_epoch % 2)) {
+	if ((days_since_epoch % 2)) {
 		
 		//pumpe an
 		send_mayson(true);
