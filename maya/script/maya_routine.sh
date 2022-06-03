@@ -225,7 +225,7 @@ do
 	(
 		#######'Uploading logs!'
 		sudo -u mayadm git checkout artifacts
-		sudo -u mayadm cp -n ${logs_path} ../artifacts/logs --recursive
+		sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive
 		#sudo -u mayadm git add -u
 		sudo -u mayadm git add ../artifacts/logs/*.log -f
 		sudo -u mayadm git commit -m "upload logs"
