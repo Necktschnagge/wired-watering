@@ -4,3 +4,6 @@
 [submodule "maya/extern/googletest"]
 	path = maya/extern/googletest
 	url = https://github.com/google/googletest
+[submodule "maya/extern/td"]
+	path = maya/extern/td
+	url = https://github.com/tdlib/td.git
