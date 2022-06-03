@@ -230,6 +230,7 @@ do
 		sudo -u mayadm git add ../artifacts/logs/*.log -f
 		sudo -u mayadm git commit -m "upload logs"
 		sudo -u mayadm git push
+		sudo -u mayadm git checkout maya-productive
 
 		echo "##############################################################"
 		echo "###################                        ###################"
