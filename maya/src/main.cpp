@@ -31,7 +31,7 @@ bool ping(const std::string& ip_address) {
 int64_t get_seconds_since_epoch(bool verbose = false) {
 	auto time_since_0 = std::chrono::system_clock::now().time_since_epoch();
 	std::chrono::seconds seconds_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
-	
+
 	if (verbose) {
 		std::cout
 			<< "std::chrono::system_clock::now().time_since_epoch()   :   "
@@ -59,23 +59,30 @@ int64_t get_seconds_since_epoch(bool verbose = false) {
 
 static uint8_t james_valves{ 0 };
 
-void send_mayson(bool on) {
-	std::cout << "send pump relay\n" << on << std::endl;
+void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on = 2) {
 	std::string url{ "http://" };
 	url += IP_ADDRESS_PUMP_SERVER_MAYSON;
 	url += ":80/status";
+	auto params = cpr::Parameters();
+	if (auto_on < 2) params.Add({ "auto", auto_on == 1 ? "on" : "off" });
+	if (system_on < 2) params.Add({ "system", system_on == 1 ? "on" : "off" });
+	if (manual_on < 2) params.Add({ "manual", system_on == 1 ? "on" : "off" });
+
 	cpr::Response r = cpr::Get(
 		cpr::Url{ url },
 		//cpr::Authentication{ "user", "pass", cpr::AuthMode::BASIC },
-		cpr::Parameters{ {"auto", on ? "on" : "off" }}
+		params
 	);
 	//r.status_code;                  // 200
 	//r.header["content-type"];       // application/json; charset=utf-8
 	//r.text;
-
-	std::cout << r.text << std::endl;
-	std::cout << r.status_code << std::endl;
-
+	std::cout
+		<< "Send request to pump relay:\n"
+		<< "URL:   " << r.url << std::endl;
+	std::cout
+		<< "Response:\n"
+		<< "status code:   " << r.status_code << std::endl
+		<< "text:\n" << r.text << std::endl;
 }
 
 
@@ -122,37 +129,54 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
+	constexpr uint8_t JAMES_GURKE_ERBSE{ 0b00000001 };
+	constexpr uint8_t JAMES_TOMATE_ERDBEERE{ 0b00000010 };
+	constexpr uint8_t JAMES_BOHNEN_ERDBEERE{ 0b00000100 };
+	constexpr uint8_t JAMES_KAROTTEN{ 0b00001000 };
+
+	//pumpe an
+	send_mayson(0, 0, 0);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	send_mayson(1, 1);
+	std::this_thread::sleep_for(std::chrono::seconds(6));
 
 	if ((days_since_epoch % 2)) {
-		
-		//pumpe an
-		send_mayson(true);
-		
+
 		auto start_watering_1 = get_seconds_since_epoch();
 		apply_james(0b00000011);
 		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
-		
+
 		auto start_watering_2 = get_seconds_since_epoch();
 		apply_james(0b00001100);
 		while (get_seconds_since_epoch() < start_watering_2 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		apply_james(0b00000000);
-		
-		send_mayson(false);
+
 		//pumpe aus
 	}
+	else {
+		auto start_watering_1 = get_seconds_since_epoch();
+		apply_james(JAMES_GURKE_ERBSE);
+		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+		apply_james(0b00000000);
+
+	}
+	send_mayson(0);
 }
 
 
 int main(int argc, char** argv) {
-	
+
 	(void)argc;
 	(void)argv;
-	
+
 	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
 	ping(IP_ADDRESS_VALVE_SERVER_JAMES);
 
