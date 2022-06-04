@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
 	ping("1.1.1.1");
 	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
 	ping(TEST_ADRESS_PING_FAIL);
-
+	/*
 	cpr::Response r = cpr::Get(
 		cpr::Url{ "https://api.github.com/repos/libcpr/cpr/contributors" },
 		//cpr::Authentication{ "user", "pass", cpr::AuthMode::BASIC },
@@ -159,7 +159,7 @@ int main(int argc, char** argv) {
 
 	std::cout << r.text << std::endl;
 	std::cout << r.status_code << std::endl;
-
+	*/
 	auto seconds = get_seconds_since_epoch();
 	auto minutes_since_epoch = (seconds / 60);
 	auto minute_of_the_day = (seconds / 60) % (24 * 60);
