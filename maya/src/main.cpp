@@ -28,23 +28,33 @@ bool ping(const std::string& ip_address) {
 #endif // LINUX
 }
 
-int64_t get_seconds_since_epoch() {
+int64_t get_seconds_since_epoch(bool verbose = false) {
 	auto time_since_0 = std::chrono::system_clock::now().time_since_epoch();
-
-	std::cout << time_since_0.count() << std::endl;
-	auto seconds = time_since_0.count() / 10000000;
-
-#ifdef __linux__
-	seconds /= 100;
-#endif
-	std::chrono::seconds time_since_0_seconds_2 = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
-
-
-	std::cout << time_since_0_seconds_2.count() << "   ==   ";
-	std::cout << seconds << std::endl; //two more 0 on linux
-	std::cout << (seconds / 60) % (24 * 60) << std::endl; // hour of the day in UTC (we are 2 hours ahead.)
-
-	return seconds;
+	std::chrono::seconds seconds_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
+	
+	if (verbose) {
+		std::cout
+			<< "std::chrono::system_clock::now().time_since_epoch()   :   "
+			<< time_since_0.count()
+			<< std::endl;
+		std::cout
+			<< "get_seconds_since_epoch(bool verbose /* true */)   :   "
+			<< seconds_since_epoch.count()
+			<< std::endl;
+		std::cout
+			<< "minute of day   :   "
+			<< (seconds_since_epoch.count() / 60) % (24 * 60)
+			<< std::endl;
+		std::cout
+			<< "minute of hour   :   "
+			<< (seconds_since_epoch.count() / 60) % (60)
+			<< std::endl;
+		std::cout
+			<< "hour of day   :   "
+			<< (seconds_since_epoch.count() / 60 / 60) % (24)
+			<< std::endl;
+	}
+	return seconds_since_epoch.count();
 }
 
 static uint8_t james_valves{ 0 };
@@ -139,30 +149,16 @@ void watering(const int64_t& seconds_since_epoch) {
 
 
 int main(int argc, char** argv) {
-
+	
 	(void)argc;
 	(void)argv;
-
-
-	ping("1.1.1.1");
+	
 	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
-	ping(TEST_ADRESS_PING_FAIL);
-	/*
-	cpr::Response r = cpr::Get(
-		cpr::Url{ "https://api.github.com/repos/libcpr/cpr/contributors" },
-		//cpr::Authentication{ "user", "pass", cpr::AuthMode::BASIC },
-		cpr::Parameters{ {"anon", "true"}, {"key", "value"} }
-	);
-	//r.status_code;                  // 200
-	//r.header["content-type"];       // application/json; charset=utf-8
-	//r.text;
+	ping(IP_ADDRESS_VALVE_SERVER_JAMES);
 
-	std::cout << r.text << std::endl;
-	std::cout << r.status_code << std::endl;
-	*/
-	auto seconds = get_seconds_since_epoch();
-	auto minutes_since_epoch = (seconds / 60);
-	auto minute_of_the_day = (seconds / 60) % (24 * 60);
+	auto seconds_since_epoch = get_seconds_since_epoch(true);
+	auto minutes_since_epoch = (seconds_since_epoch / 60);
+	auto minute_of_the_day = (seconds_since_epoch / 60) % (24 * 60);
 
 	int64_t previous_timestamp = 0;
 	{
@@ -195,7 +191,7 @@ int main(int argc, char** argv) {
 			s << minutes_since_epoch << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
 
-			watering(seconds);
+			watering(seconds_since_epoch);
 
 
 		}
