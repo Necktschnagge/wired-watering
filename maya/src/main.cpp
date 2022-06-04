@@ -16,26 +16,16 @@ static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 //static const std::string 
 
 bool ping(const std::string& ip_address) {
-	using std::cout, std::endl;
-
-	std::string bash_command{ "ping -c1 -s1 " };
+	std::string bash_command{ "ping -c1 -s3 " };
 	bash_command.append(ip_address);
 	bash_command.append("  > /dev/null 2>&1");
 #ifdef __linux__
 	int x = system(bash_command.c_str());
-	cout << "ping on linux" << endl;
+	return (x == 0);
 #else
-	int x = 0;
-	cout << "ping skipped, not on linux" << endl;
+	//cout << "ping skipped, not on linux" << endl;
+	return false;
 #endif // LINUX
-	if (x == 0) {
-		cout << "ping success" << endl;
-		return true;
-	}
-	else {
-		cout << "ping failed" << endl;
-		return false;
-	}
 }
 
 int64_t get_seconds_since_epoch() {
@@ -43,9 +33,14 @@ int64_t get_seconds_since_epoch() {
 
 	std::cout << time_since_0.count() << std::endl;
 	auto seconds = time_since_0.count() / 10000000;
+
 #ifdef __linux__
 	seconds /= 100;
 #endif
+	std::chrono::seconds time_since_0_seconds_2 = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
+
+
+	std::cout << time_since_0_seconds_2.count() << "   ==   ";
 	std::cout << seconds << std::endl; //two more 0 on linux
 	std::cout << (seconds / 60) % (24 * 60) << std::endl; // hour of the day in UTC (we are 2 hours ahead.)
 
