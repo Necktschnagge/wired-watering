@@ -42,6 +42,10 @@ int64_t get_seconds_since_epoch(bool verbose = false) {
 			<< seconds_since_epoch.count()
 			<< std::endl;
 		std::cout
+			<< "minutes since epoch   :   "
+			<< (seconds_since_epoch.count() / 60)
+			<< std::endl;
+		std::cout
 			<< "minute of day   :   "
 			<< (seconds_since_epoch.count() / 60) % (24 * 60)
 			<< std::endl;
