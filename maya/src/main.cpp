@@ -13,6 +13,12 @@ static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
 static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
 static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
 static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
+
+static constexpr uint8_t JAMES_GURKE_ERBSE{ 0b00000001 };
+static constexpr uint8_t JAMES_TOMATE_ERDBEERE{ 0b00000010 };
+static constexpr uint8_t JAMES_BOHNEN_ERDBEERE{ 0b00000100 };
+static constexpr uint8_t JAMES_KAROTTEN{ 0b00001000 };
+
 //static const std::string 
 
 bool ping(const std::string& ip_address) {
@@ -132,11 +138,6 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t minutes_since_epoch{ seconds_since_epoch / 60 };
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
-
-	constexpr uint8_t JAMES_GURKE_ERBSE{ 0b00000001 };
-	constexpr uint8_t JAMES_TOMATE_ERDBEERE{ 0b00000010 };
-	constexpr uint8_t JAMES_BOHNEN_ERDBEERE{ 0b00000100 };
-	constexpr uint8_t JAMES_KAROTTEN{ 0b00001000 };
 
 	//pumpe an
 	send_mayson(0, 0, 0);
