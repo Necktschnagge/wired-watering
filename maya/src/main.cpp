@@ -95,6 +95,23 @@ void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on =
 		<< "text:\n" << r.text << std::endl;
 }
 
+void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log = true) {
+	auto seconds = get_seconds_since_epoch();
+	if (enable_log) std::cout << "Send valves at " << seconds << std::endl;
+	std::string url{ "http://" };
+	url += ip_address;
+	url += ":80/status";
+	cpr::Response r = cpr::Get(
+		cpr::Url{ url },
+		cpr::Parameters{ {"valves", std::to_string(valves) } }
+	);
+	if (enable_log) {
+		std::cout << r.url << std::endl;
+		std::cout << r.status_code << std::endl;
+		std::cout << r.text << std::endl;
+	}
+}
+
 
 void send_james(uint8_t valves) {
 	std::cout << "send valves james\n";
@@ -149,32 +166,58 @@ void watering(const int64_t& seconds_since_epoch) {
 	if ((days_since_epoch % 2)) {
 
 		auto start_watering_1 = get_seconds_since_epoch();
-		apply_james(0b00000011);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0b00000011);
+
 		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
-		apply_james(0b00000000);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 
 		auto start_watering_2 = get_seconds_since_epoch();
-		apply_james(0b00001100);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0b00001100);
+
 		while (get_seconds_since_epoch() < start_watering_2 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
-		apply_james(0b00000000);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 
-		//pumpe aus
 	}
 	else {
 		auto start_watering_1 = get_seconds_since_epoch();
-		apply_james(JAMES_GURKE_ERBSE);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
+
 		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
-		apply_james(0b00000000);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 
 	}
+	//pumpe aus
 	send_mayson(0);
 }
+
+class repetition_policy {
+	// bestimmte wochentage (+x days)
+	// bestimmte zahl an minuten 
+	// allow overlapping...
+};
+
+class timer {
+
+	int64_t earliest_starting_time_min;
+
+	int64_t legal_time_window_length_min;
+	int64_t duration_time_sum_s;
+
+	double max_interrupt_driven_duration_elongation_relative;
+	double min_interrupt_driven_duration_elongation_relative;
+
+	// sonder modus: nur in manuellem betrieb etc
+
+	//wiederholung.
+	repetition_policy p;
+
+};
 
 
 int main(int argc, char** argv) {
