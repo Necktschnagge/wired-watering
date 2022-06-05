@@ -132,25 +132,6 @@ void send_james(uint8_t valves) {
 
 }
 
-void apply_james(uint8_t valves_new) {
-	uint8_t current_james{ james_valves };
-	uint8_t turn_off = james_valves & (~valves_new);
-	uint8_t turn_on = (~james_valves) & valves_new;
-	for (uint8_t i = 0; i < 8; ++i) {
-		uint8_t pos = 1 << i;
-		if ((turn_off & pos) || (turn_on & pos)) {
-			current_james &= ~pos;
-			current_james |= pos & valves_new;
-			send_james(current_james);
-			std::this_thread::sleep_for(std::chrono::milliseconds(400));
-		}
-	}
-
-
-	james_valves = valves_new;
-	send_james(james_valves);
-}
-
 void watering(const int64_t& seconds_since_epoch) {
 	const int64_t minutes_since_epoch{ seconds_since_epoch / 60 };
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
@@ -166,7 +147,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	if ((days_since_epoch % 2)) {
 
 		auto start_watering_1 = get_seconds_since_epoch();
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0b00000011);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE);
 
 		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -174,7 +155,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 
 		auto start_watering_2 = get_seconds_since_epoch();
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0b00001100);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN);
 
 		while (get_seconds_since_epoch() < start_watering_2 + 60 * 17) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -196,6 +177,12 @@ void watering(const int64_t& seconds_since_epoch) {
 	send_mayson(0);
 }
 
+class valve {
+	std::string ip_address;
+
+	uint8_t index;
+};
+
 class repetition_policy {
 	// bestimmte wochentage (+x days)
 	// bestimmte zahl an minuten 
@@ -204,9 +191,10 @@ class repetition_policy {
 
 class timer {
 
-	int64_t earliest_starting_time_min;
+	valve v;
 
-	int64_t legal_time_window_length_min;
+	int64_t earliest_starting_time_s;
+	int64_t legal_time_window_length_s;
 	int64_t duration_time_sum_s;
 
 	double max_interrupt_driven_duration_elongation_relative;
