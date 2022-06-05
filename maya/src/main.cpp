@@ -179,12 +179,14 @@ void watering(const int64_t& seconds_since_epoch) {
 
 class valve {
 	std::string ip_address;
-
+	std::string name;
+	std::string label;
 	uint8_t index;
 };
 
 class repetition_policy {
-	// bestimmte wochentage (+x days)
+	// bestimmte wochentage (+x days)     1.1.1970 = Thursday(!)
+	// 
 	// bestimmte zahl an minuten 
 	// allow overlapping...
 };
@@ -250,9 +252,7 @@ int main(int argc, char** argv) {
 		if (s.good()) {
 			s << minutes_since_epoch << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
-
 			watering(seconds_since_epoch);
-
 
 		}
 		else {
