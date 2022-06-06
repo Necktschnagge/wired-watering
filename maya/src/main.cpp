@@ -67,7 +67,7 @@ int64_t get_seconds_since_epoch(bool verbose = false) {
 	return seconds_since_epoch.count();
 }
 
-static uint8_t james_valves{ 0 };
+//static uint8_t james_valves{ 0 };
 
 void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on = 2) {
 	std::string url{ "http://" };
