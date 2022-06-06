@@ -1,0 +1,47 @@
+=====================================================================================================
+=====================================================================================================
+===     Starting with run #210...
+=====================================================================================================
+=====================================================================================================
+210
+Mo 6. Jun 17:51:39 CEST 2022
+Connecting to internet via usb0 tethering successful.
+=====================================================================================================
+%%%%%%%%%%     [1] Cleaning working directory...
+> sudo -u mayadm git status;
+Auf Branch maya-productive
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+Änderungen, die nicht zum Commit vorgemerkt sind:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+  (benutzen Sie "git restore <Datei>...", um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+	geändert:       maya_routine.sh
+
+keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" und/oder "git commit -a")
+> sudo -u mayadm git add -u; sudo -u mayadm git add *;
+> sudo -u mayadm git status;
+Auf Branch maya-productive
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+Zum Commit vorgemerkte Änderungen:
+  (benutzen Sie "git restore --staged <Datei>..." zum Entfernen aus der Staging-Area)
+	geändert:       maya_routine.sh
+
+Checking if there are uncommitted changes...
+> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --
+********** WARNING **********
+Found uncommitted changes, staged it, will commit it to a new branch...
+cut: Feld- bzw, Zeichenpositionen werden von 1 an gezählt
+„cut --help“ liefert weitere Informationen.
+> sudo -u mayadm git switch -c "dev--"
+Zu neuem Branch 'dev--' gewechselt
+branch name is dev--
+> sudo -u mayadm git commit -m "local changes automatically committed by maya_routine.sh"
+[dev-- 7b5e9b9] local changes automatically committed by maya_routine.sh
+ 1 file changed, 1 insertion(+)
+> sudo -u mayadm git reset --hard;
+HEAD ist jetzt bei 7b5e9b9 local changes automatically committed by maya_routine.sh
+%%%%%%%%%%     [1] Cleaning working directory   ...DONE!
+=====================================================================================================
