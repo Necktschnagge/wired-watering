@@ -7,6 +7,7 @@
 #include <chrono>
 
 #include <fstream>
+#include <optional>
 
 static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
 static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
@@ -132,6 +133,15 @@ void send_james(uint8_t valves) {
 
 }
 
+void watering_helper(uint8_t valves, int64_t dur_sec) {
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, valves);
+	auto start_time = get_seconds_since_epoch();
+
+	while (get_seconds_since_epoch() < start_time + dur_sec) {
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
+}
+
 void watering(const int64_t& seconds_since_epoch) {
 	const int64_t minutes_since_epoch{ seconds_since_epoch / 60 };
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
@@ -146,28 +156,27 @@ void watering(const int64_t& seconds_since_epoch) {
 
 	if ((days_since_epoch % 2)) {
 
-		auto start_watering_1 = get_seconds_since_epoch();
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE);
-
-		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
+		watering_helper(
+			JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN,
+			60 * 25
+		);
+		watering_helper(
+			JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN | JAMES_GURKE_ERBSE,
+			60 * 5
+		);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE | JAMES_KAROTTEN);
+		watering_helper(
+			JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE,
+			60 * 17
+		);
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
-
-		auto start_watering_2 = get_seconds_since_epoch();
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN);
-
-		while (get_seconds_since_epoch() < start_watering_2 + 60 * 17) {
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
-
 	}
 	else {
 		auto start_watering_1 = get_seconds_since_epoch();
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
 
-		while (get_seconds_since_epoch() < start_watering_1 + 60 * 17) {
+		while (get_seconds_since_epoch() < start_watering_1 + 60 * 22) {
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
@@ -214,14 +223,14 @@ class pressure_policy {
 
 class watering_job {
 	//end_time
-	std::chrono::seconds time_to_finish
+	std::chrono::seconds time_to_finish;
 
 	//duration
 	std::chrono::seconds watering_duration;
 
 	valve v;
 
-	interrupted_water_specification i;
+	interrupted_watering_specification i;
 
 	pressure_policy p;
 	// enlongation_config
