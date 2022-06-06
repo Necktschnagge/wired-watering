@@ -35,6 +35,7 @@ do
 		echo "====================================================================================================="; \
 		echo "${run_counter}" | sudo -u mayadm tee ${run_counter_file_path}; \
 		date; \
+		./maya_connect_internet_usb0.sh
 		echo "====================================================================================================="; \
 		sleep ${debug_step_sleep_s}s; \
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."; \
