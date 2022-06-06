@@ -191,6 +191,43 @@ class repetition_policy {
 	// allow overlapping...
 };
 
+class interrupted_watering_specification {
+
+	std::chrono::seconds min_interval_length;
+
+	double max_relative_protraction; // 1 == one interval watering
+	double min_relative_protraction; // 0 .. 1 == everything is possible // 2 == watering for twice the time but only use 50% of the time.
+
+};
+
+class pressure_policy {
+
+	double min_pressure;
+
+	double max_pressure;
+
+	std::optional<std::function<double(const double&)>> pressure_reward;
+
+};
+
+
+
+class watering_job {
+	//end_time
+	std::chrono::seconds time_to_finish
+
+	//duration
+	std::chrono::seconds watering_duration;
+
+	valve v;
+
+	interrupted_water_specification i;
+
+	pressure_policy p;
+	// enlongation_config
+};
+
+
 class timer {
 
 	valve v;
@@ -207,6 +244,11 @@ class timer {
 	//wiederholung.
 	repetition_policy p;
 
+};
+
+class schedule {
+
+	std::vector<timer> all_timers;
 };
 
 
@@ -252,7 +294,9 @@ int main(int argc, char** argv) {
 		if (s.good()) {
 			s << minutes_since_epoch << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
+
 			watering(seconds_since_epoch);
+
 
 		}
 		else {
