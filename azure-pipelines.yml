@@ -1,0 +1,77 @@
+variables:
+ - name: project_name
+   value: ___template___project___name___
+
+trigger:
+  branches:
+    include:
+    - '*'
+    exclude:
+    - artifacts
+
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+strategy:
+  matrix:
+    ubuntu_22_04:
+      imageName: 'ubuntu-22.04'
+      the_name: 'Azure Pipelines'
+
+    ubuntu_20_04_gcc_9:
+      imageName: 'ubuntu-20.04'
+      the_name: 'Azure Pipelines'
+
+    ubuntu_18_04_gcc_8:
+      imageName: 'ubuntu-18.04'
+      the_name: 'Azure Pipelines'
+
+    mac_12:
+      imageName: 'macos-12'
+      the_name: 'Azure Pipelines'
+    mac_11:
+      imageName: 'macos-11'
+      the_name: 'Azure Pipelines'
+    mac_10_15:
+      imageName: 'macos-10.15'
+      the_name: 'Azure Pipelines'
+
+    windows_2022:
+      imageName: 'windows-2022'
+      the_name: 'Azure Pipelines'
+
+    windows_2019:
+      imageName: 'windows-2019'
+      the_name: 'Azure Pipelines'
+    
+#    raspberry_pi:
+#      the_name: 'Default'
+
+
+pool:
+  vmImage: $(imageName)
+  name: $(the_name)
+
+
+# cheat - sheet:
+#  condition: eq( variables['Agent.OSArchitecture'], 'ARM')
+#   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
+#   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
+
+steps:
+ - script: git submodule update --init --recursive
+   displayName: "Init Git Submodules"
+   condition: succeeded()
+ - script: cmake -S . -B ./build/
+   displayName: "CMake: Create Project"
+   condition: succeeded()
+ - script: cmake --build ./build
+   displayName: "CMake: Compile and Link"
+   condition: succeeded()
+ - script: ./build/test/TEST-$(project_name)
+   displayName: "Run Tests on Linux / Mac OS"
+   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
+ - script: .\build\test\Debug\TEST-$(project_name).exe
+   displayName: "Run Tests on Windows"
+   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
