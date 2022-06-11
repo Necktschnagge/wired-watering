@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include <optional>
+#include <vector>
 
 static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
 static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
@@ -184,18 +185,69 @@ void watering(const int64_t& seconds_since_epoch) {
 }
 
 class valve {
-	std::string ip_address;
-	std::string name;
 	std::string label;
 	uint8_t index;
+
+	uint8_t station_id;
+
+public:
+	valve(
+		const std::string& label,
+		uint8_t index,
+		uint8_t station_id
+	) : label(label), index(index), station_id(station_id) {
+
+	}
+
 };
 
-class repetition_policy {
-	// bestimmte wochentage (+x days)     1.1.1970 = Thursday(!)
-	// 
-	// bestimmte zahl an minuten 
-	// allow overlapping...
+class valve_station {
+
+	std::string ip_address;
+	std::string name;
+	bool enabled;
+
+	std::vector<valve> valves;
+
+public:
+	valve_station(
+		const std::string& ip_address,
+		const std::string& name,
+		bool enabled,
+		std::vector<valve>&& valves
+	) : ip_address(ip_address), name(name), enabled(enabled), valves(std::move(valves))
+	{
+		/* log valve station created */
+	}
 };
+
+class landscape {
+
+	/* no singleton pattern, just create your instance in main code and pass it through... */
+
+	std::vector<valve_station> valve_stations;
+
+	landscape() : valve_stations() {
+		/* load from json ...*/
+		/* log landscape created */
+	}
+
+public:
+
+
+};
+
+
+class repetition_policy {
+
+	// 0 SU, 1 MO, 2 TU, 3 WE, 4 TH, 5 FR, 6 SA
+	// 1.1.1970 = Thursday(!)
+	std::vector<uint8_t> days_of_the_week;
+
+	std::chrono::seconds const_period;
+};
+
+	// allow overlapping...
 
 class interrupted_watering_specification {
 

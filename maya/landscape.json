@@ -1,0 +1,86 @@
+{
+  "valve_stations": [
+    {
+      "ip_address": "192.168.1.20",
+      "name": "james",
+      "location": "Holzpflock",
+      "enabled": true,
+      "valves": [
+        {
+          "label": "Gurken",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "16mm-transparent"
+        },
+        {
+          "label": "Tomaten",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "16mm-transparent"
+        },
+        {
+          "label": "Bohnen",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "16mm-transparent"
+        },
+        {
+          "label": "Erdbeeren",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "16mm-transparent"
+        }
+      ]
+    },
+    {
+      "ip_address": "192.168.1.21",
+      "name": "lucas",
+      "location": "Rhododendron",
+      "enabled": false,
+      "valves": [
+        {
+          "label": "Karotten",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "16mm-transparent"
+        },
+        {
+          "label": "Kartoffeln",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "11mm-green-thin"
+        },
+        {
+          "label": "Heidelbeeren",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "11mm-green-thin"
+        }
+      ]
+    },
+    {
+      "ip_address": "192.168.1.22",
+      "name": "felix",
+      "location": "Eibe",
+      "enabled": false,
+      "valves": [
+        {
+          "label": "Erdbeeren",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "11mm-green-thin"
+        },
+        {
+          "label": "Kleefeld",
+          "valve-type": "messing-12VDC",
+          "connector": "3/4-AG",
+          "hose": "11mm-green-thin"
+        }
+      ]
+    }
+  ],
+  "pump_relay": {
+    "ip_address" : "192.168.1.10"
+  }
+}
+
