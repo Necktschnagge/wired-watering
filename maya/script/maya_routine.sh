@@ -27,6 +27,7 @@ fi
 while true
 do
 	let run_counter++
+log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 	(
 		echo "====================================================================================================="; \
 		echo "====================================================================================================="; \
@@ -69,7 +70,7 @@ do
 				sudo -u mayadm git reset --hard; \
 		echo "%%%%%%%%%%     [1] Cleaning working directory   ...DONE!"; \
 		echo "====================================================================================================="; \
-	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-1.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-1.log
 	
 	
 	sleep ${debug_step_sleep_s}s; \
@@ -94,7 +95,7 @@ do
 		echo "Last commit is:   ${commit}"
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!"; \
 		echo "====================================================================================================="; \
-	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-2.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-2.log
 	
 	build_success=true
 	sleep ${debug_step_sleep_s}s
@@ -182,7 +183,7 @@ do
 		)
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!"; \
 		echo "====================================================================================================="; \
-	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-3.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
 	
 	
@@ -202,7 +203,7 @@ do
 		fi
 		echo "%%%%%%%%%%     [4] Run the executable   ...DONE!"; \
 		echo "====================================================================================================="
-	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-4.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
 
 	(
@@ -221,7 +222,7 @@ do
 		date
 		echo "%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!"; \
 		echo "====================================================================================================="; \
-	) 2>&1 | sudo -u mayadm tee ${logs_path}/${run_counter}-5.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
 	
 	(
 		#######'Uploading logs!'
