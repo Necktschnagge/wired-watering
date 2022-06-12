@@ -10,8 +10,8 @@ LOCAL_WORKING_BRANCH="routine-standard-branch-739"
 BRANCH_TO_LOAD_AS_WORKING_BRANCH="maya-productive"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 
-current_sleep_time_s=900		#standard: 900 (15min) 
-debug_step_sleep_s=15			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
+current_sleep_time_s=1200		#standard: 900 (15min), 1200 (20min)
+debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 run_counter_file_path="../artifacts/counter.info"
@@ -35,6 +35,7 @@ do
 		echo "====================================================================================================="; \
 		echo "${run_counter}" | sudo -u mayadm tee ${run_counter_file_path}; \
 		date; \
+		./maya_connect_internet_usb0.sh
 		echo "====================================================================================================="; \
 		sleep ${debug_step_sleep_s}s; \
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."; \

@@ -173,14 +173,11 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
 	else {
-		auto start_watering_1 = get_seconds_since_epoch();
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
-
-		while (get_seconds_since_epoch() < start_watering_1 + 60 * 22) {
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
+		watering_helper(
+			JAMES_GURKE_ERBSE,
+			60 * 22
+		);
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
-
 	}
 	//pumpe aus
 	send_mayson(0);
