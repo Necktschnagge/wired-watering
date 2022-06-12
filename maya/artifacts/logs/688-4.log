@@ -1,0 +1,12 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+> sudo -u mayadm ./ur-unix-run.sh
+std::chrono::system_clock::now().time_since_epoch()   :   1655022652808895062
+get_seconds_since_epoch(bool verbose /* true */)   :   1655022652
+minutes since epoch   :   27583710
+minute of day   :   510
+minute of hour   :   30
+hour of day   :   8
+previous time_stamp:   27583326
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+=====================================================================================================
