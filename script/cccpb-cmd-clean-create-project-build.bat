@@ -1,3 +1,3 @@
-call .\win-clean.bat
-call .\win-create-project.bat
-call .\win-build.bat
+call .\cc-cmd-clean.bat
+call .\ccp-cmd-create-project.bat
+call .\cb-cmd-build.bat
