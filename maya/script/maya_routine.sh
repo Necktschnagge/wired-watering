@@ -24,8 +24,6 @@ if [[ -f "$run_counter_file_path" ]]; then
 fi
 
 
-while true
-do
 	let run_counter++
 log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 	(
@@ -259,4 +257,4 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "##############################################################"
 		sleep ${debug_step_sleep_s}s
 	)
-done
+

@@ -7,5 +7,10 @@ fi
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 
-cp ./maya_routine.sh ../../../logs/maya_routine.sh
-../../../logs/maya_routine.sh
+while true
+do
+
+	cp ./maya_routine.sh ../../../logs/maya_routine.sh
+	../../../logs/maya_routine.sh
+
+done
