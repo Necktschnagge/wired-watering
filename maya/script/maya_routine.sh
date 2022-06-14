@@ -208,10 +208,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "====================================================================================================="; \
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."; \
 		####### enhance this step 5!!!
-		echo "> sudo -u mayadm git branch"; \
-				sudo -u mayadm git branch; \
-		echo "> echo ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"; \
-				echo ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}; \
 		sudo -u mayadm git add -u; \
 		sudo -u mayadm git add *; \
 		sudo -u mayadm git status; \
@@ -232,7 +228,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive
 		#sudo -u mayadm git add -u
 		sudo -u mayadm git add ../artifacts/logs/*.log -f
-		sudo -u mayadm git add ../artifacts/logs/*.sh -f
 		sudo -u mayadm git commit -m "upload logs"
 		sudo -u mayadm git push
 		sudo -u mayadm git checkout maya-productive
