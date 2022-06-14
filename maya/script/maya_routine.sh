@@ -210,6 +210,10 @@ log_commit_message="maya logs:   $(date +%Y-%m-%d\ \ \ %H:%M)"
 		echo "====================================================================================================="; \
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."; \
 		####### enhance this step 5!!!
+		echo "> sudo -u mayadm git branch"; \
+				sudo -u mayadm git branch; \
+		echo "> echo ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"; \
+				echo ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}; \
 		sudo -u mayadm git add -u; \
 		sudo -u mayadm git add *; \
 		sudo -u mayadm git status; \
