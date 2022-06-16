@@ -40,11 +40,11 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."; \
 		echo "> sudo -u mayadm git branch"; \
 				sudo -u mayadm git branch; \
-		echo "> sudo -u mayadm git status;"; \
+		echo "> sudo -u mayadm git status"; \
 				sudo -u mayadm git status; \
-		echo "> sudo -u mayadm git add -u; sudo -u mayadm git add *;"; \
-				sudo -u mayadm git add -u; sudo -u mayadm git add *; \
-		echo "> sudo -u mayadm git status;"; \
+		echo "> sudo -u mayadm git add -u; sudo -u mayadm git add *"; \
+				sudo -u mayadm git add -u; sudo -u mayadm git add *; \ #adds all tracket and all untracked files
+		echo "> sudo -u mayadm git status"; \
 				sudo -u mayadm git status; \
 		sleep ${debug_step_sleep_s}s; \
 		# check if uncommitted changes are there and would be discarded if not handling it...
@@ -226,10 +226,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 	
 	(
 		#######'Uploading logs!'
-		sudo -u mayadm git checkout artifacts
+		#sudo -u mayadm git checkout artifacts
 		sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive
 		#sudo -u mayadm git add -u
-		sudo -u mayadm git add ../artifacts/logs/*.log -f
+		sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
 		sudo -u mayadm git commit -m "upload logs"
 		sudo -u mayadm git pull
 		sudo -u mayadm git push
@@ -260,5 +260,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "#######                                                #######"
 		echo "##############################################################"
 		sleep ${debug_step_sleep_s}s
-	)
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-6.log
+
 
