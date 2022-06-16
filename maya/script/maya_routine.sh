@@ -10,7 +10,7 @@ LOCAL_WORKING_BRANCH="routine-standard-branch-739"
 BRANCH_TO_LOAD_AS_WORKING_BRANCH="maya-productive"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 
-current_sleep_time_s=1200		#standard: 900 (15min), 1200 (20min)
+current_sleep_time_s=300		#standard: 900 (15min), 1200 (20min)
 debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
@@ -42,8 +42,9 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 				sudo -u mayadm git branch; \
 		echo "> sudo -u mayadm git status"; \
 				sudo -u mayadm git status; \
+		# add all tracket and all untracked files:
 		echo "> sudo -u mayadm git add -u; sudo -u mayadm git add *"; \
-				sudo -u mayadm git add -u; sudo -u mayadm git add *; \ #adds all tracket and all untracked files
+				sudo -u mayadm git add -u; sudo -u mayadm git add *; \ 
 		echo "> sudo -u mayadm git status"; \
 				sudo -u mayadm git status; \
 		sleep ${debug_step_sleep_s}s; \
@@ -182,6 +183,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 			build_success=false
 		)
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!"; \
+		echo "${LOCAL_WORKING_BRANCH}"
 		echo "====================================================================================================="; \
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
@@ -203,11 +205,13 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		fi
 		echo "%%%%%%%%%%     [4] Run the executable   ...DONE!"; \
 		echo "====================================================================================================="
+		echo "${LOCAL_WORKING_BRANCH}"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
 
 	(
 		echo "====================================================================================================="; \
+		echo "${LOCAL_WORKING_BRANCH}"
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."; \
 		####### enhance this step 5!!!
 		sudo -u mayadm git add -u; \
