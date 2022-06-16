@@ -224,6 +224,13 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		date
 		echo "%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!"; \
 		echo "====================================================================================================="; \
+git branch | grep routine-* | while read line 
+do
+	echo Delte branch: ${line}
+	#branch_name=$(echo ${line} | sed -E "s/${remote_name}\///")
+	#echo pure branch name: ${branch_name}
+	#git push ${remote_name} --delete ${branch_name}
+done
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
 	
 	(
