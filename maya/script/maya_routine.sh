@@ -184,7 +184,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 			build_success=false
 		)
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!"; \
-		echo "${LOCAL_WORKING_BRANCH}"
 		echo "====================================================================================================="; \
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
@@ -206,13 +205,11 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		fi
 		echo "%%%%%%%%%%     [4] Run the executable   ...DONE!"; \
 		echo "====================================================================================================="
-		echo "${LOCAL_WORKING_BRANCH}"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
 
 	(
 		echo "====================================================================================================="; \
-		echo "${LOCAL_WORKING_BRANCH}"
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."; \
 		####### enhance this step 5!!!
 		sudo -u mayadm git add -u; \
@@ -241,6 +238,14 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		sudo -u mayadm git checkout maya-productive
 		sudo -u mayadm git push
 
+
+git branch | grep routine-* | while read line 
+do
+	echo Delte branch: ${line}
+	#branch_name=$(echo ${line} | sed -E "s/${remote_name}\///")
+	#echo pure branch name: ${branch_name}
+	#git push ${remote_name} --delete ${branch_name}
+done
 		echo "##############################################################"
 		echo "###################                        ###################"
 		echo "###################     GOING TO SLEEP     ###################"
