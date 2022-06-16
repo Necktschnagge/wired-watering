@@ -99,6 +99,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-2.log
 	
 	build_success=true
+	commit_short=$(sudo -u mayadm git rev-parse HEAD | cut -c1-8); \
+	seconds_since_epoch=$(date -u +%s); \
+	LOCAL_WORKING_BRANCH="routine-${commit_short}-${seconds_since_epoch}"; \
+
 	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="; \
@@ -108,10 +112,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules..."; \
 
 		echo "Determining working branch name..."
-		commit_short=$(sudo -u mayadm git rev-parse HEAD | cut -c1-8); \
-		seconds_since_epoch=$(date -u +%s); \
-		LOCAL_WORKING_BRANCH="routine-${commit_short}-${seconds_since_epoch}"; \
-		echo "branch name:   ${LOCAL_WORKING_BRANCH}"; \
+		echo "branch name:   ${LOCAL_WORKING_BRANCH}"
 		
 		echo "Switching to working branch..."; \
 		echo "> sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}"; \
