@@ -23,8 +23,9 @@ if [[ -f "$run_counter_file_path" ]]; then
 	typeset -i run_counter=$(cat ${run_counter_file_path})
 fi
 
+previous_run_counter=$run_counter
+let run_counter++
 
-	let run_counter++
 log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 	(
 		echo "====================================================================================================="; \
@@ -229,7 +230,7 @@ do
 	echo Delte branch: ${line}
 	#branch_name=$(echo ${line} | sed -E "s/${remote_name}\///")
 	#echo pure branch name: ${branch_name}
-	#git push ${remote_name} --delete ${branch_name}
+	git branch -D ${line}
 done
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
 	
@@ -239,6 +240,7 @@ done
 		sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive
 		#sudo -u mayadm git add -u
 		sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
+		sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
 		sudo -u mayadm git commit -m "upload logs"
 		sudo -u mayadm git pull
 		sudo -u mayadm git push
