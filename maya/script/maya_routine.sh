@@ -38,6 +38,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		echo "====================================================================================================="; \
 		sleep ${debug_step_sleep_s}s; \
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."; \
+		echo "> sudo -u mayadm git branch"; \
+				sudo -u mayadm git branch; \
 		echo "> sudo -u mayadm git status;"; \
 				sudo -u mayadm git status; \
 		echo "> sudo -u mayadm git add -u; sudo -u mayadm git add *;"; \
@@ -229,8 +231,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--$(date +%Y-%m-%d--%Hh%M)--"
 		#sudo -u mayadm git add -u
 		sudo -u mayadm git add ../artifacts/logs/*.log -f
 		sudo -u mayadm git commit -m "upload logs"
+		sudo -u mayadm git pull
 		sudo -u mayadm git push
 		sudo -u mayadm git checkout maya-productive
+		sudo -u mayadm git push
 
 		echo "##############################################################"
 		echo "###################                        ###################"
