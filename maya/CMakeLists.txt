@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13.4)
 
 
 ############### Names ###############
-set(PROJECT_NAME Maya_Commander)
+set(PROJECT_NAME Maya-Commander)
 
 
 ############### Preprocessor Macros ###############
