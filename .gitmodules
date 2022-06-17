@@ -1,6 +1,6 @@
 [submodule "extern/spdlog"]
-	path = extern/spdlog
+	path = maya/extern/spdlog
 	url = https://github.com/gabime/spdlog
 [submodule "extern/googletest"]
-	path = extern/googletest
+	path = maya/extern/googletest
 	url = https://github.com/google/googletest

@@ -63,15 +63,15 @@ steps:
  - script: git submodule update --init --recursive
    displayName: "Init Git Submodules"
    condition: succeeded()
- - script: cmake -S . -B ./build/
+ - script: cd maya && cmake -S . -B ./build/
    displayName: "CMake: Create Project"
    condition: succeeded()
- - script: cmake --build ./build
+ - script: cd maya && cmake --build ./build
    displayName: "CMake: Compile and Link"
    condition: succeeded()
- - script: ./build/test/TEST-$(project_name)
+ - script: cd maya && ./build/test/TEST-$(project_name)
    displayName: "Run Tests on Linux / Mac OS"
    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
- - script: .\build\test\Debug\TEST-$(project_name).exe
+ - script: cd maya && .\build\test\Debug\TEST-$(project_name).exe
    displayName: "Run Tests on Windows"
    condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
