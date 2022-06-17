@@ -10,7 +10,7 @@ LOCAL_WORKING_BRANCH="routine-standard-branch-739"
 BRANCH_TO_LOAD_AS_WORKING_BRANCH="maya-productive"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 
-current_sleep_time_s=300		#standard: 900 (15min), 1200 (20min)
+current_sleep_time_s=3000		#standard: 900 (15min), 1200 (20min), 3000 (50min)
 debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
