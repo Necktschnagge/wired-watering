@@ -26,6 +26,7 @@ current_sleep_time_s=300		#standard: 900 (15min), 1200 (20min), 3000 (50min)
 debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
+#logs_path="../../../logs/maya/artifacts/logs/" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 run_counter_file_path="../artifacts/counter.info"
 
 run_counter=0
@@ -264,6 +265,7 @@ delete_branches=false
 	
 	echo "> sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive"
 			sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive # -n do not copy if file already present
+			# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
