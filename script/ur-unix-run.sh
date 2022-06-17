@@ -1,2 +1,2 @@
 #!/bin/bash
-../build/src/___template___project___name___
+../build/src/Maya_Commander

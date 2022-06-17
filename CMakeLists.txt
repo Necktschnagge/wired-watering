@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.13.4)
 
 
 ############### Names ###############
-set(PROJECT_NAME ___template___project___name___)
+set(PROJECT_NAME Maya_Commander)
 
 
 ############### Preprocessor Macros ###############
-add_compile_definitions(GIT_REPOSITORY_URL="___template___project___url___")
+add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/automatic-watering")
 
 
 ############### Project Decklaration ###############

@@ -1,6 +1,6 @@
 variables:
  - name: project_name
-   value: ___template___project___name___
+   value: Maya_Commander
 
 trigger:
   branches:

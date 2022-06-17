@@ -1,1 +1,1 @@
-../build/___template___project___name___.sln
+../build/Maya_Commander.sln

@@ -1,2 +1,2 @@
 #!/bin/bash
-cmake --build ../build/ --target ___template___project___name___
+cmake --build ../build/ --target Maya_Commander
