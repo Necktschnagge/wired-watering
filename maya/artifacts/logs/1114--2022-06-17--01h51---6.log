@@ -1,0 +1,40 @@
+[maya-productive 7fa2a58] upload logs
+ 7 files changed, 226 insertions(+)
+ create mode 100644 maya/artifacts/logs/1113--2022-06-17--01h45---6.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---1.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---2.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---3.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---4.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---5.log
+ create mode 100644 maya/artifacts/logs/1114--2022-06-17--01h51---6.log
+Bereits aktuell.
+fatal: Die Gegenseite hat unerwartet abgebrochen.
+fatal: Die Gegenseite hat unerwartet abgebrochen.
+Everything up-to-date
+Bereits auf 'maya-productive'
+Ihr Branch ist 1 Commit vor 'origin/maya-productive'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+To https://github.com/Necktschnagge/wired-watering
+   6ee160e..7fa2a58  maya-productive -> maya-productive
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 300
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Thu Jun 16 23:57:46 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################

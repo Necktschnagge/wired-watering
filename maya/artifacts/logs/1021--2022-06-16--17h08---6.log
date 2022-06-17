@@ -1,0 +1,40 @@
+[maya-productive fcd6896] upload logs
+ 6 files changed, 1198 insertions(+)
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---1.log
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---2.log
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---3.log
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---4.log
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---5.log
+ create mode 100644 maya/artifacts/logs/1021--2022-06-16--17h08---6.log
+Von https://github.com/Necktschnagge/wired-watering
+   b1245d0..e5f7188  maya-productive -> origin/maya-productive
+Merge made by the 'recursive' strategy.
+ maya/script/maya_routine.sh | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+To https://github.com/Necktschnagge/wired-watering
+   e5f7188..f8c7076  maya-productive -> maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 300
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Thu Jun 16 15:13:46 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################

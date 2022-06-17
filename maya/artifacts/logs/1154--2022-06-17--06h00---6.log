@@ -1,0 +1,35 @@
+[maya-productive 9c2eede] upload logs
+ 5 files changed, 188 insertions(+)
+ create mode 100644 maya/artifacts/logs/1154--2022-06-17--06h00---1.log
+ create mode 100644 maya/artifacts/logs/1154--2022-06-17--06h00---2.log
+ create mode 100644 maya/artifacts/logs/1154--2022-06-17--06h00---3.log
+ create mode 100644 maya/artifacts/logs/1154--2022-06-17--06h00---4.log
+ create mode 100644 maya/artifacts/logs/1154--2022-06-17--06h00---5.log
+Bereits aktuell.
+To https://github.com/Necktschnagge/wired-watering
+   b3c6112..9c2eede  maya-productive -> maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 300
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Fri Jun 17 04:06:12 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
