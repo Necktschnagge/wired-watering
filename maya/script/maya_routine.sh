@@ -267,7 +267,7 @@ delete_branches=false
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
-		#sudo -u mayadm git checkout artifacts
+		sudo -u mayadm git checkout artifacts
 		#sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
 				sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
