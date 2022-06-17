@@ -1,1 +1,1 @@
-../build/Maya_Commander.sln
+../build/Maya-Commander.sln
