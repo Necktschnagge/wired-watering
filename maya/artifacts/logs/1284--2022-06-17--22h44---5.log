@@ -1,0 +1,19 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+> sudo -u mayadm git add -u
+> sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch routine-8c6dc6e9-1655498664
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git reset --hard
+HEAD ist jetzt bei 8c6dc6e Merge remote-tracking branch 'origin/maya-productive' into maya-productive
+Deleting local working branch...
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git branch -D routine-8c6dc6e9-1655498664
+Branch routine-8c6dc6e9-1655498664 entfernt (war 8c6dc6e).
+Finished run 1284!
+Fr 17. Jun 22:44:34 CEST 2022
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+=====================================================================================================
