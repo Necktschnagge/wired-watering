@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.13.4)
 
 
 ############### Names ###############
-set(PROJECT_NAME Maya-Commander)
+set(PROJECT_NAME Maya_Commander)
 
 
 ############### Preprocessor Macros ###############
-add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/wired-watering")
+add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/automatic-watering")
 
 
 ############### Project Decklaration ###############
@@ -41,33 +41,19 @@ if (UNIX)
 	message("Running on UNIX.")
 endif()
 
-if(WIN32) # Install dlls in the same directory as the executable on Windows
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-endif()
 
 ############### Language and Flags ###############
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
-if (WIN32)
-	#set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /DNDEBUG")
-	#set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
-endif()
+set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "/MTd /Zi /Ob0 /Od /RTC1")
 
-include(FetchContent)
-FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
-                         GIT_TAG db351ffbbadc6c4e9239daaa26e9aefa9f0ec82d) # The commit hash for 1.8.0. Replace with the latest from: https://github.com/libcpr/cpr/releases
-FetchContent_MakeAvailable(cpr)
 
 ############### Libraries ###############
 include_directories(SYSTEM extern/spdlog/include)
-#include_directories(SYSTEM extern/cpr/include)
-#include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
-#add_subdirectory(extern/td)
 
-#add_subdirectory(extern/cpr)
 
 ############### Sources ###############
 add_subdirectory(src)

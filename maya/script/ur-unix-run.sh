@@ -1,2 +1,2 @@
 #!/bin/bash
-../build/src/Maya-Commander
+../build/src/Maya_Commander
