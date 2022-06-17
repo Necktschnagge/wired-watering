@@ -1,2 +1,2 @@
 #!/bin/bash
-cmake --build ../build/ --target Maya_Commander
+cmake --build ../build/ --target Maya-Commander
