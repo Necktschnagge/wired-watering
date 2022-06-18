@@ -72,6 +72,6 @@ steps:
  - script: cd maya && ./build/test/TEST-$(project_name)
    displayName: "Run Tests on Linux / Mac OS"
    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
- - script: cd maya && .\build\test\Debug\TEST-$(project_name).exe
+ - script: cd maya && .\build\Debug\TEST-$(project_name).exe
    displayName: "Run Tests on Windows"
    condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
