@@ -1,0 +1,13 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+std::chrono::system_clock::now().time_since_epoch()   :   1655527466141535494
+get_seconds_since_epoch(bool verbose /* true */)   :   1655527466
+minutes since epoch   :   27592124
+minute of day   :   284
+minute of hour   :   44
+hour of day   :   4
+previous time_stamp:   27591974
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+=====================================================================================================
