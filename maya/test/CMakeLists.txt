@@ -11,7 +11,7 @@ add_test(NAME ${TEST_PROJECT_NAME} COMMAND ${TEST_PROJECT_NAME})
 add_custom_command(TARGET ${TEST_PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_SOURCE_DIR}/build/bin/Debug"
-        $<TARGET_FILE_DIR:MyTest>)
+        "${PROJECT_SOURCE_DIR}/build/Debug")
 
 ############### Libraries ###############
 if(LINUX)
