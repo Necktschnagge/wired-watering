@@ -1,4 +1,6 @@
 
+#include "logger.h"
+
 
 #include "cpr/cpr.h"
 
