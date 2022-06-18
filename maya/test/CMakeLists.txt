@@ -15,4 +15,7 @@ if(LINUX)
 	)
 endif()
 
-target_link_libraries(${TEST_PROJECT_NAME} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest)
+#target_link_libraries(${TEST_PROJECT_NAME} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest)
+target_link_libraries(${TEST_PROJECT_NAME} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest cpr::cpr)
+#target_link_libraries(${PROJECT_NAME}_lib PUBLIC cpr::cpr)
+
