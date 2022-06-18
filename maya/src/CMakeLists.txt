@@ -4,7 +4,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 
 ############### Libraries ###############
-target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
+target_link_libraries(${PROJECT_NAME} PUBLIC cpr::cpr)
 #target_link_libraries(${PROJECT_NAME} PRIVATE Td::TdStatic)
 
 if(LINUX)
@@ -14,5 +14,5 @@ if(LINUX)
 endif()
 
 add_library(${PROJECT_NAME}_lib STATIC ${SOURCES}) #for using in tests
-target_link_libraries(${PROJECT_NAME}_lib PRIVATE cpr::cpr)
+target_link_libraries(${PROJECT_NAME}_lib PUBLIC cpr::cpr)
 #target_link_libraries(${PROJECT_NAME}_lib PRIVATE Td::TdStatic)
