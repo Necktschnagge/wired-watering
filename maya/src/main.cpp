@@ -1,4 +1,6 @@
 
+#include "logger.h"
+
 
 #include "cpr/cpr.h"
 
@@ -183,6 +185,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	send_mayson(0);
 }
 
+#if false
 class valve {
 	std::string ip_address;
 	std::string name;
@@ -257,11 +260,14 @@ class schedule {
 	std::vector<timer> all_timers;
 };
 
+#endif
 
 int main(int argc, char** argv) {
 
 	(void)argc;
 	(void)argv;
+	
+	init_logger();
 
 	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
 	ping(IP_ADDRESS_VALVE_SERVER_JAMES);
