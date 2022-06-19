@@ -137,11 +137,13 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}
 		
 		echo "Updating git submodules..."
+		date
 		(
 			echo "> timeout 240m sudo -u mayadm git submodule update --init --recursive"
 					timeout 240m sudo -u mayadm git submodule update --init --recursive
 		) && echo "successfully updated git submodules" || echo "git submodul update FAILED!"
-		
+		date
+
 		(
 			echo "%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)..."
 			(
