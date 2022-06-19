@@ -33,10 +33,10 @@ run_counter=0
 
 ############################################### modify variables ############################################################
 
-if [[ -f "$run_counter_file_path" ]]; then
+#if [[ -f "$run_counter_file_path" ]]; then
 	echo "Found ${run_counter_file_path} from previous run to load run number."
 	typeset -i run_counter=$(cat ${run_counter_file_path})
-fi
+#fi
 
 previous_run_counter=$run_counter
 let run_counter++
