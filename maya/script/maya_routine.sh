@@ -145,8 +145,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		(
 			echo "%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)..."
 			(
-				echo "> timeout 60m sudo -u mayadm ./up-unix-create-project.sh" &&
-						timeout 60m sudo -u mayadm ./up-unix-create-project.sh
+				echo "> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh" &&
+						timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
 			) && (
 				echo "> timeout 60m sudo -u mayadm ./ub-unix-build.sh" &&
 						timeout 60m sudo -u mayadm ./ub-unix-build.sh
@@ -163,8 +163,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				echo "> timeout 60m sudo -u mayadm ./uc-unix-clean.sh" &&
 						timeout 60m sudo -u mayadm ./uc-unix-clean.sh
 			) && (
-				echo "> timeout 60m sudo -u mayadm ./up-unix-create-project.sh" &&
-						timeout 60m sudo -u mayadm ./up-unix-create-project.sh
+				echo "> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh" &&
+						timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
 			) && (
 				echo "> timeout 60m sudo -u mayadm ./ub-unix-build.sh" &&
 						timeout 60m sudo -u mayadm ./ub-unix-build.sh
@@ -183,8 +183,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				echo "> timeout 60m sudo -u mayadm ./uc-unix-clean.sh" &&
 						timeout 60m sudo -u mayadm ./uc-unix-clean.sh
 			) && (
-				echo "> timeout 60m sudo -u mayadm ./up-unix-create-project.sh" &&
-						timeout 60m sudo -u mayadm ./up-unix-create-project.sh
+				echo "> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh" &&
+						timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
 			) && (
 				echo "> timeout 60m sudo -u mayadm ./ub-unix-build.sh" &&
 						timeout 60m sudo -u mayadm ./ub-unix-build.sh
