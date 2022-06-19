@@ -269,7 +269,13 @@ delete_branches=false
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
-		sudo -u mayadm git checkout artifacts
+		echo "> sudo -u mayadm git checkout artifacts"
+				sudo -u mayadm git checkout artifacts
+		echo "> sudo -u mayadm git pull"
+				sudo -u mayadm git pull
+		echo "> sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
+				sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
+
 		#sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
 				sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
@@ -277,8 +283,6 @@ delete_branches=false
 				sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
 		echo "> sudo -u mayadm git commit -m \"logs at ${log_timestamp}\""
 				sudo -u mayadm git commit -m "logs at ${log_timestamp}"
-		echo "> sudo -u mayadm git pull"
-				sudo -u mayadm git pull
 		echo "> sudo -u mayadm git push"
 				sudo -u mayadm git push
 		echo "> sudo -u mayadm git checkout maya-productive"
