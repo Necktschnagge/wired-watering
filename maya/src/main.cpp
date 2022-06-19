@@ -158,26 +158,65 @@ void watering(const int64_t& seconds_since_epoch) {
 
 	if ((days_since_epoch % 2)) {
 
+		// GURK  0 : TOMA  0  : EMÖHR  0 : BOHN  0 // 0
 		watering_helper(
-			JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN,
-			60 * 25
-		);
-		watering_helper(
-			JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN | JAMES_GURKE_ERBSE,
+			JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE | JAMES_BOHNEN_ERDBEERE,
 			60 * 5
 		);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE | JAMES_KAROTTEN);
+		// GURK  5 : TOMA  5  : EMÖHR  0 : BOHN  5 // 5
 		watering_helper(
-			JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE,
-			60 * 17
+			JAMES_GURKE_ERBSE | JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN,
+			60 * 15
 		);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
+		// GURK 20 : TOMA  5  : EMÖHR 15 : BOHN  20 // 20
+		watering_helper(
+			JAMES_TOMATE_ERDBEERE | JAMES_KAROTTEN,
+			60 * 5
+		);
+		// GURK 20 : TOMA  10  : EMÖHR 20 : BOHN  20 // 25
+
+		// restart pump
+		watering_helper(JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE, 1); // let water capacitor run dry while pump off
+		send_mayson(0);
+		std::this_thread::sleep_for(std::chrono::seconds(100));
+		send_mayson(1);
+		//restart pump end
+
+		// GURK 20 : TOMA  10  : EMÖHR 20 : BOHN  20 // 25
+		watering_helper(
+			JAMES_GURKE_ERBSE | JAMES_BOHNEN_ERDBEERE,
+			60 * 10
+		);
+		// GURK 30 : TOMA  10  : EMÖHR 20 : BOHN  30 // 35
+		watering_helper(
+			JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE | JAMES_KAROTTEN,
+			60 * 5
+		);
+		// GURK 35 : TOMA  15  : EMÖHR 25 : BOHN  30 // 40
+		watering_helper(
+			JAMES_BOHNEN_ERDBEERE | JAMES_KAROTTEN,
+			60 * 15
+		);
+		// GURK 35 : TOMA  15  : EMÖHR 40 : BOHN  45 // 55
+		watering_helper(
+			JAMES_TOMATE_ERDBEERE | JAMES_KAROTTEN | JAMES_GURKE_ERBSE,
+			60 * 5
+		);
+		// GURK 40 : TOMA  20  : EMÖHR 45 : BOHN  45 // 60 (whole time)
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
 	else {
 		watering_helper(
 			JAMES_GURKE_ERBSE,
-			60 * 22
+			60 * 20
+		);
+		watering_helper(0, 30); // wait for pressure reached
+		send_mayson(0); // restart pump
+		std::this_thread::sleep_for(std::chrono::seconds(5*60)); // ... minutes pause
+		send_mayson(1);
+		watering_helper(
+			JAMES_GURKE_ERBSE,
+			60 * 20
 		);
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
