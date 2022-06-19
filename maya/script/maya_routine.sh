@@ -138,8 +138,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		
 		echo "Updating git submodules..."
 		(
-			echo "> timeout 240m sudo -u mayadm git submodule update --init --recursive"
-					timeout 240m sudo -u mayadm git submodule update --init --recursive
+			echo "> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1"
+					timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
 		) && echo "successfully updated git submodules" || echo "git submodul update FAILED!"
 		
 		(
