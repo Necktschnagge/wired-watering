@@ -1,0 +1,40 @@
+=====================================================================================================
+=====================================================================================================
+===     Starting with run #1362...
+=====================================================================================================
+=====================================================================================================
+> echo "1362" | sudo -u mayadm tee ../artifacts/counter.info
+1362
+> date
+So 19. Jun 12:09:38 CEST 2022
+> ./maya_connect_internet_usb0.sh
+RTNETLINK answers: File exists
+Connecting to internet via usb0 tethering successful.
+=====================================================================================================
+%%%%%%%%%%     [1] Cleaning working directory...
+> sudo -u mayadm git branch
+  artifacts
+  dev--
+  master
+  maya-fallback
+* maya-productive
+  nchain
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist 2 Commits hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git add -u; sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist 2 Commits hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+Checking if there are uncommitted changes...
+> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --
+> sudo -u mayadm git reset --hard;
+HEAD ist jetzt bei 139c363 Merge pull request #21 from Necktschnagge/feature-parallel-build
+%%%%%%%%%%     [1] Cleaning working directory   ...DONE!
+=====================================================================================================
