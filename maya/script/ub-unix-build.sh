@@ -1,2 +1,2 @@
 #!/bin/bash
-cmake --build ../build
+cmake --build ../build --parallel 4

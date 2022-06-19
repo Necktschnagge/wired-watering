@@ -68,7 +68,10 @@ steps:
    condition: succeeded()
  - script: cd maya && cmake --build ./build
    displayName: "CMake: Compile and Link"
-   condition: succeeded()
+   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+ - script: cd maya/script && ./ub-unix-build.sh 
+   displayName: "CMake: Compile and Link (unix)"
+   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' )
  - script: cd maya && ./build/test/TEST-$(project_name)
    displayName: "Run Tests on Linux / Mac OS"
    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
