@@ -1,0 +1,36 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+warning: unable to rmdir 'maya/extern/spdlog': Das Verzeichnis ist nicht leer
+Zu neuem Branch 'artifacts' gewechselt
+Branch 'artifacts' folgt nun Remote-Branch 'artifacts' von 'origin'.
+> sudo -u mayadm git add "../artifacts/logs/1-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/0-*.log" -f
+fatal: Pfadspezifikation '../artifacts/logs/0-*.log' stimmt mit keinen Dateien überein
+> sudo -u mayadm git commit -m "logs at 2022-06-19--13h36"
+Auf Branch artifacts
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+
+Unversionierte Dateien:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+	../extern/spdlog/
+
+nichts zum Commit vorgemerkt, aber es gibt unversionierte Dateien
+(benutzen Sie "git add" zum Versionieren)
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git push
+Everything up-to-date
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
