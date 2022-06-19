@@ -27,16 +27,17 @@ debug_step_sleep_s=10			#productive: 0 (no sleeps), debug: 15 (make log readable
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 #logs_path="../../../logs/maya/artifacts/logs/" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
-run_counter_file_path="~/repos/logs/counter.info"
+user_home="/home/mayadm"
+run_counter_file_path="${user_home}/repos/logs/counter.info"
 
 run_counter=0
 
 ############################################### modify variables ############################################################
 
-#if [[ -f "$run_counter_file_path" ]]; then
+if [[ -f "$run_counter_file_path" ]]; then
 	echo "Found ${run_counter_file_path} from previous run to load run number."
 	typeset -i run_counter=$(cat ${run_counter_file_path})
-#fi
+fi
 
 previous_run_counter=$run_counter
 let run_counter++
