@@ -23,7 +23,7 @@ BRANCH_TO_LOAD_AS_WORKING_BRANCH="maya-productive"
 BRANCH_TO_LOAD_AS_FALLBACK_BRANCH="maya-fallback"
 
 current_sleep_time_s=1200		#standard: 900 (15min), 1200 (20min), 3000 (50min)
-debug_step_sleep_s=10			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
+debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 #logs_path="../../../logs/maya/artifacts/logs/" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
@@ -62,6 +62,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "====================================================================================================="
 		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."
+		start_time=$(date +%s)
 		echo "> sudo -u mayadm git branch"
 				sudo -u mayadm git branch
 		echo "> sudo -u mayadm git status"
@@ -92,6 +93,9 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "> sudo -u mayadm git reset --hard;"
 				sudo -u mayadm git reset --hard
 		echo "%%%%%%%%%%     [1] Cleaning working directory   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
+		
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-1.log
 	
@@ -100,6 +104,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin..."
+		start_time=$(date +%s)
 		echo "> sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
 				sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		(
@@ -115,6 +120,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		commit=$(sudo -u mayadm git rev-parse HEAD)
 		echo "Last commit is:   ${commit}"
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-2.log
 	
@@ -126,6 +133,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources..."
+		start_time=$(date +%s)
 		echo
 		echo
 		echo "%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules..."
@@ -202,6 +210,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 			echo "**********************************************************"
 		)
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
@@ -210,6 +220,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [4] Run the executable..."
+		start_time=$(date +%s)
 
 #this does not work due to locality of variables:
 
@@ -225,6 +236,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "> sudo -u mayadm ./ur-unix-run.sh"
 				sudo -u mayadm ./ur-unix-run.sh
 		echo "%%%%%%%%%%     [4] Run the executable   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
@@ -232,6 +245,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."
+		start_time=$(date +%s)
 		echo "> sudo -u mayadm git add -u"
 				sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add *"
@@ -261,6 +275,8 @@ delete_branches=false
 		echo "Finished run ${run_counter}!"
 		date
 		echo "%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
 	
@@ -270,6 +286,7 @@ delete_branches=false
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
+		start_time=$(date +%s)
 		sudo -u mayadm git checkout artifacts
 		#sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
@@ -313,6 +330,8 @@ delete_branches=false
 		echo "##############################################################"
 		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!"
+		end_time=$(date +%s)
+		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-6.log
 
