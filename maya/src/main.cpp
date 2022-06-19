@@ -175,9 +175,12 @@ void watering(const int64_t& seconds_since_epoch) {
 		);
 		// GURK 20 : TOMA  10  : EMÖHR 20 : BOHN  20 // 25
 
+		// restart pump
+		watering_helper(JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE, 1); // let water capacitor run dry while pump off
 		send_mayson(0);
-		std::this_thread::sleep_for(std::chrono::seconds(30));
+		std::this_thread::sleep_for(std::chrono::seconds(100));
 		send_mayson(1);
+		//restart pump end
 
 		// GURK 20 : TOMA  10  : EMÖHR 20 : BOHN  20 // 25
 		watering_helper(
@@ -209,7 +212,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		);
 		watering_helper(0, 30); // wait for pressure reached
 		send_mayson(0); // restart pump
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		std::this_thread::sleep_for(std::chrono::seconds(5*60)); // ... minutes pause
 		send_mayson(1);
 		watering_helper(
 			JAMES_GURKE_ERBSE,
