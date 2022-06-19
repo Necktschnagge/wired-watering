@@ -27,7 +27,7 @@ debug_step_sleep_s=10			#productive: 0 (no sleeps), debug: 15 (make log readable
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 #logs_path="../../../logs/maya/artifacts/logs/" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
-run_counter_file_path="../artifacts/counter.info"
+run_counter_file_path="~/repos/logs/counter.info"
 
 run_counter=0
 
