@@ -59,8 +59,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "> ./maya_connect_internet_usb0.sh"
 				./maya_connect_internet_usb0.sh
 		echo "====================================================================================================="
-		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git branch"
 				sudo -u mayadm git branch
 		echo "> sudo -u mayadm git status"
@@ -70,7 +70,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				sudo -u mayadm git add -u; sudo -u mayadm git add *
 		echo "> sudo -u mayadm git status"
 				sudo -u mayadm git status
-		sleep ${debug_step_sleep_s}s
 		echo "Checking if there are uncommitted changes..."
 		(
 			echo "> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --"
@@ -78,6 +77,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		) || (
 			echo "********** WARNING **********"
 			echo "Found uncommitted changes, staged it, will commit it to a new branch to not loose them..."
+			sleep ${debug_step_sleep_s}s
 			timestamp=$(date +%s)
 			commit=$(sudo -u mayadm git rev-parse HEAD | cut -c0-7) #local variable inside ( ... )
 			echo "> sudo -u mayadm git switch -c \"dev-${commit}-${timetamp}\""
@@ -85,7 +85,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 			echo "branch name is dev-${commit}-${timetamp}"
 			echo '> sudo -u mayadm git commit -m "local changes automatically committed by maya_routine.sh"'
 					sudo -u mayadm git commit -m "local changes automatically committed by maya_routine.sh"
-			sleep ${debug_step_sleep_s}s
 		)
 
 		echo "> sudo -u mayadm git reset --hard;"
@@ -95,10 +94,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-1.log
 	
 	
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin..."
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
 				sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		(
@@ -121,13 +120,13 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	seconds_since_epoch=$(date -u +%s)
 	LOCAL_WORKING_BRANCH="routine-${commit_short}-${seconds_since_epoch}"
 
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources..."
 		echo
 		echo
 		echo "%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules..."
+		sleep ${debug_step_sleep_s}s
 
 		echo "Determining working branch name..."
 		echo "branch name:   ${LOCAL_WORKING_BRANCH}"
@@ -207,10 +206,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
 	
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [4] Run the executable..."
+		sleep ${debug_step_sleep_s}s
 
 #this does not work due to locality of variables:
 
@@ -229,10 +228,10 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git add -u"
 				sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add *"
@@ -268,10 +267,10 @@ delete_branches=false
 	echo "> sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive"
 			sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive # -n do not copy if file already present
 			# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git checkout artifacts"
 				sudo -u mayadm git checkout artifacts
 		echo "> sudo -u mayadm git pull"
