@@ -66,7 +66,7 @@ steps:
  - script: cd maya && cmake -S . -B ./build/
    displayName: "CMake: Create Project"
    condition: succeeded()
- - script: cd maya/script && ./wb-win-build.ps1
+ - script: cd maya/script && cb-cmd-build.bat
    displayName: "CMake: Compile and Link (windows)"
    condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
  - script: cd maya/script && ./ub-unix-build.sh 
