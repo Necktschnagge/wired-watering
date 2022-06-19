@@ -137,15 +137,13 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				sudo -u mayadm git switch -c ${LOCAL_WORKING_BRANCH}
 		
 		echo "Updating git submodules..."
-		date
 		(
 			echo "> timeout 240m sudo -u mayadm git submodule update --init --recursive"
 					timeout 240m sudo -u mayadm git submodule update --init --recursive
 		) && echo "successfully updated git submodules" || echo "git submodul update FAILED!"
-		date
-
 		(
 			echo "%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh" &&
 						timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
@@ -161,6 +159,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		
 		(
 			echo "%%%%%%%%%%     [3.3] Creating project and building sources (clean build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> timeout 60m sudo -u mayadm ./uc-unix-clean.sh" &&
 						timeout 60m sudo -u mayadm ./uc-unix-clean.sh
@@ -178,6 +177,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		
 		(
 			echo "%%%%%%%%%%     [3.4] Creating project and building sources (fallback clean build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/${BRANCH_TO_LOAD_AS_FALLBACK_BRANCH}" &&
 						sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/${BRANCH_TO_LOAD_AS_FALLBACK_BRANCH}
@@ -207,7 +207,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
 	
-	
+	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [4] Run the executable..."
@@ -229,7 +229,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
-
+	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."
@@ -268,6 +268,7 @@ delete_branches=false
 	echo "> sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive"
 			sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive # -n do not copy if file already present
 			# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
+	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
@@ -316,7 +317,6 @@ delete_branches=false
 		echo "#######            just waked up from sleep            #######"
 		echo "#######                                                #######"
 		echo "##############################################################"
-		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-6.log
