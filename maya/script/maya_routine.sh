@@ -60,9 +60,9 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "> ./maya_connect_internet_usb0.sh"
 				./maya_connect_internet_usb0.sh
 		echo "====================================================================================================="
-		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [1] Cleaning working directory..."
 		start_time=$(date +%s)
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git branch"
 				sudo -u mayadm git branch
 		echo "> sudo -u mayadm git status"
@@ -72,7 +72,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				sudo -u mayadm git add -u; sudo -u mayadm git add *
 		echo "> sudo -u mayadm git status"
 				sudo -u mayadm git status
-		sleep ${debug_step_sleep_s}s
 		echo "Checking if there are uncommitted changes..."
 		(
 			echo "> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --"
@@ -80,6 +79,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		) || (
 			echo "********** WARNING **********"
 			echo "Found uncommitted changes, staged it, will commit it to a new branch to not loose them..."
+			sleep ${debug_step_sleep_s}s
 			timestamp=$(date +%s)
 			commit=$(sudo -u mayadm git rev-parse HEAD | cut -c0-7) #local variable inside ( ... )
 			echo "> sudo -u mayadm git switch -c \"dev-${commit}-${timetamp}\""
@@ -87,7 +87,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 			echo "branch name is dev-${commit}-${timetamp}"
 			echo '> sudo -u mayadm git commit -m "local changes automatically committed by maya_routine.sh"'
 					sudo -u mayadm git commit -m "local changes automatically committed by maya_routine.sh"
-			sleep ${debug_step_sleep_s}s
 		)
 
 		echo "> sudo -u mayadm git reset --hard;"
@@ -100,11 +99,11 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-1.log
 	
 	
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [2] Loading source branch, pulling updates from origin..."
 		start_time=$(date +%s)
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
 				sudo -u mayadm git checkout ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		(
@@ -129,7 +128,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	seconds_since_epoch=$(date -u +%s)
 	LOCAL_WORKING_BRANCH="routine-${commit_short}-${seconds_since_epoch}"
 
-	sleep ${debug_step_sleep_s}s
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [3] Switching to new branch and building sources..."
@@ -137,6 +135,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo
 		echo
 		echo "%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules..."
+		sleep ${debug_step_sleep_s}s
 
 		echo "Determining working branch name..."
 		echo "branch name:   ${LOCAL_WORKING_BRANCH}"
@@ -150,9 +149,9 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 			echo "> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1"
 					timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
 		) && echo "successfully updated git submodules" || echo "git submodul update FAILED!"
-		
 		(
 			echo "%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh" &&
 						timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
@@ -168,6 +167,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		
 		(
 			echo "%%%%%%%%%%     [3.3] Creating project and building sources (clean build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> timeout 60m sudo -u mayadm ./uc-unix-clean.sh" &&
 						timeout 60m sudo -u mayadm ./uc-unix-clean.sh
@@ -185,6 +185,7 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		
 		(
 			echo "%%%%%%%%%%     [3.4] Creating project and building sources (fallback clean build)..."
+			sleep ${debug_step_sleep_s}s
 			(
 				echo "> sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/${BRANCH_TO_LOAD_AS_FALLBACK_BRANCH}" &&
 						sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/${BRANCH_TO_LOAD_AS_FALLBACK_BRANCH}
@@ -216,11 +217,11 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-3.log
 	
 	
-	
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [4] Run the executable..."
 		start_time=$(date +%s)
+		sleep ${debug_step_sleep_s}s
 
 #this does not work due to locality of variables:
 
@@ -241,11 +242,11 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-4.log
 	
-
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [5] Cleaning git working directory..."
 		start_time=$(date +%s)
+		sleep ${debug_step_sleep_s}s
 		echo "> sudo -u mayadm git add -u"
 				sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add *"
@@ -287,7 +288,13 @@ delete_branches=false
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
 		start_time=$(date +%s)
-		sudo -u mayadm git checkout artifacts
+		sleep ${debug_step_sleep_s}s
+		echo "> sudo -u mayadm git checkout artifacts"
+				sudo -u mayadm git checkout artifacts
+		echo "> sudo -u mayadm git pull"
+				sudo -u mayadm git pull
+		echo "> sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
+				sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		#sudo -u mayadm git add -u
 		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
 				sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
@@ -295,8 +302,6 @@ delete_branches=false
 				sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
 		echo "> sudo -u mayadm git commit -m \"logs at ${log_timestamp}\""
 				sudo -u mayadm git commit -m "logs at ${log_timestamp}"
-		echo "> sudo -u mayadm git pull"
-				sudo -u mayadm git pull
 		echo "> sudo -u mayadm git push"
 				sudo -u mayadm git push
 		echo "> sudo -u mayadm git checkout maya-productive"
@@ -328,7 +333,6 @@ delete_branches=false
 		echo "#######            just waked up from sleep            #######"
 		echo "#######                                                #######"
 		echo "##############################################################"
-		sleep ${debug_step_sleep_s}s
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!"
 		end_time=$(date +%s)
 		echo "elapsed time:   $(( end_time - start_time ))s"
