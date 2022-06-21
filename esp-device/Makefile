@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := simple
+PROJECT_NAME := esp-device
 
 EXTRA_COMPONENT_DIRS = $(IDF_PATH)/examples/common_components/protocol_examples_common
 
