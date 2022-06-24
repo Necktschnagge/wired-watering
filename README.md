@@ -7,7 +7,8 @@
 5. `make -j17 all`
    * You might get propmted with so called _MENUCONFIG_.
    * You can just exit it.
-   * If you want to flash a device you should set the port where to talk to your device at `Serial flasher config ---> Default serial port`.
+   * If you want to flash a device you should set the port where to talk to your device at `Serial flasher config ---> Default serial port`, e.g. `COM4` on Windows (check ports using `devmgmt.msc` to find the correct one).
+   * Choose _Save_ first, then _Exit_ after you edited properties.
    * You can also do it later running `make menuconfig` to get back to this menu.
 
 
