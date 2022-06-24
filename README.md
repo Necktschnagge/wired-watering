@@ -1,4 +1,17 @@
-# Simple HTTPD Server Example
+
+## HowTo compile esp-device
+1. Set-up build environment like [described in Wiki](https://github.com/Necktschnagge/wired-watering/wiki/Toolchain-SETUP-(ESP8266)-(on-Windows)).
+2. start your shell `C:\msys32\mingw32.exe`.
+3. `git clone <this_repository>`
+4. `cd <path_to_repository>/esp-device`
+5. `make -j17 all`
+   * You might get propmted with so called _MENUCONFIG_.
+   * You can just exit it.
+   * If you want to flash a device you should set the port where to talk to your device at `Serial flasher config ---> Default serial port`.
+   * You can also do it later running `make menuconfig` to get back to this menu.
+
+
+## to be replaced: Simple HTTPD Server Example
 
 The Example consists of HTTPD server demo with demostration of URI handling :
     1. URI \hello for GET command returns "Hello World!" message
