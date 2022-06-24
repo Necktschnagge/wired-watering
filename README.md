@@ -1,6 +1,9 @@
 
 ## HowTo compile esp-device
 1. Set-up build environment like [described in Wiki](https://github.com/Necktschnagge/wired-watering/wiki/Toolchain-SETUP-(ESP8266)-(on-Windows)).
+   * if you wan to use cmake, you need to pu two paths into system path var: path to xtensa compiler, path to mingw, which is also part of msys2 (look at atab to find out -> update the wiki) ***TODO*** it may also work if there is some other mingw installation which is used 
+   check notepadd++ entry on atab: first cmake generation might fail, maybe rerun, it may say please execute some python pip install. Then execute it from powershell like cmake tells.
+   Where you might use python2 with make, cmake may decide to use a python3 if it finds it. so just install the python packages for the other python version too.
 2. start your shell `C:\msys32\mingw32.exe`.
 3. `git clone <this_repository>`
 4. `cd <path_to_repository>/esp-device`
@@ -11,7 +14,11 @@
    * If you want to flash a device you should set the port where to talk to your device at `Serial flasher config ---> Default serial port`, e.g. `COM4` on Windows (check ports using `devmgmt.msc` to find the correct one).
    * Choose _Save_ first, then _Exit_ after you edited properties.
    * You can also do it later running `make menuconfig` to get back to this menu.
+   
+make flash, flashes all (run once)
+make appflash, flashes only your application (run on updates).
 
+make flash and make monitor in one go, type make flash monitor
 
 ## to be replaced: Simple HTTPD Server Example
 
