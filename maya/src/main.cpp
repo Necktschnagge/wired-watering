@@ -152,7 +152,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	//pumpe an
 	send_mayson(0, 0, 0);
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
 
@@ -203,7 +203,6 @@ void watering(const int64_t& seconds_since_epoch) {
 			60 * 5
 		);
 		// GURK 40 : TOMA  20  : EMÖHR 45 : BOHN  45 // 60 (whole time)
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
 	else {
 		watering_helper(
@@ -218,10 +217,20 @@ void watering(const int64_t& seconds_since_epoch) {
 			JAMES_GURKE_ERBSE,
 			60 * 20
 		);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
+
+	// valves off:
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+	watering_helper(0, 30); // wait for pressure reached
 	//pumpe aus
 	send_mayson(0);
+
+	// let capacitor run dry:
+	watering_helper(
+		JAMES_GURKE_ERBSE,
+		60 * 3
+	);
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 }
 
 #if false
