@@ -1,0 +1,18 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   3be8830..2662145  check-my-ip-address -> origin/check-my-ip-address
+Aktualisiere 4a7b395..7df90bc
+Fast-forward
+ maya/src/main.cpp | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+Pulling maya-productive successfully!
+Last commit is:   7df90bc2a77cb08f8f3ca6351084ac1135af42e5
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================
