@@ -5,6 +5,7 @@
 3. `git clone <this_repository>`
 4. `cd <path_to_repository>/esp-device`
 5. `make -j17 all`
+   * `-j17` tells the build system to compile with up to 17 parallel threads. Choose the appropriate value for your system.
    * You might get propmted with so called _MENUCONFIG_.
    * You can just exit it.
    * If you want to flash a device you should set the port where to talk to your device at `Serial flasher config ---> Default serial port`, e.g. `COM4` on Windows (check ports using `devmgmt.msc` to find the correct one).
