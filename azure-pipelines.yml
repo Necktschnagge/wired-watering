@@ -54,7 +54,7 @@ stages:
        - script: export PATH="$PATH:/home/vsts/work/esp/xtensa-lx106-elf/bin"
          displayName: "path var"
          condition: succeeded()
-       - script: ls ls /home/vsts/work/esp/xtensa-lx106-elf/bin
+       - script: ls /home/vsts/work/esp/xtensa-lx106-elf/bin
          displayName: "ls /home/vsts/work/esp/xtensa-lx106-elf/bin"
          condition: succeeded()
        - script: echo $PATH
