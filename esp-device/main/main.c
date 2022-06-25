@@ -234,7 +234,7 @@ static void connect_handler(void* arg, esp_event_base_t event_base,
 }
 
 /* FreeRTOS event group to signal when we are connected*/
-static EventGroupHandle_t s_wifi_event_group;
+static EventGroupHandle_t s_wifi_event_group; //check if it is needed anymore #### ? TODO
 
 /* The event group allows multiple bits for each event, but we only care about two events:
  * - we are connected to the AP with an IP
@@ -252,16 +252,11 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         wifi_connected = false;
-        //if (retry_delay_s < WIFI_CONNECT_MAX_RETRY) {
         ESP_LOGI(TAG, "Wait %i seconds before trying to reconnect Wifi.", retry_delay_s);
         vTaskDelay(retry_delay_s * 1000 / portTICK_RATE_MS);
             esp_wifi_connect();
             retry_delay_s = (retry_delay_s * 49 + 60 * 2) / 50; // stabilizes on 71
             ESP_LOGI(TAG, "retry to connect to the AP");
-        //}
-        //else {
-        //    xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
-        //}
         ESP_LOGI(TAG, "connect to the AP fail");
         //##### handle the case where it does not reconnect anymore !!!
     }
