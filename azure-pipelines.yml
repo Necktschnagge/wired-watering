@@ -51,12 +51,20 @@ stages:
        - script: ls -la esp/xtensa*/bin
          displayName: "ls -la esp/xtensa*/bin"
          condition: succeeded()
-       - script: export PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
+       - script: export PATH="$PATH:/home/vsts/work/esp/xtensa-lx106-elf/bin"
          displayName: "path var"
          condition: succeeded()
        - script: echo $PATH
          displayName: "check path var"
          condition: succeeded()
+       - script: xtensa-lx106-elf-c++ --version
+         displayName: "check path var"
+         condition: succeeded()
+       - script: | 
+          export PATH="$PATH:/home/vsts/work/esp/xtensa-lx106-elf/bin"
+          xtensa-lx106-elf-c++ --version
+         displayName: "check path var"
+         condition: true
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
