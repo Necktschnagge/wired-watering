@@ -12,7 +12,7 @@ trigger:
     - artifacts
 
 stages:
- - stage: $(esp_project_name)
+ - stage: ESP8266-device
  
    jobs:
     - job: build
@@ -32,7 +32,7 @@ stages:
          displayName: "check Java install directory"
          condition: succeeded()
 
- - stage: $(project_name)
+ - stage: Maya-Commander
    
    dependsOn: [] #build
    
