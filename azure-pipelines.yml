@@ -33,6 +33,9 @@ stages:
        - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
          displayName: "Install the required packages for $(esp_project_name)"
          condition: succeeded()
+       - script: ls -la
+         displayName: "ls -la"
+         condition: succeeded()
        - script: wget -o xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Download xtensa-elf-gcc for linux amd64"
          condition: succeeded()
