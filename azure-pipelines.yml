@@ -72,6 +72,9 @@ stages:
           xtensa-lx106-elf-c++ --version
          displayName: "check path var"
          condition: true
+       - script: xtensa-lx106-elf-c++ --version
+         displayName: "Check xtensa available"
+         condition: succeeded()
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
