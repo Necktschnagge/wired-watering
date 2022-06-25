@@ -48,6 +48,9 @@ stages:
           tar -xzf ../xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Unpack tar.gz archive"
          condition: succeeded()
+       - script: ls -la esp/xtensa*/
+         displayName: "ls -la esp/xtensa*/"
+         condition: succeeded()
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
