@@ -36,45 +36,36 @@ stages:
        - script: ls -la
          displayName: "ls -la"
          condition: succeeded()
-       - script: wget -O xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+       - script: mkdir -p /home/esp
+         displayName: "Prepare esp directory"
+         condition: succeeded()
+       - script: wget -O /home/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Download xtensa-elf-gcc for linux amd64"
          condition: succeeded()
-       - script: ls -la
-         displayName: "ls -la"
-         condition: succeeded()
+#       - script: ls -la
+#         displayName: "ls -la"
+#         condition: succeeded()
        - script: |
-          mkdir -p esp
-          cd esp
-          tar -xzf ../xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+          #mkdir -p /home/esp
+          cd /home/esp
+          tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Unpack tar.gz archive"
          condition: succeeded()
-       - script: ls -la esp/xtensa*/bin
-         displayName: "ls -la esp/xtensa*/bin"
-         condition: succeeded()
-       - script: export PATH="$PATH:/home/vsts/work/_temp/esp/xtensa-lx106-elf/bin"
-         displayName: "path var"
-         condition: succeeded()
-       - script: pwd
-         displayName: "ls .. .. .."
-         condition: true
+#       - script: ls -la esp/xtensa*/bin
+#         displayName: "ls -la esp/xtensa*/bin"
+#         condition: succeeded()
+#       - script: export PATH="$PATH:/home/vsts/work/_temp/esp/xtensa-lx106-elf/bin"
+#         displayName: "path var"
+#         condition: succeeded()
+#       - script: pwd
+#         displayName: "show current dir"
+#         condition: true
        - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/work/1/s/esp/xtensa-lx106-elf/bin"
-         displayName: "set var"
-         condition: true
-       - script: echo $PATH
-         displayName: "check path var"
+         displayName: "Update PATH variable"
          condition: succeeded()
-       - script: xtensa-lx106-elf-c++ --version
-         displayName: "check path var"
+       - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
+         displayName: "Check for xtensa c++ compiler available"
          condition: succeeded()
-       - script: | 
-          export PATH="$PATH:/home/vsts/work/1/s/esp/xtensa-lx106-elf/bin"
-          echo $PATH
-          xtensa-lx106-elf-c++ --version
-         displayName: "check path var"
-         condition: true
-       - script: xtensa-lx106-elf-c++ --version
-         displayName: "Check xtensa available"
-         condition: true
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
@@ -93,6 +84,12 @@ stages:
       # - script: dir maya\build\Debug\ && cd maya && .\build\Debug\TEST-$(project_name).exe
       #   displayName: "Run Tests on Windows"
       #   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+#       - script: | 
+#          export PATH="$PATH:/home/vsts/work/1/s/esp/xtensa-lx106-elf/bin"
+#          echo $PATH
+#          xtensa-lx106-elf-c++ --version
+#         displayName: "check path var"
+#         condition: true
 
  - stage: Maya_Commander
    
