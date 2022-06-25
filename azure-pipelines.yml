@@ -62,7 +62,7 @@ pool:
 #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
 
 steps:
- - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python python-serial
+ - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python-serial
    displayName: "Install the required packages for $(esp_project_name)"
    condition: succeeded()
  - script: wget -o xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
