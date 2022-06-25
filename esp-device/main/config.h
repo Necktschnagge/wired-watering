@@ -3,7 +3,8 @@
 #include "secret_config.h"
 #define WIFI_CONNECT_MAX_RETRY 250
 
-#define IP_CLIENT_CONFIG IP4_ADDR(&sta_ip.ip, 192, 168, 1, 10); \
+#define IP_CLIENT_CONFIG \
+IP4_ADDR(&sta_ip.ip, 192, 168, 1, 10); \
 IP4_ADDR(&sta_ip.gw, 192, 168, 1, 1); \
 IP4_ADDR(&sta_ip.netmask, 255, 255, 255, 0);
 
