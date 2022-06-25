@@ -74,7 +74,7 @@ stages:
          condition: true
        - script: xtensa-lx106-elf-c++ --version
          displayName: "Check xtensa available"
-         condition: succeeded()
+         condition: true
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
