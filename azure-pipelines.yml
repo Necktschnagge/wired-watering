@@ -30,36 +30,20 @@ stages:
       condition: true
       timeoutInMinutes: 50
       steps:
+       - script: cd ~ && pwd
+         displayName: "debug"
+         condition: succeeded()
        - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
          displayName: "Install the required packages for $(esp_project_name)"
          condition: succeeded()
-#       - script: ls -la
-#         displayName: "ls -la"
-#         condition: succeeded()
-#       - script: mkdir -p /home/esp
-#         displayName: "Prepare esp directory"
-#         condition: succeeded()
        - script: mkdir -p /home/vsts/esp && wget -O /home/vsts/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Download xtensa-elf-gcc for linux amd64"
          condition: succeeded()
-#       - script: ls -la
-#         displayName: "ls -la"
-#         condition: succeeded()
        - script: |
-          #mkdir -p /home/esp
           cd /home/vsts/esp
           tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Unpack tar.gz archive"
          condition: succeeded()
-#       - script: ls -la esp/xtensa*/bin
-#         displayName: "ls -la esp/xtensa*/bin"
-#         condition: succeeded()
-#       - script: export PATH="$PATH:/home/vsts/work/_temp/esp/xtensa-lx106-elf/bin"
-#         displayName: "path var"
-#         condition: succeeded()
-#       - script: pwd
-#         displayName: "show current dir"
-#         condition: true
        - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/esp/xtensa-lx106-elf/bin"
          displayName: "Update PATH variable"
          condition: succeeded()
@@ -84,19 +68,13 @@ stages:
       # - script: dir maya\build\Debug\ && cd maya && .\build\Debug\TEST-$(project_name).exe
       #   displayName: "Run Tests on Windows"
       #   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
-#       - script: | 
-#          export PATH="$PATH:/home/vsts/work/1/s/esp/xtensa-lx106-elf/bin"
-#          echo $PATH
-#          xtensa-lx106-elf-c++ --version
-#         displayName: "check path var"
-#         condition: true
 
  - stage: Maya_Commander
    
    dependsOn: [] #build
    
    jobs:
-    - job: analyze_multiple_json_configs
+    - job: build_maya
       strategy:
         matrix:
           ubuntu_20_04:
@@ -105,7 +83,7 @@ stages:
       pool:
         vmImage: $(os_image)
         name: $(agent_pool)
-      condition: eq(variables['Build.Reason'], 'IndividualCI')
+      #condition: eq(variables['Build.Reason'], 'IndividualCI')
       timeoutInMinutes: 180
       steps:      
        - script: ls -la
