@@ -77,7 +77,7 @@ stages:
    dependsOn: [] #build
    
    jobs:
-    - job: build_maya
+    - job: build
       strategy:
         matrix:
           ubuntu_20_04:
