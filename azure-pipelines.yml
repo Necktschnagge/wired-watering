@@ -57,7 +57,7 @@ stages:
        - script: ls /home/vsts/work/_temp/esp/xtensa-lx106-elf/bin /home/vsts/work/_temp/esp/xtensa-lx106-elf /home/vsts/work/_temp/esp /home/vsts/work/_temp /home/vsts/work /home/vsts /home
          displayName: "ls /home/vsts/work/esp/xtensa-lx106-elf/bin"
          condition: succeeded()
-       - script: ls . .. ../.. ../../..
+       - script: pwd
          displayName: "ls .. .. .."
          condition: true
        - script: echo $PATH
