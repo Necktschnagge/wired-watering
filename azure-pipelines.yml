@@ -36,11 +36,11 @@ stages:
        - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
          displayName: "Install the required packages for $(esp_project_name)"
          condition: succeeded()
-       - script: mkdir -p /home/vsts/esp && wget -O /home/vsts/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+       - script: mkdir -p ~/esp && wget -O ~/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Download xtensa-elf-gcc for linux amd64"
          condition: succeeded()
        - script: |
-          cd /home/vsts/esp
+          cd ~/esp
           tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Unpack tar.gz archive"
          condition: succeeded()
@@ -49,6 +49,9 @@ stages:
          condition: succeeded()
        - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
          displayName: "Check for xtensa c++ compiler available"
+         condition: succeeded()
+       - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
+         displayName: "Clone ESP8266 RTOS SDK"
          condition: succeeded()
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
