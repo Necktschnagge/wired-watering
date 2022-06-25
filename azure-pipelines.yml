@@ -48,8 +48,14 @@ stages:
           tar -xzf ../xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Unpack tar.gz archive"
          condition: succeeded()
-       - script: ls -la esp/xtensa*/
-         displayName: "ls -la esp/xtensa*/"
+       - script: ls -la esp/xtensa*/bin
+         displayName: "ls -la esp/xtensa*/bin"
+         condition: succeeded()
+       - script: export PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
+         displayName: "path var"
+         condition: succeeded()
+       - script: echo $PATH
+         displayName: "check path var"
          condition: succeeded()
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
