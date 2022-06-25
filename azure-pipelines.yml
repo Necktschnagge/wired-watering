@@ -36,7 +36,7 @@ stages:
        - script: ls -la
          displayName: "ls -la"
          condition: succeeded()
-       - script: wget -o xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+       - script: wget -O xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
          displayName: "Download xtensa-elf-gcc for linux amd64"
          condition: succeeded()
        - script: ls -la
