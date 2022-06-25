@@ -59,7 +59,7 @@ stages:
          condition: succeeded()
        - script: ls . .. ../.. ../../..
          displayName: "ls .. .. .."
-         condition: succeeded()
+         condition: true
        - script: echo $PATH
          displayName: "check path var"
          condition: succeeded()
