@@ -11,81 +11,45 @@ trigger:
     exclude:
     - artifacts
 
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-strategy:
-  matrix:
-    ubuntu_22_04:
-      imageName: 'ubuntu-22.04'
-      the_name: 'Azure Pipelines'
+stages:
+ - stage: $(esp_project_name)
+ 
+   jobs:
+    - job: build
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            imageName: 'ubuntu-22.04'
+            the_name: 'Azure Pipelines'
+      pool:
+        vmImage: $(image_name)
+        name: $(agent_pool_name)
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: ls /usr/lib/jvm/
+         displayName: "check Java install directory"
+         condition: succeeded()
 
-#    ubuntu_20_04_gcc_9:
-#      imageName: 'ubuntu-20.04'
-#      the_name: 'Azure Pipelines'
-#
-#    ubuntu_18_04_gcc_8:
-#      imageName: 'ubuntu-18.04'
-#      the_name: 'Azure Pipelines'
-#
-#    mac_12:
-#      imageName: 'macos-12'
-#      the_name: 'Azure Pipelines'
-#    mac_11:
-#      imageName: 'macos-11'
-#      the_name: 'Azure Pipelines'
-#    mac_10_15:
-#      imageName: 'macos-10.15'
-#      the_name: 'Azure Pipelines'
-#
-#    windows_2022:
-#      imageName: 'windows-2022'
-#      the_name: 'Azure Pipelines'
-#
-#    windows_2019:
-#      imageName: 'windows-2019'
-#      the_name: 'Azure Pipelines'
-    
-#    raspberry_pi:
-#      the_name: 'Default'
-
-
-pool:
-  vmImage: $(imageName)
-  name: $(the_name)
-
-
-# cheat - sheet:
-#  condition: eq( variables['Agent.OSArchitecture'], 'ARM')
-#   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
-#   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
-
-steps:
- - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python-serial
-   displayName: "Install the required packages for $(esp_project_name)"
-   condition: succeeded()
- - script: wget -o xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
-   displayName: "Download xtensa-elf-gcc for linux amd64"
-   condition: succeeded()
- - script: ls -la
-   displayName: "ls -la"
-   condition: succeeded()
- - script: git submodule update --init --recursive
-   displayName: "Init Git Submodules"
-   condition: succeeded()
-# - script: cd maya && cmake -S . -B ./build/
-#   displayName: "CMake: Create Project"
-#   condition: succeeded()
-# - script: cd maya/script && cb-cmd-build.bat
-#   displayName: "CMake: Compile and Link (windows)"
-#   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
-# - script: cd maya/script && ./ub-unix-build.sh 
-#   displayName: "CMake: Compile and Link (unix)"
-#   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' ))
-# - script: cd maya && ./build/test/TEST-$(project_name)
-#   displayName: "Run Tests on Linux / Mac OS"
-#   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
-# - script: dir maya\build\Debug\ && cd maya && .\build\Debug\TEST-$(project_name).exe
-#   displayName: "Run Tests on Windows"
-#   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+ - stage: $(project_name)
+   
+   dependsOn: [] #build
+   
+   jobs:
+    - job: analyze_multiple_json_configs
+      strategy:
+        matrix:
+          ubuntu_20_04:
+            image_name: 'ubuntu-20.04'
+            agent_pool_name: 'Azure Pipelines'
+      pool:
+        vmImage: $(image_name)
+        name: $(agent_pool_name)
+      condition: eq(variables['Build.Reason'], 'IndividualCI')
+      timeoutInMinutes: 180
+      steps:      
+       - script: ls -la
+         displayName: "test"
+         condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))         
+         
