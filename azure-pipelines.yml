@@ -60,6 +60,9 @@ stages:
        - script: pwd
          displayName: "ls .. .. .."
          condition: true
+       - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/work/1/s/esp/xtensa-lx106-elf/bin"
+         displayName: "set var"
+         condition: true
        - script: echo $PATH
          displayName: "check path var"
          condition: succeeded()
