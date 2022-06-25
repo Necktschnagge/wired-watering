@@ -62,6 +62,7 @@ stages:
          condition: succeeded()
        - script: | 
           export PATH="$PATH:/home/vsts/work/esp/xtensa-lx106-elf/bin"
+          echo $PATH
           xtensa-lx106-elf-c++ --version
          displayName: "check path var"
          condition: true
