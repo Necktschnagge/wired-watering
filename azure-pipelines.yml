@@ -13,17 +13,19 @@ trigger:
 
 stages:
  - stage: ESP8266_device
- 
+   
+   dependsOn: [] #build
+   
    jobs:
     - job: build
       strategy:
         matrix:
           ubuntu_22_04:
-            imageName: 'ubuntu-22.04'
-            the_name: 'Azure Pipelines'
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
       pool:
-        vmImage: $(image_name)
-        name: $(agent_pool_name)
+        vmImage: $(os_image)
+        name: $(agent_pool)
       
       condition: true
       timeoutInMinutes: 50
@@ -41,11 +43,11 @@ stages:
       strategy:
         matrix:
           ubuntu_20_04:
-            image_name: 'ubuntu-20.04'
-            agent_pool_name: 'Azure Pipelines'
+            os_image: 'ubuntu-20.04'
+            agent_pool: 'Azure Pipelines'
       pool:
-        vmImage: $(image_name)
-        name: $(agent_pool_name)
+        vmImage: $(os_image)
+        name: $(agent_pool)
       condition: eq(variables['Build.Reason'], 'IndividualCI')
       timeoutInMinutes: 180
       steps:      
