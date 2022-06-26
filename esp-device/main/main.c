@@ -25,6 +25,7 @@
 
 
 #include "config.h"
+#include "gpio_definitions_james.h"
 #include "server_c_connector.h"
 
 static const char* string_on = "on";
@@ -133,14 +134,14 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 ESP_LOGI(TAG, "Keep / set system =%s", pump_system ? string_on : string_off);
             }
 #endif // PUMP_RELAY_MAYSON
-#ifdef VALVE_SERVER_JAMES
+#ifdef ANY_VALVE_SERVER
             if (httpd_query_key_value(buf, "valves", param, sizeof(param)) == ESP_OK) {
                 const char* end;
                 unsigned long valve_value = strtoul(param, &end, 10);
                 global_valve_state = valve_value;
                 ESP_LOGI(TAG, "got valves =%s", param);
             }
-#endif // VALVE_SERVER_JAMES
+#endif // ANY_VALVE_SERVER
 
 
 
@@ -378,33 +379,6 @@ void connect_wifi(void) {
 #define GPIO_OUTPUT_LANES ((1ULL<<PIN_D1) | (1ULL<<PIN_D2) | (1ULL<<PIN_D0) | (1ULL<<PIN_D6) | (1ULL<<PIN_D7))
 
 #endif // PUMP_RELAY_MAYSON
-
-#ifdef VALVE_SERVER_JAMES
-// ESP_TO_ATM_SYNC
-#define PIN_D1 5
-#define ESP_TO_ATM_SYNC PIN_D1
-
-// ESP_TO_ATM_CLOCK
-#define PIN_D2 4
-#define ESP_TO_ATM_CLOCK PIN_D2
-
-// ESP_TO_ATM_DATA
-#define PIN_D7 13
-#define ESP_TO_ATM_DATA PIN_D7
-
-// ATM_TO_ESP_DATA // blue LED on wifi board is on if pulled low.
-#define PIN_D4 2
-#define ATM_TO_ESP_DATA PIN_D4
-
-// ATM_TO_ESP_CLOCK
-#define PIN_D3 0
-#define ATM_TO_ESP_CLOCK PIN_D3
-
-#define GPIO_INPUT_LANES ((1ULL<<ATM_TO_ESP_DATA) | (1ULL<<ATM_TO_ESP_CLOCK))
-
-#define GPIO_OUTPUT_LANES ((1ULL<<ESP_TO_ATM_DATA) | (1ULL<<ESP_TO_ATM_CLOCK) | (1ULL<<ESP_TO_ATM_SYNC))
-#endif // VALVE_SERVER_JAMES
-
 
 #ifdef VALVE_SERVER_JAMES
 
