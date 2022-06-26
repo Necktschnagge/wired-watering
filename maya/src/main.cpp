@@ -324,6 +324,19 @@ int main(int argc, char** argv) {
 	auto minutes_since_epoch = (seconds_since_epoch / 60);
 	auto minute_of_the_day = (seconds_since_epoch / 60) % (24 * 60);
 
+	{
+		int64_t start{ 1656238630 };
+		if (seconds_since_epoch > start && seconds_since_epoch < start + 20 * 60) {
+			standard_logger()->warn("hack watering on");
+			send_mayson(1);
+		}
+
+		if (seconds_since_epoch > start + 30 * 60 && seconds_since_epoch < start + 30*60 + 25 * 60) {
+			standard_logger()->warn("hack watering off");
+			send_mayson(0);
+		}
+	}
+
 	int64_t previous_timestamp = 0;
 	{
 		std::ifstream is;
