@@ -335,6 +335,12 @@ int main(int argc, char** argv) {
 			standard_logger()->warn("hack watering off");
 			send_mayson(0);
 		}
+
+		if (seconds_since_epoch < 1656274078 + 60 * 60 *3){
+			standard_logger()->warn("hack watering off late night");
+			watering_helper(0, 0);
+			send_mayson(0, 1, 0);
+		}
 	}
 
 	int64_t previous_timestamp = 0;
