@@ -327,10 +327,12 @@ int main(int argc, char** argv) {
 	{
 		int64_t start{ 1656238630 };
 		if (seconds_since_epoch > start && seconds_since_epoch < start + 20 * 60) {
+			standard_logger()->warn("hack watering on");
 			send_mayson(1);
 		}
 
 		if (seconds_since_epoch > start + 30 * 60 && seconds_since_epoch < start + 30*60 + 25 * 60) {
+			standard_logger()->warn("hack watering off");
 			send_mayson(0);
 		}
 	}
