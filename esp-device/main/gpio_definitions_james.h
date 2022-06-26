@@ -1,6 +1,9 @@
 #include "config.h"
 
 #ifdef VALVE_SERVER_JAMES
+
+
+
 // ESP_TO_ATM_SYNC
 #define PIN_D1 5
 #define ESP_TO_ATM_SYNC PIN_D1
@@ -21,9 +24,14 @@
 #define PIN_D3 0
 #define ATM_TO_ESP_CLOCK PIN_D3
 
+
+
 #define GPIO_INPUT_LANES ((1ULL<<ATM_TO_ESP_DATA) | (1ULL<<ATM_TO_ESP_CLOCK))
 
 #define GPIO_OUTPUT_LANES ((1ULL<<ESP_TO_ATM_DATA) | (1ULL<<ESP_TO_ATM_CLOCK) | (1ULL<<ESP_TO_ATM_SYNC))
+
+
+
 #endif // VALVE_SERVER_JAMES
 
 

@@ -2,11 +2,14 @@
 
 #include "secret_config.h"
 
-
-//#define PUMP_RELAY_MAYSON
+/*
+#define VALVE_SERVER_LUCAS
+*/
+#define VALVE_SERVER_FELIX
+/*
+#define PUMP_RELAY_MAYSON
 #define VALVE_SERVER_JAMES
-//#define VALVE_SERVER_LUCAS
-//#define VALVE_SERVER_FELIX
+*/
 
 #ifdef PUMP_RELAY_MAYSON
 
