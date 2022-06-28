@@ -36,7 +36,6 @@
 [[maybe_unused]] static constexpr uint8_t JAMES_TOMATE_ERDBEERE{ JAMES_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN_UNKRAUT{ JAMES_VALVE_3 };
 
-[[maybe_unused]] static constexpr uint8_t ERROR_WHEN_USED_TAKE_LUCAS_KAROTTE{ 0b00001000 };
 [[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
 [[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
 
@@ -134,8 +133,7 @@ void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log 
 	}
 }
 
-#if false
-void send_james(uint8_t valves) {
+[[deprecated]] void send_james(uint8_t valves) {
 	std::cout << "send valves james\n";
 	std::string url{ "http://" };
 	url += IP_ADDRESS_VALVE_SERVER_JAMES;
@@ -153,7 +151,6 @@ void send_james(uint8_t valves) {
 	std::cout << r.status_code << std::endl;
 
 }
-#endif
 
 void watering_helper(const std::string& ip_address, uint8_t valves, int64_t dur_sec) {
 	send_valves(ip_address, valves);
