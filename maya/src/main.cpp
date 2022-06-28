@@ -153,7 +153,7 @@ void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log 
 
 }
 
-void watering_helper(const std::string& ip_address, uint8_t valves, int64_t dur_sec) {
+void set_valves_and_wait_for(const std::string& ip_address, uint8_t valves, int64_t dur_sec) {
 	send_valves(ip_address, valves);
 	auto start_time = get_seconds_since_epoch();
 
@@ -178,21 +178,21 @@ void watering(const int64_t& seconds_since_epoch) {
 
 		// GURK  0 : TOMA  0  : ERDBE  0 : BOHN  0 // 0
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_GURKE_ERBSE | JAMES_TOMATE_ERDBEERE | JAMES_BOHNEN_UNKRAUT,
 			60 * 5
 		);
 		// GURK  5 : TOMA  5  : ERDBE  0 : BOHN  5 // 5
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_GURKE_ERBSE | JAMES_BOHNEN_UNKRAUT,
 			60 * 15
 		);
 		// GURK 20 : TOMA  5  : ERDBE 15 : BOHN  20 // 20
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_TOMATE_ERDBEERE,
 			60 * 5
@@ -201,7 +201,7 @@ void watering(const int64_t& seconds_since_epoch) {
 
 		// restart pump
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE,
 			1); // let water capacitor run dry while pump off
@@ -212,28 +212,28 @@ void watering(const int64_t& seconds_since_epoch) {
 
 		// GURK 20 : TOMA  10  : ERDBE 20 : BOHN  20 // 25
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_GURKE_ERBSE | JAMES_BOHNEN_UNKRAUT,
 			60 * 10
 		);
 		// GURK 30 : TOMA  10  : ERDBE 20 : BOHN  30 // 35
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE,
 			60 * 5
 		);
 		// GURK 35 : TOMA  15  : ERDBE 25 : BOHN  30 // 40
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_BOHNEN_UNKRAUT,
 			60 * 15
 		);
 		// GURK 35 : TOMA  15  : ERDBE 40 : BOHN  45 // 55
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_TOMATE_ERDBEERE | JAMES_GURKE_ERBSE,
 			60 * 5
@@ -242,7 +242,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	}
 	else {
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_KAROTTEN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_GURKE_ERBSE,
 			60 * 20
@@ -250,14 +250,14 @@ void watering(const int64_t& seconds_since_epoch) {
 		
 		// wait for pressure reached
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		watering_helper(IP_ADDRESS_VALVE_SERVER_JAMES, 0, 30);
+		set_valves_and_wait_for(IP_ADDRESS_VALVE_SERVER_JAMES, 0, 30);
 		
 		send_mayson(0); // restart pump
 		std::this_thread::sleep_for(std::chrono::seconds(5 * 60)); // ... minutes pause
 		send_mayson(1);
 
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_KAROTTEN);
-		watering_helper(
+		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_GURKE_ERBSE,
 			60 * 20
@@ -267,12 +267,12 @@ void watering(const int64_t& seconds_since_epoch) {
 	// valves off:
 	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
-	watering_helper(IP_ADDRESS_VALVE_SERVER_JAMES, 0, 30); // wait for pressure reached
+	set_valves_and_wait_for(IP_ADDRESS_VALVE_SERVER_JAMES, 0, 30); // wait for pressure reached
 	//pumpe aus
 	send_mayson(0);
 
 	// let capacitor run dry:
-	watering_helper(
+	set_valves_and_wait_for(
 		IP_ADDRESS_VALVE_SERVER_JAMES,
 		JAMES_GURKE_ERBSE,
 		60 * 3
