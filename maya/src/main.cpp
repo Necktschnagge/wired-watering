@@ -12,33 +12,33 @@
 #include <optional>
 
 
-static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
+[[maybe_unused]] static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
 
-static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
-static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
-static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
 
-static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
+[[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 
-static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
-static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
-static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
-static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
+[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
+[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
+[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
+[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
 
-static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
-static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
-static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
+[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
+[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
+[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
 
-static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
-static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
+[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
+[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
-static constexpr uint8_t JAMES_GURKE_ERBSE{ JAMES_VALVE_1 };
-static constexpr uint8_t JAMES_TOMATE_ERDBEERE{ JAMES_VALVE_2 };
-static constexpr uint8_t JAMES_BOHNEN_UNKRAUT{ JAMES_VALVE_3 };
+[[maybe_unused]] static constexpr uint8_t JAMES_GURKE_ERBSE{ JAMES_VALVE_1 };
+[[maybe_unused]] static constexpr uint8_t JAMES_TOMATE_ERDBEERE{ JAMES_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN_UNKRAUT{ JAMES_VALVE_3 };
 
-static constexpr uint8_t ERROR_WHEN_USED_TAKE_LUCAS_KAROTTE{ 0b00001000 };
-static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
-static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t ERROR_WHEN_USED_TAKE_LUCAS_KAROTTE{ 0b00001000 };
+[[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
+[[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
 
 
 //static const std::string 
