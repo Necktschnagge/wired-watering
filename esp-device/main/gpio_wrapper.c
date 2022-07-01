@@ -9,7 +9,7 @@
 #include "config.h"
 
 // libraries
-#include "gpio.h"
+#include "driver/gpio.h"
 
 void gpio_init(void) {
 
