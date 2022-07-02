@@ -57,6 +57,8 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 				echo "${run_counter}" | sudo -u mayadm tee ${run_counter_file_path}
 		echo "> date"
 				date
+		echo "> dig +short txt ch whoami.cloudflare @1.0.0.1" #https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+				dig +short txt ch whoami.cloudflare @1.0.0.1
 		echo "> ./maya_connect_internet_usb0.sh"
 				./maya_connect_internet_usb0.sh
 		echo "====================================================================================================="
