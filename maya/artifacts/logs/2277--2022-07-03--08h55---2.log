@@ -1,0 +1,14 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   c096fc0f..ae87f996  rolling-update-extrawatering-strawberries -> origin/rolling-update-extrawatering-strawberries
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   c24b793c80ecb5709102beadc9774f67b0d48b72
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================
