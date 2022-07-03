@@ -53,6 +53,9 @@ stages:
        - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
          displayName: "Clone ESP8266 RTOS SDK"
          condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=IDF_PATH;]/home/vsts/esp/ESP8266_RTOS_SDK"
+         displayName: "Set IDF_PATH variable"
+         condition: succeeded()
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
