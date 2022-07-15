@@ -228,37 +228,6 @@ stages:
    
    dependsOn: [] #build
    
-   strategy:
-     matrix:
-       ubuntu_22_04:
-         os_image: 'ubuntu-22.04'
-         agent_pool: 'Azure Pipelines'
-   
-       ubuntu_20_04_gcc_9:
-         os_image: 'ubuntu-20.04'
-         agent_pool: 'Azure Pipelines'
-   
-       ubuntu_18_04_gcc_8:
-         os_image: 'ubuntu-18.04'
-         agent_pool: 'Azure Pipelines'
-   
-       mac_12:
-         os_image: 'macos-12'
-         agent_pool: 'Azure Pipelines'
-       mac_11:
-         os_image: 'macos-11'
-         agent_pool: 'Azure Pipelines'
-       mac_10_15:
-         os_image: 'macos-10.15'
-         agent_pool: 'Azure Pipelines'
-   
-       windows_2022:
-         os_image: 'windows-2022'
-         agent_pool: 'Azure Pipelines'
-   
-       windows_2019:
-         os_image: 'windows-2019'
-         agent_pool: 'Azure Pipelines'
 
 # cheat - sheet:
 #  condition: eq( variables['Agent.OSArchitecture'], 'ARM')
@@ -266,17 +235,46 @@ stages:
 #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
 
    jobs:
+
     - job: build
-#      strategy:
-#        matrix:
-#          ubuntu_20_04:
-#            os_image: 'ubuntu-20.04'
-#            agent_pool: 'Azure Pipelines'
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      
+          ubuntu_20_04_gcc_9:
+            os_image: 'ubuntu-20.04'
+            agent_pool: 'Azure Pipelines'
+      
+          ubuntu_18_04_gcc_8:
+            os_image: 'ubuntu-18.04'
+            agent_pool: 'Azure Pipelines'
+      
+          mac_12:
+            os_image: 'macos-12'
+            agent_pool: 'Azure Pipelines'
+          mac_11:
+            os_image: 'macos-11'
+            agent_pool: 'Azure Pipelines'
+          mac_10_15:
+            os_image: 'macos-10.15'
+            agent_pool: 'Azure Pipelines'
+      
+          windows_2022:
+            os_image: 'windows-2022'
+            agent_pool: 'Azure Pipelines'
+      
+          windows_2019:
+            os_image: 'windows-2019'
+            agent_pool: 'Azure Pipelines'
+
       pool:
         vmImage: $(os_image)
         name: $(agent_pool)
       #condition: eq(variables['Build.Reason'], 'IndividualCI')
       timeoutInMinutes: 180
+
       steps:      
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
