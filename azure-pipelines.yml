@@ -62,7 +62,7 @@ stages:
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
-        - script: ls -la
+       - script: ls -la
          displayName: "debug"
          condition: succeeded()
       # - script: cd maya && cmake -S . -B ./build/
