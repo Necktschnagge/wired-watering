@@ -387,3 +387,11 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,visualstudio
+
+# ESP8266 Toolchain
+
+sdkconfig
+sdkconfig.old
+
+build/
+out/
