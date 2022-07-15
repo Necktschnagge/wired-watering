@@ -1,0 +1,7 @@
+sdkconfig
+sdkconfig.old
+secret_config.h
+
+.vs/
+build/
+out/
