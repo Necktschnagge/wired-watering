@@ -1,0 +1,60 @@
+{
+  "timers": [
+    {
+      "label": "carrot every two days",
+      "valve": {
+        "label": "carrot"
+      }
+    },
+    {
+      "label": "carrot every two days",
+      "valve": { //how to find the valve
+        "valve_station_name": "lucas",
+        "valve_index": 1
+      },
+      "trigger": {
+        "type": "timestamp",
+        "unix_timestamp": 637429346233,
+        "human_timestamp": "2022-08-01+03:05:00",
+      },
+      "repeat": {
+        "interval": "2d+1h+3m+10s", // mo tu we th fr sa su; d h m s
+        "formula": "1d+3h+x(2d)",
+        "formulaXX": "3h+n(7d)+t1(1d)+t_2(3d)+t3(5d)+t4(7d)",
+        "exclude": [
+          {
+            "begin": {
+              "human_timestamp": "2022-08-01+03:05:00"
+            },
+            "end": {
+              "human_timestamp": "2022-08-01+03:05:00"
+            }
+          }
+        ]
+      },
+      "validity": {
+        "valid_for": "2h", // set it such a way that it should be possible to comply with
+        "exceed_tolerance": "1h" // this is only for the algorithm to be able to continue watering after deadline, if the tolerance becomes exceeded too, watering will stop immediately with an error.
+      }
+      "pressure": {
+        "min": 1.7, //bar 
+        "max": 5.0, //bar
+        "rating": {
+          // give some rating for finding optimal pressure
+        }
+      },
+      "elongation": {
+        "factor_min": 1.0,
+        "factor_max": 4.0,
+        "min_continuous_on": "30s",
+        "may_continuous_on": "XXX",
+        // 
+
+      },
+      "duration": "40m",
+      "strategy": "edf", //edf (earliest deadline first), pad+ldf (padding for manual watering) // what was the scheduling strategy for latest possible beginning point?
+
+      "dummy": "dummy"
+    }
+  ]
+}

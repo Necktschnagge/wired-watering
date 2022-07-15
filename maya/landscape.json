@@ -39,7 +39,7 @@
       "enabled": false,
       "valves": [
         {
-          "label": "Karotten",
+          "label": "carrot",
           "valve-type": "messing-12VDC",
           "connector": "3/4-AG",
           "hose": "16mm-transparent"
@@ -79,8 +79,17 @@
       ]
     }
   ],
-  "pump_relay": {
-    "ip_address" : "192.168.1.10"
+  "pump_server": {
+    "ip_address": "192.168.1.10",
+    "name": "mayson",
+    "location": "Werkstatt",
+    "enabled": true,
+    "relays": [
+      {
+        "label": "pump",
+        "relay-type": "Finder 12V DC -- 230V AC 16A"
+      }
+    ]
   }
 }
 
