@@ -25,6 +25,11 @@
 
 
 #include "config.h"
+#include "gpio_definitions_felix.h"
+#include "gpio_definitions_lucas.h"
+#include "gpio_definitions_james.h"
+#include "gpio_definitions_mayson.h"
+#include "gpio_wrapper.h"
 #include "server_c_connector.h"
 
 static const char* string_on = "on";
@@ -37,9 +42,9 @@ static bool pump_manual = false;
 static bool pump_auto = false;
 #endif // PUMP_RELAY_MAYSON
 
-#ifdef VALVE_SERVER_JAMES
+#ifdef ANY_VALVE_SERVER
 static unsigned long global_valve_state = 0;
-#endif // VALVE_SERVER_JAMES
+#endif // ANY_VALVE_SERVER
 
 
 static bool wifi_connected = false;
@@ -133,14 +138,14 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 ESP_LOGI(TAG, "Keep / set system =%s", pump_system ? string_on : string_off);
             }
 #endif // PUMP_RELAY_MAYSON
-#ifdef VALVE_SERVER_JAMES
+#ifdef ANY_VALVE_SERVER
             if (httpd_query_key_value(buf, "valves", param, sizeof(param)) == ESP_OK) {
                 const char* end;
                 unsigned long valve_value = strtoul(param, &end, 10);
                 global_valve_state = valve_value;
                 ESP_LOGI(TAG, "got valves =%s", param);
             }
-#endif // VALVE_SERVER_JAMES
+#endif // ANY_VALVE_SERVER
 
 
 
@@ -156,9 +161,9 @@ esp_err_t status_get_handler(httpd_req_t *req)
      * string passed in user context*/
     //const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
     char resp_str[200] = "";
-#ifdef VALVE_SERVER_JAMES
+#ifdef ANY_VALVE_SERVER
     int okn = c_for_get_set_valve_answer(resp_str, 200);
-#endif // VALVE_SERVER_JAMES
+#endif // ANY_VALVE_SERVER
 #ifdef PUMP_RELAY_MAYSON
     int okn = c_for_get_relay_answer(resp_str, 200);
 #endif // PUMP_RELAY_MAYSON
@@ -353,59 +358,6 @@ void connect_wifi(void) {
     */
 }
 
-#ifdef PUMP_RELAY_MAYSON
-// led auto
-#define PIN_D0 16
-// led system
-#define PIN_D1 5
-// led wifi
-#define PIN_D2 4
-
-// button
-#define PIN_D3 0
-// button
-#define PIN_D4 2
-
-// led: do not use it prevents from boot and flashing when pulled down via led.
-#define PIN_D5 14
-// led manual
-#define PIN_D6 12
-// led pump relay
-#define PIN_D7 13
-
-#define GPIO_INPUT_LANES ((1ULL<<PIN_D3) | (1ULL<<PIN_D4)) 
-
-#define GPIO_OUTPUT_LANES ((1ULL<<PIN_D1) | (1ULL<<PIN_D2) | (1ULL<<PIN_D0) | (1ULL<<PIN_D6) | (1ULL<<PIN_D7))
-
-#endif // PUMP_RELAY_MAYSON
-
-#ifdef VALVE_SERVER_JAMES
-// ESP_TO_ATM_SYNC
-#define PIN_D1 5
-#define ESP_TO_ATM_SYNC PIN_D1
-
-// ESP_TO_ATM_CLOCK
-#define PIN_D2 4
-#define ESP_TO_ATM_CLOCK PIN_D2
-
-// ESP_TO_ATM_DATA
-#define PIN_D7 13
-#define ESP_TO_ATM_DATA PIN_D7
-
-// ATM_TO_ESP_DATA // blue LED on wifi board is on if pulled low.
-#define PIN_D4 2
-#define ATM_TO_ESP_DATA PIN_D4
-
-// ATM_TO_ESP_CLOCK
-#define PIN_D3 0
-#define ATM_TO_ESP_CLOCK PIN_D3
-
-#define GPIO_INPUT_LANES ((1ULL<<ATM_TO_ESP_DATA) | (1ULL<<ATM_TO_ESP_CLOCK))
-
-#define GPIO_OUTPUT_LANES ((1ULL<<ESP_TO_ATM_DATA) | (1ULL<<ESP_TO_ATM_CLOCK) | (1ULL<<ESP_TO_ATM_SYNC))
-#endif // VALVE_SERVER_JAMES
-
-
 #ifdef VALVE_SERVER_JAMES
 
 #define wait_to_not_be_busy vTaskDelay(1) /// otherwise we block other tasks and watchdog kills the whole system -> reboot(?)
@@ -446,37 +398,7 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
 #endif // VALVE_SERVER_JAMES
 
 
-
 void gpio_actor(void) {
-
-    gpio_config_t output_lanes_config;
-    //disable interrupt
-    output_lanes_config.intr_type = GPIO_INTR_DISABLE;
-    //set as output mode
-    output_lanes_config.mode = GPIO_MODE_OUTPUT;
-    //bit mask of the pins that you want to set,e.g.GPIO15/16
-    output_lanes_config.pin_bit_mask = GPIO_OUTPUT_LANES;
-    //disable pull-down mode
-    output_lanes_config.pull_down_en = 0;
-    //disable pull-up mode
-    output_lanes_config.pull_up_en = 0;
-    //configure GPIO with the given settings
-    gpio_config(&output_lanes_config);
-
-    gpio_config_t input_lanes_config;
-    //disable interrupt
-    input_lanes_config.intr_type = GPIO_INTR_DISABLE;
-    //set as input mode
-    input_lanes_config.mode = GPIO_MODE_INPUT;
-    //bit mask of the pins that you want to set,e.g.GPIO15/16
-    input_lanes_config.pin_bit_mask = GPIO_INPUT_LANES;
-    //disable pull-down mode
-    input_lanes_config.pull_down_en = 0;
-    //enable pull-up mode
-    input_lanes_config.pull_up_en = GPIO_PULLUP_ENABLE;
-    //configure GPIO with the given settings
-    gpio_config(&input_lanes_config);
-
 
 #ifdef PUMP_RELAY_MAYSON
 
@@ -581,7 +503,28 @@ again_sync:
 
 #endif // VALVE_SERVER_JAMES
 
+#ifdef VALVE_SERVER_LUCAS
 
+    while (1) {
+        vTaskDelay(1); // do not block for concurrent procedures
+        long valve_output = global_valve_state; // make it interrupt-safe!!!
+        gpio_set_level(LUCAS_VALVE_0, (valve_output >> 0) % 2);
+        gpio_set_level(LUCAS_VALVE_1, (valve_output >> 1) % 2);
+        gpio_set_level(LUCAS_VALVE_2, (valve_output >> 2) % 2);
+    }
+
+#endif // VALVE_SERVER_LUCAS
+
+#ifdef VALVE_SERVER_FELIX
+
+    while (1) {
+        vTaskDelay(1); // do not block for concurrent procedures
+        long valve_output = global_valve_state; // make it interrupt-safe!!!
+        gpio_set_level(FELIX_VALVE_0, (valve_output >> 0) % 2);
+        gpio_set_level(FELIX_VALVE_1, (valve_output >> 1) % 2);
+    }
+
+#endif // VALVE_SERVER_FELIX
 }
 
 void app_main()
@@ -599,6 +542,7 @@ void app_main()
     server = start_webserver();
 
     ESP_LOGI(TAG, "setting / getting gpio permanently...");
+    gpio_init();
     gpio_actor();
 
 }
