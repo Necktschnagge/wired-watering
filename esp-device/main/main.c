@@ -366,12 +366,12 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
     while (count_bits != 0) {
         --count_bits;
         
-        gpio_set_level(ESP_TO_ATM_DATA, data % 2);
+        gpio_set_level(JAMES_ESP_TO_ATM_DATA, data % 2);
         // data set!
         data = data / 2;
-        gpio_set_level(ESP_TO_ATM_CLOCK, 1);
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 1);
         // clock set: ready for the receiver to read data bit
-        while (gpio_get_level(ATM_TO_ESP_CLOCK) == 1) {
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
             if (xTaskGetTickCount() - t0 > timeout_difference) {
                 ESP_LOGI(TAG, "timeout #3611133");
                 return false;
@@ -380,10 +380,10 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
             //wait until clock in is LOW
         }
         // receiver has read
-        gpio_set_level(ESP_TO_ATM_DATA, 0);
-        gpio_set_level(ESP_TO_ATM_CLOCK, 0);
+        gpio_set_level(JAMES_ESP_TO_ATM_DATA, 0);
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0);
 
-        while (gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
             if (xTaskGetTickCount() - t0 > timeout_difference) {
                 ESP_LOGI(TAG, "timeout #3731134");
                 return false;
@@ -427,24 +427,24 @@ void gpio_actor(void) {
 #ifdef VALVE_SERVER_JAMES
     unsigned int cnt = 0;
 
-    int got_data = gpio_get_level(ATM_TO_ESP_DATA);
-    int got_clock = gpio_get_level(ATM_TO_ESP_CLOCK);
+    int got_data = gpio_get_level(JAMES_ATM_TO_ESP_DATA);
+    int got_clock = gpio_get_level(JAMES_ATM_TO_ESP_CLOCK);
 
 again_sync:
     wait_to_not_be_busy;
     TickType_t t0 = xTaskGetTickCount(); //uint32_t
 
     // start sync
-    gpio_set_level(ESP_TO_ATM_SYNC, 0);
-    gpio_set_level(ESP_TO_ATM_CLOCK, 0);
-    gpio_set_level(ESP_TO_ATM_DATA, 0);
+    gpio_set_level(JAMES_ESP_TO_ATM_SYNC, 0);
+    gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0);
+    gpio_set_level(JAMES_ESP_TO_ATM_DATA, 0);
 
     wait_to_not_be_busy;
-    gpio_set_level(ESP_TO_ATM_DATA, 0); // data LOW
-    gpio_set_level(ESP_TO_ATM_CLOCK, 0); // clock LOW
-    gpio_set_level(ESP_TO_ATM_SYNC, 1);
+    gpio_set_level(JAMES_ESP_TO_ATM_DATA, 0); // data LOW
+    gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0); // clock LOW
+    gpio_set_level(JAMES_ESP_TO_ATM_SYNC, 1);
     wait_to_not_be_busy;
-    while (gpio_get_level(ATM_TO_ESP_DATA) == 0 || gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+    while (gpio_get_level(JAMES_ATM_TO_ESP_DATA) == 0 || gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
         //wait until data in, clock in is HIGH
         if (xTaskGetTickCount() - t0 > 100) {
             ESP_LOGI(TAG, "timeout #4301132");
@@ -460,8 +460,8 @@ again_sync:
         }
     }
     */
-    gpio_set_level(ESP_TO_ATM_CLOCK, 1); // clock HIGH
-    while (gpio_get_level(ATM_TO_ESP_CLOCK) == 1) {
+    gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 1); // clock HIGH
+    while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
         //wait until clock in is LOW
         if (xTaskGetTickCount() - t0 > 100) {
             ESP_LOGI(TAG, "timeout #4471132");
@@ -470,9 +470,9 @@ again_sync:
         wait_to_not_be_busy;
 
     }
-    gpio_set_level(ESP_TO_ATM_SYNC, 0); // sync LOW
-    gpio_set_level(ESP_TO_ATM_CLOCK, 0); // clock LOW
-    while (gpio_get_level(ATM_TO_ESP_CLOCK) == 0) {
+    gpio_set_level(JAMES_ESP_TO_ATM_SYNC, 0); // sync LOW
+    gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0); // clock LOW
+    while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
         //wait until clock in is LOW
         if (xTaskGetTickCount() - t0 > 100) {
             ESP_LOGI(TAG, "timeout #4581132");
