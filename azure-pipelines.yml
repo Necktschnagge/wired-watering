@@ -31,7 +31,7 @@ stages:
       timeoutInMinutes: 50
       steps:
        - script: cd ~ && pwd
-         displayName: "debug"
+         displayName: "Info: show ~ dir"
          condition: succeeded()
        - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
          displayName: "Install the required packages for $(esp_project_name)"
@@ -62,8 +62,8 @@ stages:
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
-       - script: ls -la && cd esp-device && mv sdkconfig.ci sdkconfig && make all
-         displayName: "debug"
+       - script: cd esp-device && mv sdkconfig.ci sdkconfig && make all
+         displayName: "Build: make all"
          condition: succeeded()
       # - script: cd maya && cmake -S . -B ./build/
       #   displayName: "CMake: Create Project"
