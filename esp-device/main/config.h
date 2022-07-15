@@ -1,15 +1,8 @@
 #pragma once
 
+#include "select_device.h"
 #include "secret_config.h"
 
-/*
-#define VALVE_SERVER_FELIX
-*/
-#define VALVE_SERVER_LUCAS
-/*
-#define PUMP_RELAY_MAYSON
-#define VALVE_SERVER_JAMES
-*/
 
 #ifdef PUMP_RELAY_MAYSON
 
