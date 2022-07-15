@@ -50,7 +50,6 @@ esp_err_t status_get_handler(httpd_req_t *req)
     char*  buf;
     size_t buf_len;
     bool abort_on_wrong_target_name = false;
-    const int y = x;
 
     /* Get header value string length and allocate memory for length + 1,
      * extra byte for null termination */
