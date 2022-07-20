@@ -36,9 +36,12 @@ stages:
          displayName: "Init Git Submodules"
          condition: succeeded()
        - script: git clone https://github.com/mkleemann/cmake-avr.git ./cmake-avr/
-         displayName: "Get Tools"
+         displayName: "Get CMake tools: mkleemann/cmake-avr"
+         condition: succeeded()
+       - script: sudo apt-get install binutils gcc-avr avr-libc
+         displayName: "Dependencies: apt-get install"
+         condition: succeeded()
        - script: |
-          sudo apt-get install binutils gcc-avr avr-libc
           mkdir -p build
           cd ./build/
           tree
