@@ -12,6 +12,45 @@
 #include <optional>
 #include <vector>
 
+/*
+
+model: d : \mathbb{R} \to bool
+
+d satisfies f \in LCTL ...
+
+
+
+f \in LCTL \iff
+
+f ::= true | f1 or f2 | not f1 | f1 @g | f1 UNTIL f2
+
+d sat @g :
+	true  for t==g
+	false for f!=g
+d sat (f1 @ g)  \iff
+	d con (x |-> x-g) sat f1
+	
+f1 UNTIL f2:
+	true  for 
+	false for f!=g
+
+
+true UNTIL @x						°°°°°°°°°°__________
+									          x
+(true UNTIL @3) or @3				°°°°°°°°°°°_________
+
+not ((true UNTIL @3) or @3)			___________°°°°°°°°°
+									          x
+not ((true UNTIL @3) )				__________°°°°°°°°°°
+
+
+g \in LCTP \iff 
+
+g ::= x \in \mathbb{R} | 
+
+
+*/
+
 
 [[maybe_unused]] static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
 
