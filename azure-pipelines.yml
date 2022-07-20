@@ -1,3 +1,9 @@
+variables:
+ - name: project_name
+   value: Maya-Commander
+ - name: esp_project_name
+   value: esp-8266-device
+
 trigger:
   branches:
     include:
@@ -5,83 +11,341 @@ trigger:
     exclude:
     - artifacts
 
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-strategy:
-  matrix:
-#    ubuntu_20_04_gcc_9:
-#      imageName: 'ubuntu-20.04'
-##      CC: gcc-9
-##      CXX: g++-9
-#      the_name: 'Azure Pipelines'
+stages:
+ - stage: Atmega_device
+   
+   dependsOn: []
+   
+   jobs:
+   
+    - job: Compile_AVR
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: git clone https://github.com/mkleemann/cmake-avr.git ./avr-toolchain/
+         displayName: "Get Tools"
+       - script: |
+          sudo apt-get install binutils gcc-avr avr-libc
+          mkdir -p build
+          cd ./build/
+          tree
+          cmake -DCMAKE_TOOLCHAIN_FILE=../avr-toolchain/generic-gcc-avr.cmake ../avr-toolchain/example
+          tree
+          make
+          tree
+         displayName: "Run"
+      # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
+      #   displayName: "Create and deploy #include dependency graph"
+      #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
+      # - script: ./script/ci/check-compile-header-test-integrity.sh
+      #   displayName: "Check compile header test integrity"
+      #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
+       - script: cmake -S . -B ./build/
+         displayName: "CMake: Create Project"
+         condition: succeeded()
+       - script: cmake --build ./build
+         displayName: "CMake: Compile and Link"
+         condition: succeeded()
+      
+      # - script: ./build/test/TEST-Mona-Controller
+      #   displayName: "Run Tests on Linux / Mac OS"
+      #   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
+      # - script: .\build\test\Debug\TEST-Mona-Controller.exe
+      #   displayName: "Run Tests on Windows"
+      #   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
 
-    ubuntu_18_04_gcc_8:
-      imageName: 'ubuntu-18.04'
-      the_name: 'Azure Pipelines'
 
-#    ubuntu_16_04_gcc_8:
-#      imageName: 'ubuntu-16.04'
-#      CC: gcc-9
-#      CXX: g++-9
-#      the_name: 'Azure Pipelines'
+ - stage: ESP8266_device
+   
+   dependsOn: [] #build
+   
+   jobs:
+    - job: Felix
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: cd ~ && pwd
+         displayName: "Info: show ~ dir"
+         condition: succeeded()
+       - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
+         displayName: "Install the required packages for $(esp_project_name)"
+         condition: succeeded()
+       - script: mkdir -p ~/esp && wget -O ~/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Download xtensa-elf-gcc for linux amd64"
+         condition: succeeded()
+       - script: |
+          cd ~/esp
+          tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Unpack tar.gz archive"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/esp/xtensa-lx106-elf/bin"
+         displayName: "Update PATH variable"
+         condition: succeeded()
+       - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
+         displayName: "Check for xtensa c++ compiler available"
+         condition: succeeded()
+       - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
+         displayName: "Clone ESP8266 RTOS SDK"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=IDF_PATH;]/home/vsts/esp/ESP8266_RTOS_SDK"
+         displayName: "Set IDF_PATH variable"
+         condition: succeeded()
+       - script: python -m pip install --user -r $IDF_PATH/requirements.txt
+         displayName: "Install python requirements"
+         condition: succeeded()
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: cd esp-device && mv sdkconfig.ci sdkconfig && cd main && cp select_device_felix.h select_device.h
+         displayName: "Init config files"
+         condition: succeeded()
+       - script: cd esp-device && make all
+         displayName: "Build: make all"
+         condition: succeeded()
+    - job: James
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: cd ~ && pwd
+         displayName: "Info: show ~ dir"
+         condition: succeeded()
+       - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
+         displayName: "Install the required packages for $(esp_project_name)"
+         condition: succeeded()
+       - script: mkdir -p ~/esp && wget -O ~/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Download xtensa-elf-gcc for linux amd64"
+         condition: succeeded()
+       - script: |
+          cd ~/esp
+          tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Unpack tar.gz archive"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/esp/xtensa-lx106-elf/bin"
+         displayName: "Update PATH variable"
+         condition: succeeded()
+       - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
+         displayName: "Check for xtensa c++ compiler available"
+         condition: succeeded()
+       - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
+         displayName: "Clone ESP8266 RTOS SDK"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=IDF_PATH;]/home/vsts/esp/ESP8266_RTOS_SDK"
+         displayName: "Set IDF_PATH variable"
+         condition: succeeded()
+       - script: python -m pip install --user -r $IDF_PATH/requirements.txt
+         displayName: "Install python requirements"
+         condition: succeeded()
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: cd esp-device && mv sdkconfig.ci sdkconfig && cd main && cp select_device_james.h select_device.h
+         displayName: "Init config files"
+         condition: succeeded()
+       - script: cd esp-device && make all
+         displayName: "Build: make all"
+         condition: succeeded()
+    - job: Lucas
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: cd ~ && pwd
+         displayName: "Info: show ~ dir"
+         condition: succeeded()
+       - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
+         displayName: "Install the required packages for $(esp_project_name)"
+         condition: succeeded()
+       - script: mkdir -p ~/esp && wget -O ~/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Download xtensa-elf-gcc for linux amd64"
+         condition: succeeded()
+       - script: |
+          cd ~/esp
+          tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Unpack tar.gz archive"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/esp/xtensa-lx106-elf/bin"
+         displayName: "Update PATH variable"
+         condition: succeeded()
+       - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
+         displayName: "Check for xtensa c++ compiler available"
+         condition: succeeded()
+       - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
+         displayName: "Clone ESP8266 RTOS SDK"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=IDF_PATH;]/home/vsts/esp/ESP8266_RTOS_SDK"
+         displayName: "Set IDF_PATH variable"
+         condition: succeeded()
+       - script: python -m pip install --user -r $IDF_PATH/requirements.txt
+         displayName: "Install python requirements"
+         condition: succeeded()
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: cd esp-device && mv sdkconfig.ci sdkconfig && cd main && cp select_device_lucas.h select_device.h
+         displayName: "Init config files"
+         condition: succeeded()
+       - script: cd esp-device && make all
+         displayName: "Build: make all"
+         condition: succeeded()
+    - job: Mayson
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: cd ~ && pwd
+         displayName: "Info: show ~ dir"
+         condition: succeeded()
+       - script: sudo apt-get install gcc git wget make libncurses-dev flex bison gperf python-is-python3 python3-serial
+         displayName: "Install the required packages for $(esp_project_name)"
+         condition: succeeded()
+       - script: mkdir -p ~/esp && wget -O ~/esp/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Download xtensa-elf-gcc for linux amd64"
+         condition: succeeded()
+       - script: |
+          cd ~/esp
+          tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz
+         displayName: "Unpack tar.gz archive"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=PATH;]$PATH:/home/vsts/esp/xtensa-lx106-elf/bin"
+         displayName: "Update PATH variable"
+         condition: succeeded()
+       - script: echo $PATH && echo && xtensa-lx106-elf-c++ --version
+         displayName: "Check for xtensa c++ compiler available"
+         condition: succeeded()
+       - script: cd ~/esp && git clone --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git
+         displayName: "Clone ESP8266 RTOS SDK"
+         condition: succeeded()
+       - bash: echo "##vso[task.setvariable variable=IDF_PATH;]/home/vsts/esp/ESP8266_RTOS_SDK"
+         displayName: "Set IDF_PATH variable"
+         condition: succeeded()
+       - script: python -m pip install --user -r $IDF_PATH/requirements.txt
+         displayName: "Install python requirements"
+         condition: succeeded()
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: cd esp-device && mv sdkconfig.ci sdkconfig && cd main && cp select_device_mayson.h select_device.h
+         displayName: "Init config files"
+         condition: succeeded()
+       - script: cd esp-device && make all
+         displayName: "Build: make all"
+         condition: succeeded()
 
-#    mac_10_15:
-#      imageName: 'macos-10.15'
-#      the_name: 'Azure Pipelines'
-    mac_10_14: #fails since with Apple toolchain std::filesystem::path is not available before macos-10-15
-      imageName: 'macos-10.14'
-      the_name: 'Azure Pipelines'
 
-    windows_2019:
-      imageName: 'windows-2019'
-      the_name: 'Azure Pipelines'
-#    windows_2016: # executing tests on CI fails. Remove some test/compile_headers files to make it run.
-#      imageName: 'vs2017-win2016'
-#      the_name: 'Azure Pipelines'
-    
-#    Aria:
-#      the_name: 'Performance'
+ - stage: Maya_Commander
+   
+   dependsOn: [] #build
+   
 
-
-pool:
-  vmImage: $(imageName)
-  name: $(the_name)
-
-
-steps:
- - script: git submodule update --init --recursive
-   displayName: "Init Git Submodules"
-   condition: succeeded()
- - script: git clone https://github.com/mkleemann/cmake-avr.git ./avr-toolchain/
-   displayName: "Get Tools"
- - script: |
-    sudo apt-get install binutils gcc-avr avr-libc
-    mkdir -p build
-    cd ./build/
-    tree
-    cmake -DCMAKE_TOOLCHAIN_FILE=../avr-toolchain/generic-gcc-avr.cmake ../avr-toolchain/example
-    tree
-    make
-    tree
-   displayName: "Run"
-# - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
-#   displayName: "Create and deploy #include dependency graph"
+# cheat - sheet:
+#  condition: eq( variables['Agent.OSArchitecture'], 'ARM')
 #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
-# - script: ./script/ci/check-compile-header-test-integrity.sh
-#   displayName: "Check compile header test integrity"
 #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
- - script: cmake -S . -B ./build/
-   displayName: "CMake: Create Project"
-   condition: succeeded()
- - script: cmake --build ./build
-   displayName: "CMake: Compile and Link"
-   condition: succeeded()
 
-# - script: ./build/test/TEST-Mona-Controller
-#   displayName: "Run Tests on Linux / Mac OS"
-#   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
-# - script: .\build\test\Debug\TEST-Mona-Controller.exe
-#   displayName: "Run Tests on Windows"
-#   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+   jobs:
+
+    - job: build
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      
+          ubuntu_20_04_gcc_9:
+            os_image: 'ubuntu-20.04'
+            agent_pool: 'Azure Pipelines'
+      
+          ubuntu_18_04_gcc_8:
+            os_image: 'ubuntu-18.04'
+            agent_pool: 'Azure Pipelines'
+      
+          mac_12:
+            os_image: 'macos-12'
+            agent_pool: 'Azure Pipelines'
+          mac_11:
+            os_image: 'macos-11'
+            agent_pool: 'Azure Pipelines'
+          mac_10_15:
+            os_image: 'macos-10.15'
+            agent_pool: 'Azure Pipelines'
+      
+          windows_2022:
+            os_image: 'windows-2022'
+            agent_pool: 'Azure Pipelines'
+      
+          windows_2019:
+            os_image: 'windows-2019'
+            agent_pool: 'Azure Pipelines'
+
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      #condition: eq(variables['Build.Reason'], 'IndividualCI')
+      timeoutInMinutes: 180
+
+      steps:      
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: cd maya && cmake -S . -B ./build/
+         displayName: "CMake: Create Project"
+         condition: succeeded()
+       - script: cd maya/script && cb-cmd-build.bat
+         displayName: "CMake: Compile and Link (windows)"
+         condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+       - script: cd maya/script && ./ub-unix-build.sh 
+         displayName: "CMake: Compile and Link (unix)"
+         condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' ))
+       - script: cd maya && ./build/test/TEST-$(project_name)
+         displayName: "Run Tests on Linux / Mac OS"
+         condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
+       - script: dir maya\build\Debug\ && cd maya && .\build\Debug\TEST-$(project_name).exe
+         displayName: "Run Tests on Windows"
+         condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))

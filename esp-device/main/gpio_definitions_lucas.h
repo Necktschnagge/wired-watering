@@ -1,0 +1,29 @@
+#include "config.h"
+
+#ifdef VALVE_SERVER_LUCAS
+
+
+
+// LUCAS_VALVE_0
+#define PIN_D1 5
+#define LUCAS_VALVE_0 PIN_D1
+
+// LUCAS_VALVE_1
+#define PIN_D2 4
+#define LUCAS_VALVE_1 PIN_D2
+
+// LUCAS_VALVE_2
+#define PIN_D7 13
+#define LUCAS_VALVE_2 PIN_D7
+
+
+
+#define GPIO_INPUT_LANES (0ULL)
+
+#define GPIO_OUTPUT_LANES ((1ULL<<LUCAS_VALVE_0) | (1ULL<<LUCAS_VALVE_1) | (1ULL<<LUCAS_VALVE_2))
+
+
+
+#endif // VALVE_SERVER_LUCAS
+
+
