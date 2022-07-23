@@ -26,6 +26,10 @@ void pin_init(){
 
 	DDRB  = 0b00011000; // communication to master : X X X : CLOCK : DATA : SYNC : CLOCK : DATA
 	PORTB = 0b00000111; // pull-up resistors for input lanes.
+	
+	// connect AREF port to VCC
+	DDRC  = 0b00000000; // XXXX XXX[ADC pressure sensor input]
+	PORTC = 0b00000000; // no pull-up for sensor input
 }
 
 human_clock& the_clock{ human_clock::instance() };
@@ -739,15 +743,9 @@ int main(void)
 			}
 			PORTD = valves;
 			continue;
-
-			
 		}
 		goto again_sync; // no valid opcode
-		
 	}
-	
-	//super_init_timers();
-	//the_clock.set();
 	
 	PORTD = 0;
 
