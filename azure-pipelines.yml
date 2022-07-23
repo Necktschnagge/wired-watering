@@ -54,7 +54,7 @@ stages:
           pwd
           ls -la atmega-device/extern/cmake-avr/
           #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
-          cmake -DCMAKE_TOOLCHAIN_FILE=/home/vsts/work/1/s/atmega-device/extern/cmake-avr/generic-gcc-avr.cmake -S atmega-device/example-c++ -B atmega-device/build
+          cmake -DCMAKE_TOOLCHAIN_FILE=/home/vsts/work/1/s/atmega-device/extern/cmake-avr/generic-gcc-avr.cmake -S atmega-device/extern/cmake-avr/example-c++ -B atmega-device/build
           cd ./atmega-device/build
           tree
          displayName: "CMake: Create Project"
