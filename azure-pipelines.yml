@@ -48,6 +48,7 @@ stages:
          displayName: "mkdir build"
          condition: succeeded()
        - script: |
+          ls -la atmega-device/extern/cmake-avr/
           cmake -DCMAKE_TOOLCHAIN_FILE=atmega-device/extern/cmake-avr/generic-gcc-avr.cmake -S atmega-device/extern/cmake-avr/example -B atmega-device/build
           cd ./atmega-device/build
           tree
