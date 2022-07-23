@@ -41,28 +41,13 @@ stages:
        - script: sudo apt-get install binutils gcc-avr avr-libc
          displayName: "Dependencies: apt-get install"
          condition: succeeded()
-       - script: |
-          mkdir -p atmega-device/build
-          cd ./atmega-device/build
-          tree
+       - script: mkdir -p atmega-device/build ##### try to remove this step!
          displayName: "mkdir build"
          condition: succeeded()
-       - script: cat /home/vsts/work/1/s/atmega-device/extern/cmake-avr/generic-gcc-avr.cmake
-         displayName: "debug"
-         condition: succeeded()
-       - script: |
-          pwd
-          ls -la atmega-device/extern/cmake-avr/
-          #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
-          cmake -DCMAKE_TOOLCHAIN_FILE=/home/vsts/work/1/s/atmega-device/generic-gcc-avr.cmake -S atmega-device/example-c++ -B atmega-device/build
-          cd ./atmega-device/build
-          tree
+       - script: cmake -DCMAKE_TOOLCHAIN_FILE=/home/vsts/work/1/s/atmega-device/generic-gcc-avr.cmake -S atmega-device/example-c++ -B atmega-device/build #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
          displayName: "CMake: Create Project"
          condition: succeeded()
-       - script: |
-          cd ./atmega-device/build
-          make
-          tree
+       - script: cd ./atmega-device/build && make
          displayName: "CMake: Compile and Link"
          condition: succeeded()
       # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
