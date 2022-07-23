@@ -45,6 +45,10 @@ stages:
           mkdir -p build
           cd ./build/
           tree
+         displayName: "mkdir build"
+         condition: succeeded()
+       - script: |
+          cd ./build/
           cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-avr/generic-gcc-avr.cmake ../cmake-avr/example
           tree
           make
