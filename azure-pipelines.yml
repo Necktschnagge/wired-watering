@@ -83,6 +83,7 @@ stages:
  - stage: ESP8266_device
    
    dependsOn: [] #build
+   condition: false
    
    jobs:
     - job: Felix
@@ -292,7 +293,7 @@ stages:
 
 
  - stage: Maya_Commander
-   
+   condition: false
    dependsOn: [] #build
    
 
