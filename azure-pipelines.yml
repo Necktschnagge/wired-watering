@@ -49,7 +49,7 @@ stages:
          condition: succeeded()
        - script: |
           cd ./build/
-          cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-avr/generic-gcc-avr.cmake ../cmake-avr/example
+          cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-avr/generic-gcc-avr.cmake -S ../cmake-avr/example -B .
           tree
          displayName: "CMake: Create Project"
          condition: succeeded()
