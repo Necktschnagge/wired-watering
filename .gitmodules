@@ -10,3 +10,6 @@
 [submodule "maya/extern/td"]
 	path = maya/extern/td
 	url = https://github.com/tdlib/td.git
+[submodule "atmega-device/extern/cmake-avr"]
+	path = atmega-device/extern/cmake-avr
+	url = https://github.com/mkleemann/cmake-avr.git
