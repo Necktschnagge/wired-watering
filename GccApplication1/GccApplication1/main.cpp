@@ -629,11 +629,8 @@ void set_data_output_lane(bool b){
 	PORTB = (PORTB & (~0b00001000)) | (b ? 0b00001000 : 0b0);
 }
 
-int main(void)
-{
-	
-	pin_init();
-	
+void esp_comm_sync(){
+
 	again_sync:
 	while (!is_sync_input_lane_active() || is_data_input_lane_active() || is_clock_input_lane_active()){
 		//wait for sync begin
@@ -659,61 +656,93 @@ int main(void)
 		goto again_sync;
 	}
 	set_clock_output_lane(false);
+	return;
+}
+
+/*
+enum class
+RECEIVE_PHASE : char {
+	READ_EEPROM_SUCCESS = 0,
+	OPCODE_SET_VALVES = 1,
+};
+*/
+
+/**
+@brief Reads opcode from esp_comm_line.
+
+@param opcode will be replaced by opcode read or bits read so far until canceled.
+@return Returns false if re-sync initiated, aborted reading opcode. Returns true if reading opcode was read successfully.
+*/
+
+
+namespace fsl {
+	
+	template <class T> struct remove_reference;
+	template <class T> struct remove_reference			{ using type = T; };
+	template <class T> struct remove_reference<T&>		{ using type = T; };
+	template <class T> struct remove_reference<T&&>		{ using type = T; };
+	
+	template <class T>
+	using remove_reference_t = typename remove_reference<T>::type;
+	
+}
+
+
+template<class Integer_Type>
+bool try_read_bits_from_esp(uint8_t count_bits, Integer_Type& read_buffer){
+	read_buffer = 0;
+	int pos = 0;
+	while (count_bits)
+	{
+		// read one bit:
+		while(!is_clock_input_lane_active()){
+			if (is_sync_input_lane_active()){
+				return false;
+			}
+		}
+		bool bit = is_data_input_lane_active();
+		--count_bits;
+		//read_buffer = bit;
+		read_buffer |=  (static_cast<fsl::remove_reference_t<decltype(read_buffer)>>(1) << pos) * bit; // data are received LSB first!
+		++pos;
+		set_clock_output_lane(true);
+		while (is_clock_input_lane_active()){
+			if (is_sync_input_lane_active()){
+				return false;
+			}
+		}
+		set_clock_output_lane(false);
+		
+	}
+	return true;
+}
+
+int main(void)
+{
+	
+	pin_init();
+	
+	again_sync:
+	esp_comm_sync();
 	// sync done.
 	
-	uint8_t read_bits = 4;
-	uint64_t read_buffer = 0;
-	uint8_t opcode = 0;
-	uint8_t mode = 0; // read opcode
-	// 1 read data
-	
 	while (true){
-		// read one bit:
-		int pos = 0;
-		while (read_bits)
-		{
-			while(!is_clock_input_lane_active()){
-				if (is_sync_input_lane_active()){
-					goto again_sync;
-				}
-			}
-			bool bit = is_data_input_lane_active();
-			--read_bits;
-			read_buffer |=  (static_cast<decltype(read_buffer)>(1) << pos) * bit;
-			++pos;
-			set_clock_output_lane(true);
-			while (is_clock_input_lane_active()){
-				if (is_sync_input_lane_active()){
-					goto again_sync;
-				}
-			}
-			set_clock_output_lane(false);
-			
-		}
-		if (mode == 0){
-			opcode = read_buffer & 0b1111;
-			
-			if (opcode == 0b0001){
-				mode = 1;
-				read_bits = 8; // check correct opcode here #####
-				read_buffer = 0;
-				continue;
-			}
-			
-			goto again_sync; // no valid opcode
+		uint8_t opcode = 0;
+		if (!try_read_bits_from_esp(4, opcode)){
+			goto again_sync;
 		}
 
-		if (mode == 1){
-			uint8_t valves = read_buffer & 0b11111111;
-			
+		if (opcode == 0b0001){
+			uint8_t valves = 0;
+			if (!try_read_bits_from_esp(8,valves)){
+				goto again_sync;
+			}
 			PORTD = valves;
-			
-			mode = 0;
-			read_bits = 4;
-			read_buffer = 0;
 			continue;
+
+			
 		}
-		
+		goto again_sync; // no valid opcode
 		
 	}
 	
