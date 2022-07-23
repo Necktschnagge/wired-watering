@@ -51,9 +51,14 @@ stages:
           cd ./build/
           cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-avr/generic-gcc-avr.cmake ../cmake-avr/example
           tree
+         displayName: "CMake: Create Project"
+         condition: succeeded()
+       - script: |
+          cd ./build/
           make
           tree
-         displayName: "Run"
+         displayName: "CMake: Compile and Link"
+         condition: succeeded()
       # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
       #   displayName: "Create and deploy #include dependency graph"
       #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
