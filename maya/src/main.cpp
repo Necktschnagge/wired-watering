@@ -34,7 +34,7 @@
 
 [[maybe_unused]] static constexpr uint8_t JAMES_GURKE_ERBSE{ JAMES_VALVE_1 };
 [[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ JAMES_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN_UNKRAUT{ JAMES_VALVE_3 };
+[[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN{ JAMES_VALVE_4 };
 
 [[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
 [[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
@@ -183,7 +183,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
 		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_TOMATE | JAMES_BOHNEN_UNKRAUT,
+			JAMES_GURKE_ERBSE | JAMES_TOMATE | JAMES_BOHNEN,
 			60 * 5
 		);
 		// GURK  5 : TOMA  5  : ERDBE  0 : BOHN  5 // 5
@@ -191,7 +191,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
 		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_BOHNEN_UNKRAUT,
+			JAMES_GURKE_ERBSE | JAMES_BOHNEN,
 			60 * 15
 		);
 		// GURK 20 : TOMA  5  : ERDBE 15 : BOHN  20 // 20
@@ -221,7 +221,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
 		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_BOHNEN_UNKRAUT,
+			JAMES_GURKE_ERBSE | JAMES_BOHNEN,
 			60 * 10
 		);
 		// GURK 30 : TOMA  10  : ERDBE 20 : BOHN  30 // 35
@@ -237,7 +237,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
 		set_valves_and_wait_for(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_BOHNEN_UNKRAUT,
+			JAMES_BOHNEN,
 			60 * 15
 		);
 		// GURK 35 : TOMA  15  : ERDBE 40 : BOHN  45 // 55
