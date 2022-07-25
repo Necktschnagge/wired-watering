@@ -52,7 +52,7 @@ bool ping(const std::string& ip_address) {
 	int x = system(bash_command.c_str());
 	return (x == 0);
 #else
-	//cout << "ping skipped, not on linux" << endl;
+	standard_logger()->warn("Ping skipped, not on Linux");
 	return false;
 #endif // LINUX
 }
@@ -199,7 +199,7 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(
 			IP_ADDRESS_VALVE_SERVER_JAMES,
 			JAMES_TOMATE
-			);
+		);
 		wait_for(60 * 5);
 		// GURK 20 : TOMA  10  : ERDBE 20 : BOHN  20 // 25
 
