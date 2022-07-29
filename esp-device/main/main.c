@@ -198,7 +198,7 @@ httpd_handle_t start_webserver(void)
         return server;
     }
 
-    ESP_LOGI(logging_tag, "Error starting server!");
+    ESP_LOGE(logging_tag, "Error starting server!");
     return NULL;
 }
 
@@ -208,7 +208,15 @@ void stop_webserver(httpd_handle_t server)
     httpd_stop(server);
 }
 
-static httpd_handle_t server = NULL;
+typedef struct global_entities_s {
+    httpd_handle_t httpd_server_handle;
+} global_entities_t;
+
+global_entities_t GLOBAL;
+
+void init_GLOBAL() {
+    GLOBAL.httpd_server_handle = NULL;
+}
 
 static void disconnect_handler(void* arg, esp_event_base_t event_base, 
                                int32_t event_id, void* event_data)
@@ -522,23 +530,29 @@ again_sync:
 
 void app_main()
 {
-    ESP_LOGI(logging_tag, "calling nvs_flash_init...");
+    ESP_LOGI(logging_tag, "Initializing GLOBAL...");
+    init_GLOBAL();
+
+    ESP_LOGI(logging_tag, "Initializing NVS partition...");
     ESP_ERROR_CHECK(nvs_flash_init());
 
-    ESP_LOGI(logging_tag, "calling connect_wifi...");
-    connect_wifi();
-
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &server));
-    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &server));
-
-    ESP_LOGI(logging_tag, "starting http server...");
-    server = start_webserver();
-
-    ESP_LOGI(logging_tag, "setting / getting gpio permanently...");
+    ESP_LOGI(logging_tag, "Initializing GPIO...");
     gpio_init();
 
+    ESP_LOGI(logging_tag, "Connecting to WLAN Access Point...");
+    connect_wifi();
+
+    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &GLOBAL.httpd_server_handle)); // handler to start http server on WLAN connected event
+
+    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &GLOBAL.httpd_server_handle)); // handler to stop http server on WLAN disconnected event
+
+    ESP_LOGI(logging_tag, "Starting http server...");
+    GLOBAL.httpd_server_handle = start_webserver();
+
+    ESP_LOGI(logging_tag, "Setting / getting gpio permanently...");
     gpio_actor(); // should never return
 
+    ESP_LOGE(logging_tag, "This section should never be reached!");
     // should never be reached:
     while (true) {
         vTaskDelay(2000 / portTICK_RATE_MS);
