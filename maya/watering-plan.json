@@ -16,7 +16,8 @@
         "type": "timestamp",
         "unix_timestamp": 637429346233,
         "human_timestamp": "2022-08-01+03:05:00",
-        "convenient_timestamp" : "NEXT:mo+3h+50m"
+        "convenient_timestamp": "NEXT:mo+3h+50m",
+        "convenient_timestamp_formula": "NEXT:mo+n(2d)+3h+50m"
       },
       "repeat": {
         "interval": "2d+1h+3m+10s", // mo tu we th fr sa su; d h m s, w (week, beginning su, 0:00)
