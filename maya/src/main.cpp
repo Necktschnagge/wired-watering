@@ -520,7 +520,11 @@ int main(int argc, char** argv) {
 			s << minutes_since_epoch << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
 
-			watering(seconds_since_epoch);
+			constexpr bool global_watering_enable{ false };
+			if (global_watering_enable) {
+				watering(seconds_since_epoch);
+			}
+
 
 
 		}
