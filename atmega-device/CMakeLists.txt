@@ -131,13 +131,13 @@ add_definitions("-c")
 ##########################################################################
 # include search paths
 ##########################################################################
-include_directories(${AVR-CPP-EXAMPLE_SOURCE_DIR}/mycpplib)
+include_directories(${AVR-CPP-EXAMPLE_SOURCE_DIR}/GccLibrary1)
 
 ##########################################################################
 # building library and application in their subdirectories
 ##########################################################################
-add_subdirectory(mycpplib)
-add_subdirectory(cppapp)
+add_subdirectory(GccLibrary1)
+add_subdirectory(GccApplication1)
 
 ##########################################################################
 # use default documentation target
