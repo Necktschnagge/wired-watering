@@ -44,7 +44,7 @@ stages:
        - script: mkdir -p atmega-device/build ##### try to remove this step!
          displayName: "mkdir build"
          condition: succeeded()
-       - script: cmake -S atmega-device/example-c++ -B atmega-device/build #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
+       - script: cmake -S atmega-device -B atmega-device/build #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
          displayName: "CMake: Create Project"
          condition: succeeded()
        - script: cd ./atmega-device/build && make
