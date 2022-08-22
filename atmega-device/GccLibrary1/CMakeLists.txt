@@ -3,7 +3,7 @@
 #####################################################################
 add_avr_library(
    mycpplib
-   input.cpp
-   input.h
+   library.cpp
+#   input.h
    )
 
