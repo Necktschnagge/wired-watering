@@ -116,6 +116,7 @@ endif(CMAKE_BUILD_TYPE MATCHES Debug)
 ##########################################################################
 # compiler options for all build types
 ##########################################################################
+add_definitions("-std=c++14")
 add_definitions("-DF_CPU=${MCU_SPEED}")
 add_definitions("-fpack-struct")
 add_definitions("-fshort-enums")
