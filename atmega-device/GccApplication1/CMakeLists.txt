@@ -10,6 +10,6 @@ add_avr_executable(
 # libraries to link to
 #####################################################################
 target_link_libraries(
-   toggle-led-cpp-${AVR_MCU}.elf
+   Slave-for-James-${AVR_MCU}.elf
    mycpplib-${AVR_MCU}
    )
