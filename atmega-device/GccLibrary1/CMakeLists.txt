@@ -3,7 +3,7 @@
 #####################################################################
 add_avr_library(
    mycpplib
-   CLed.cc
-   CLed.hh
+   input.cpp
+   input.h
    )
 
