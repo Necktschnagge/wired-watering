@@ -26,7 +26,7 @@ set(AVR_UPLOADTOOL_PORT usb)
 ##########################################################################
 # AVR and fuses needs to be set
 ##########################################################################
-set(AVR_MCU atmega168A)
+set(AVR_MCU atmega168a)
 set(AVR_H_FUSE 0xd9)
 set(AVR_L_FUSE 0xc3)
 
