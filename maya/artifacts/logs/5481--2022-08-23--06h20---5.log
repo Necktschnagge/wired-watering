@@ -1,0 +1,20 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+> sudo -u mayadm git add -u
+> sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch routine-b0f3910c-1661228578
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git reset --hard
+HEAD ist jetzt bei b0f3910c Merge pull request #76 from Necktschnagge/merge-main-into-maya-prod
+Deleting local working branch...
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git branch -D routine-b0f3910c-1661228578
+Branch routine-b0f3910c-1661228578 entfernt (war b0f3910c).
+Finished run 5481!
+Di 23. Aug 06:23:20 CEST 2022
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+elapsed time:   0s
+=====================================================================================================
