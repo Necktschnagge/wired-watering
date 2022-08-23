@@ -720,7 +720,7 @@ bool try_read_bits_from_esp(uint8_t count_bits, Integer_Type& read_buffer){
 int main(void)
 {
 	
-	pin_init()+;
+	pin_init();
 	
 	again_sync:
 	esp_comm_sync();
