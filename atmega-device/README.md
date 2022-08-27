@@ -1,3 +1,6 @@
+# The following instructions were given by the original author of the cmake toolchain we are using here:
+Thanks to @mkleemann for providing the toolchain. 
+
 ## cmake-avr - a cmake toolchain for AVR projects
 
 ### Testing the example provided
