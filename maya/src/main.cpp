@@ -417,8 +417,8 @@ int main(int argc, char** argv) {
 	standard_logger()->info("Checking timestamp.txt   ...DONE!");
 
 	if (
-		(minute_of_the_day > (4 - 2) * 60) // 4:00 // -2 == UTC 
-		&& (minute_of_the_day < (7 - 2) * 60) // 7:00
+		(minute_of_the_day > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
+		&& (minute_of_the_day < (6 - 2) * 60 + 30) // 6:30
 		&& (previous_timestamp + 3 * 60 + 1 < minutes_since_epoch) // 3 hours gone since last watering
 		)
 	{
