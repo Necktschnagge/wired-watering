@@ -56,7 +56,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
         buf = malloc(buf_len);
         /* Copy null terminated value string into buffer */
         if (httpd_req_get_hdr_value_str(req, "Host", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => Host: %s", buf);
+            ESP_LOGI(logging_tag, "Found header => Host: %s", buf);
         }
         free(buf);
     }
@@ -65,9 +65,9 @@ esp_err_t status_get_handler(httpd_req_t *req)
     if (buf_len > 1) {
         buf = malloc(buf_len);
         if (httpd_req_get_hdr_value_str(req, "target-name", buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found header => target-name: %s", buf);
+            ESP_LOGI(logging_tag, "Found header => target-name: %s", buf);
             if (strcmp(buf, string_server_name) != 0) {
-                ESP_LOGI(TAG, "Header target-name does not match device name \"%s\". Ignoring request.", string_server_name);
+                ESP_LOGI(logging_tag, "Header target-name does not match device name \"%s\". Ignoring request.", string_server_name);
                 abort_on_wrong_target_name = true;
             }
         }
@@ -87,7 +87,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
         /* After sending the HTTP response the old HTTP request
          * headers are lost. Check if HTTP request headers can be read now. */
         /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
-            ESP_LOGI(TAG, "Request headers lost");
+            ESP_LOGI(logging_tag, "Request headers lost");
         }
         */
         return ESP_OK;
@@ -99,7 +99,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
     if (buf_len > 1) {
         buf = malloc(buf_len);
         if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
-            ESP_LOGI(TAG, "Found URL query => %s", buf);
+            ESP_LOGI(logging_tag, "Found URL query => %s", buf);
             char param[32];
             /* Get value of expected key from query string */
 #ifdef PUMP_RELAY_MAYSON
@@ -110,7 +110,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 if (strcmp(param, string_off) == 0) {
                     pump_manual = false;
                 }
-                ESP_LOGI(TAG, "Keep / set manual =%s", pump_manual ? string_on : string_off);
+                ESP_LOGI(logging_tag, "Keep / set manual =%s", pump_manual ? string_on : string_off);
             }
             if (httpd_query_key_value(buf, "auto", param, sizeof(param)) == ESP_OK) {
                 if (strcmp(param, string_on) == 0) {
@@ -119,7 +119,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 if (strcmp(param, string_off) == 0) {
                     pump_auto = false;
                 }
-                ESP_LOGI(TAG, "Keep / set auto =%s", pump_auto ? string_on : string_off);
+                ESP_LOGI(logging_tag, "Keep / set auto =%s", pump_auto ? string_on : string_off);
             }
             if (httpd_query_key_value(buf, "system", param, sizeof(param)) == ESP_OK) {
                 if (strcmp(param, string_on) == 0) {
@@ -128,7 +128,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 if (strcmp(param, string_off) == 0) {
                     pump_system = false;
                 }
-                ESP_LOGI(TAG, "Keep / set system =%s", pump_system ? string_on : string_off);
+                ESP_LOGI(logging_tag, "Keep / set system =%s", pump_system ? string_on : string_off);
             }
 #endif // PUMP_RELAY_MAYSON
 #ifdef ANY_VALVE_SERVER
@@ -136,7 +136,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
                 const char* end;
                 unsigned long valve_value = strtoul(param, &end, 10);
                 global_valve_state = valve_value;
-                ESP_LOGI(TAG, "got valves =%s", param);
+                ESP_LOGI(logging_tag, "got valves =%s", param);
             }
 #endif // ANY_VALVE_SERVER
 
@@ -168,7 +168,7 @@ esp_err_t status_get_handler(httpd_req_t *req)
     /* After sending the HTTP response the old HTTP request
      * headers are lost. Check if HTTP request headers can be read now. */
     /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
-        ESP_LOGI(TAG, "Request headers lost");
+        ESP_LOGI(logging_tag, "Request headers lost");
     }*/
     return ESP_OK;
 }
@@ -188,17 +188,17 @@ httpd_handle_t start_webserver(void)
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
 
     // Start the httpd server
-    ESP_LOGI(TAG, "Starting server on port: '%d'", config.server_port);
+    ESP_LOGI(logging_tag, "Starting server on port: '%d'", config.server_port);
     if (httpd_start(&server, &config) == ESP_OK) {
         // Set URI handlers
-        ESP_LOGI(TAG, "Registering URI handlers");
+        ESP_LOGI(logging_tag, "Registering URI handlers");
         httpd_register_uri_handler(server, &status_uri);
         //httpd_register_uri_handler(server, &echo);
         //httpd_register_uri_handler(server, &ctrl);
         return server;
     }
 
-    ESP_LOGI(TAG, "Error starting server!");
+    ESP_LOGE(logging_tag, "Error starting server!");
     return NULL;
 }
 
@@ -208,14 +208,22 @@ void stop_webserver(httpd_handle_t server)
     httpd_stop(server);
 }
 
-static httpd_handle_t server = NULL;
+typedef struct global_entities_s {
+    httpd_handle_t httpd_server_handle;
+} global_entities_t;
+
+global_entities_t GLOBAL;
+
+void init_GLOBAL() {
+    GLOBAL.httpd_server_handle = NULL;
+}
 
 static void disconnect_handler(void* arg, esp_event_base_t event_base, 
                                int32_t event_id, void* event_data)
 {
     httpd_handle_t* server = (httpd_handle_t*) arg;
     if (*server) {
-        ESP_LOGI(TAG, "Stopping webserver");
+        ESP_LOGI(logging_tag, "Stopping webserver");
         stop_webserver(*server);
         *server = NULL;
     }
@@ -226,7 +234,7 @@ static void connect_handler(void* arg, esp_event_base_t event_base,
 {
     httpd_handle_t* server = (httpd_handle_t*) arg;
     if (*server == NULL) {
-        ESP_LOGI(TAG, "Starting webserver");
+        ESP_LOGI(logging_tag, "Starting webserver");
         *server = start_webserver();
     }
 }
@@ -250,18 +258,18 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         wifi_connected = false;
-        ESP_LOGI(TAG, "Wait %i seconds before trying to reconnect Wifi.", retry_delay_s);
+        ESP_LOGI(logging_tag, "Wait %i seconds before trying to reconnect Wifi.", retry_delay_s);
         vTaskDelay(retry_delay_s * 1000 / portTICK_RATE_MS);
             esp_wifi_connect();
             retry_delay_s = (retry_delay_s * 49 + 60 * 2) / 50; // stabilizes on 71
-            ESP_LOGI(TAG, "retry to connect to the AP");
-        ESP_LOGI(TAG, "connect to the AP fail");
+            ESP_LOGI(logging_tag, "retry to connect to the AP");
+        ESP_LOGI(logging_tag, "connect to the AP fail");
         //##### handle the case where it does not reconnect anymore !!!
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*)event_data;
         wifi_connected = true;
-        ESP_LOGI(TAG, "got ip:%s",
+        ESP_LOGI(logging_tag, "got ip:%s",
             ip4addr_ntoa(&event->ip_info.ip));
         retry_delay_s = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
@@ -272,7 +280,7 @@ void connect_wifi(void) {
     
     s_wifi_event_group = xEventGroupCreate(); // event group for signals about wifi being connected or not
 
-    ESP_LOGI(TAG, "initializing adapter...");
+    ESP_LOGI(logging_tag, "initializing adapter...");
 
     tcpip_adapter_init();
 
@@ -282,7 +290,7 @@ void connect_wifi(void) {
     ESP_ERROR_CHECK(esp_wifi_get_mac(ESP_IF_WIFI_STA, sta_mac)); //<<<<< needed?
     ESP_ERROR_CHECK(tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip)); //<<<<< needed?
 
-    ESP_LOGI(TAG, "setting static ip adresses...");
+    ESP_LOGI(logging_tag, "setting static ip adresses...");
 
     /* set static ip, gateway and netmask */
     IP_CLIENT_CONFIG;
@@ -295,7 +303,7 @@ void connect_wifi(void) {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
-    ESP_LOGI(TAG, "registering wifi handlers...");
+    ESP_LOGI(logging_tag, "registering wifi handlers...");
 
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
@@ -319,7 +327,7 @@ void connect_wifi(void) {
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    ESP_LOGI(TAG, "issued wifi start");
+    ESP_LOGI(logging_tag, "issued wifi start");
 
     /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
      * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
@@ -333,15 +341,15 @@ void connect_wifi(void) {
      * happened. */
     if (bits & WIFI_CONNECTED_BIT) {
         wifi_connected = true;
-        ESP_LOGI(TAG, "connected to ap SSID:%s",
+        ESP_LOGI(logging_tag, "connected to ap SSID:%s",
             WIFI_SSID);
     }
     else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGI(TAG, "Failed to connect to SSID:%s",
+        ESP_LOGI(logging_tag, "Failed to connect to SSID:%s",
             WIFI_SSID);
     }
     else {
-        ESP_LOGE(TAG, "UNEXPECTED EVENT");
+        ESP_LOGE(logging_tag, "UNEXPECTED EVENT");
     }
 
     /* finish wifi
@@ -366,7 +374,7 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
         // clock set: ready for the receiver to read data bit
         while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
             if (xTaskGetTickCount() - t0 > timeout_difference) {
-                ESP_LOGI(TAG, "timeout #3611133");
+                ESP_LOGI(logging_tag, "timeout #3611133");
                 return false;
             }
             wait_to_not_be_busy;
@@ -378,7 +386,7 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
 
         while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
             if (xTaskGetTickCount() - t0 > timeout_difference) {
-                ESP_LOGI(TAG, "timeout #3731134");
+                ESP_LOGI(logging_tag, "timeout #3731134");
                 return false;
             }
             wait_to_not_be_busy;
@@ -440,7 +448,7 @@ again_sync:
     while (gpio_get_level(JAMES_ATM_TO_ESP_DATA) == 0 || gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
         //wait until data in, clock in is HIGH
         if (xTaskGetTickCount() - t0 > 100) {
-            ESP_LOGI(TAG, "timeout #4301132");
+            ESP_LOGI(logging_tag, "timeout #4301132");
             goto again_sync;
         }
         wait_to_not_be_busy;
@@ -457,7 +465,7 @@ again_sync:
     while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
         //wait until clock in is LOW
         if (xTaskGetTickCount() - t0 > 100) {
-            ESP_LOGI(TAG, "timeout #4471132");
+            ESP_LOGI(logging_tag, "timeout #4471132");
             goto again_sync;
         }
         wait_to_not_be_busy;
@@ -468,7 +476,7 @@ again_sync:
     while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
         //wait until clock in is LOW
         if (xTaskGetTickCount() - t0 > 100) {
-            ESP_LOGI(TAG, "timeout #4581132");
+            ESP_LOGI(logging_tag, "timeout #4581132");
             goto again_sync;
         }
         wait_to_not_be_busy;
@@ -488,7 +496,7 @@ again_sync:
         bool success_2 = send_bits_u8(valve_output, 8, t0, 100);
         if (!success_2) goto again_sync;
 
-        ESP_LOGI(TAG, "finished sending");
+        ESP_LOGI(logging_tag, "finished sending");
 
 
         ++cnt;
@@ -522,20 +530,31 @@ again_sync:
 
 void app_main()
 {
-    ESP_LOGI(TAG, "calling nvs_flash_init...");
+    ESP_LOGI(logging_tag, "Initializing GLOBAL...");
+    init_GLOBAL();
+
+    ESP_LOGI(logging_tag, "Initializing NVS partition...");
     ESP_ERROR_CHECK(nvs_flash_init());
 
-    ESP_LOGI(TAG, "calling connect_wifi...");
+    ESP_LOGI(logging_tag, "Initializing GPIO...");
+    gpio_init();
+
+    ESP_LOGI(logging_tag, "Connecting to WLAN Access Point...");
     connect_wifi();
 
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &server));
-    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &server));
+    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &connect_handler, &GLOBAL.httpd_server_handle)); // handler to start http server on WLAN connected event
 
-    ESP_LOGI(TAG, "starting http server...");
-    server = start_webserver();
+    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, &disconnect_handler, &GLOBAL.httpd_server_handle)); // handler to stop http server on WLAN disconnected event
 
-    ESP_LOGI(TAG, "setting / getting gpio permanently...");
-    gpio_init();
-    gpio_actor();
+    ESP_LOGI(logging_tag, "Starting http server...");
+    GLOBAL.httpd_server_handle = start_webserver();
 
+    ESP_LOGI(logging_tag, "Setting / getting gpio permanently...");
+    gpio_actor(); // should never return
+
+    ESP_LOGE(logging_tag, "This section should never be reached!");
+    // should never be reached:
+    while (true) {
+        vTaskDelay(2000 / portTICK_RATE_MS);
+    }
 }
