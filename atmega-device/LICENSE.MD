@@ -1,4 +1,4 @@
-Parts of this drectory rely on a [cmake toolchain by M. Kleemann](https://github.com/mkleemann/cmake-avr)
+Parts of this directory rely on a [cmake toolchain by M. Kleemann](https://github.com/mkleemann/cmake-avr)
 This toolchain is used under the following license:
 ----------------------------------------------------------------------------
 "THE ANY BEVERAGE-WARE LICENSE" (Revision 42 - based on beer-ware license):
