@@ -1,13 +1,5 @@
 
-//#include "timer0.h"
-//#include "display.h"
-//#include "input.h"
-//#include "time_utilities.h"
-//#include "queue.h"
-//#include "pump.h"
-//#include "ui_utility.h"
 #include <avr/io.h>
-#include <avr/eeprom.h>
 
 
 void pin_init(){
@@ -69,21 +61,6 @@ void esp_comm_sync(){
 	set_clock_output_lane(false);
 	return;
 }
-
-/*
-enum class
-RECEIVE_PHASE : char {
-	READ_EEPROM_SUCCESS = 0,
-	OPCODE_SET_VALVES = 1,
-};
-*/
-
-/**
-@brief Reads opcode from esp_comm_line.
-
-@param opcode will be replaced by opcode read or bits read so far until canceled.
-@return Returns false if re-sync initiated, aborted reading opcode. Returns true if reading opcode was read successfully.
-*/
 
 
 namespace fsl {
