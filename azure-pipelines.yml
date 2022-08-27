@@ -35,18 +35,21 @@ stages:
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
-       - script: git clone https://github.com/mkleemann/cmake-avr.git ./cmake-avr/
-         displayName: "Get Tools"
-       - script: |
-          sudo apt-get install binutils gcc-avr avr-libc
-          mkdir -p build
-          cd ./build/
-          tree
-          cmake -DCMAKE_TOOLCHAIN_FILE=../cmake-avr/generic-gcc-avr.cmake ../cmake-avr/example
-          tree
-          make
-          tree
-         displayName: "Run"
+#       - script: git clone https://github.com/mkleemann/cmake-avr.git ./cmake-avr/
+#         displayName: "Get CMake tools: mkleemann/cmake-avr"
+#         condition: succeeded()
+       - script: sudo apt-get install binutils gcc-avr avr-libc
+         displayName: "Dependencies: apt-get install"
+         condition: succeeded()
+       - script: mkdir -p atmega-device/build ##### try to remove this step!
+         displayName: "mkdir build"
+         condition: succeeded()
+       - script: cmake -S atmega-device -B atmega-device/build #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
+         displayName: "CMake: Create Project"
+         condition: succeeded()
+       - script: cd ./atmega-device/build && make
+         displayName: "CMake: Compile and Link"
+         condition: succeeded()
       # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
       #   displayName: "Create and deploy #include dependency graph"
       #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
@@ -280,7 +283,7 @@ stages:
 
 
  - stage: Maya_Commander
-   
+
    dependsOn: [] #build
    
 
