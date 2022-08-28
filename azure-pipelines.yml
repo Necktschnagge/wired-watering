@@ -35,9 +35,6 @@ stages:
        - script: git submodule update --init --recursive
          displayName: "Init Git Submodules"
          condition: succeeded()
-#       - script: git clone https://github.com/mkleemann/cmake-avr.git ./cmake-avr/
-#         displayName: "Get CMake tools: mkleemann/cmake-avr"
-#         condition: succeeded()
        - script: sudo apt-get install binutils gcc-avr avr-libc
          displayName: "Dependencies: apt-get install"
          condition: succeeded()
@@ -50,25 +47,6 @@ stages:
        - script: cd ./atmega-device/build && make
          displayName: "CMake: Compile and Link"
          condition: succeeded()
-      # - script: ./script/ci/create-deploy-include-dependency-graph.sh "$(GIT_USERNAME)" "$(GIT_ACCESS_TOKEN)" "$(System.PullRequest.PullRequestNumber)"
-      #   displayName: "Create and deploy #include dependency graph"
-      #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), eq( variables['Agent.OS'], 'Linux'))
-      # - script: ./script/ci/check-compile-header-test-integrity.sh
-      #   displayName: "Check compile header test integrity"
-      #   condition: and(succeeded(), ne( variables['Agent.OSArchitecture'], 'ARM'), ne( variables['Agent.OS'], 'Windows_NT'))
-      # - script: cmake -S . -B ./build/
-      #   displayName: "CMake: Create Project"
-      #   condition: succeeded()
-      # - script: cmake --build ./build
-      #   displayName: "CMake: Compile and Link"
-      #   condition: succeeded()
-      #
-      # - script: ./build/test/TEST-Mona-Controller
-      #   displayName: "Run Tests on Linux / Mac OS"
-      #   condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT'))
-      # - script: .\build\test\Debug\TEST-Mona-Controller.exe
-      #   displayName: "Run Tests on Windows"
-      #   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
 
 
  - stage: ESP8266_device
