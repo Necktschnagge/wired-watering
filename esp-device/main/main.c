@@ -45,6 +45,110 @@ static unsigned long global_valve_state = 0;
 
 static bool wifi_connected = false;
 
+/* pressure get handler */
+esp_err_t pressure_get_handler(httpd_req_t* req)
+{
+    char* buf;
+    size_t buf_len;
+    bool abort_on_wrong_target_name = false;
+
+    /* Get header value string length and allocate memory for length + 1,
+     * extra byte for null termination */
+    buf_len = httpd_req_get_hdr_value_len(req, "Host") + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        /* Copy null terminated value string into buffer */
+        if (httpd_req_get_hdr_value_str(req, "Host", buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found header => Host: %s", buf);
+        }
+        free(buf);
+    }
+
+    buf_len = httpd_req_get_hdr_value_len(req, "target-name") + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        if (httpd_req_get_hdr_value_str(req, "target-name", buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found header => target-name: %s", buf);
+            if (strcmp(buf, string_server_name) != 0) {
+                ESP_LOGI(logging_tag, "Header target-name does not match device name \"%s\". Ignoring request.", string_server_name);
+                abort_on_wrong_target_name = true;
+            }
+        }
+        free(buf);
+    }
+
+    if (abort_on_wrong_target_name) {
+        /* Set some custom headers */
+        //httpd_resp_set_hdr(req, "Custom-Header-1", "Custom-Value-1");
+        //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+
+        /* Send response with custom headers and body set as the
+         * string passed in user context*/
+        const char* resp_str = "{\n \"error\":\"wrong target name\"\n}";
+        httpd_resp_send(req, resp_str, strlen(resp_str));
+
+        /* After sending the HTTP response the old HTTP request
+         * headers are lost. Check if HTTP request headers can be read now. */
+         /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+             ESP_LOGI(logging_tag, "Request headers lost");
+         }
+         */
+        return ESP_OK;
+    }
+
+    /* Read URL query string length and allocate memory for length + 1,
+     * extra byte for null termination */
+    buf_len = httpd_req_get_url_query_len(req) + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found URL query => %s", buf);
+            char param[32];
+            /* Get value of expected key from query string */
+
+#if false
+            if (httpd_query_key_value(buf, "valves", param, sizeof(param)) == ESP_OK) {
+                const char* end;
+                unsigned long valve_value = strtoul(param, &end, 10);
+                global_valve_state = valve_value;
+                ESP_LOGI(logging_tag, "got valves =%s", param);
+            }
+#endif // inactive
+            free(buf);
+        }
+    }
+
+    ESP_LOGI(logging_tag, "Starting to request sensor value....");
+
+
+    /* Set some custom headers */
+    httpd_resp_set_hdr(req, "server-name", string_server_name);
+    //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+
+    /* Send response with custom headers and body set as the
+     * string passed in user context*/
+     //const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
+    char resp_str[200] = "";
+#ifdef ANY_VALVE_SERVER
+    int okn = c_for_get_set_valve_answer(resp_str, 200);
+#endif // ANY_VALVE_SERVER
+#ifdef PUMP_RELAY_MAYSON
+    int okn = c_for_get_relay_answer(resp_str, 200);
+#endif // PUMP_RELAY_MAYSON
+
+
+    //(const char*) custom_answer;
+    httpd_resp_send(req, resp_str, strlen(resp_str));
+
+    /* After sending the HTTP response the old HTTP request
+     * headers are lost. Check if HTTP request headers can be read now. */
+     /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+         ESP_LOGI(logging_tag, "Request headers lost");
+     }*/
+    return ESP_OK;
+}
+
+
 /* An HTTP GET handler */
 esp_err_t status_get_handler(httpd_req_t *req)
 {
@@ -185,6 +289,12 @@ httpd_uri_t status_uri = {
     //.user_ctx  = "Hello World!"
 };
 
+httpd_uri_t pressure_uri = {
+    .uri = "/pressure",
+    .method = HTTP_GET,
+    .handler = pressure_get_handler,
+};
+
 httpd_handle_t start_webserver(void)
 {
     httpd_handle_t server = NULL;
@@ -196,8 +306,9 @@ httpd_handle_t start_webserver(void)
         // Set URI handlers
         ESP_LOGI(logging_tag, "Registering URI handlers");
         httpd_register_uri_handler(server, &status_uri);
-        //httpd_register_uri_handler(server, &echo);
-        //httpd_register_uri_handler(server, &ctrl);
+#ifdef VALVE_SERVER_JAMES
+        httpd_register_uri_handler(server, &pressure_uri);
+#endif // VALVE_SERVER_JAMES
         return server;
     }
 
