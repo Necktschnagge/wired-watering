@@ -51,6 +51,41 @@ bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t ti
     }
     return true;
 }
+
+bool read_bits_u16(uint16_t* data, uint8_t count_bits, TickType_t t0, TickType_t timeout_difference) {
+    *data = 0;
+    uint16_t the_bit = 1;
+    while (count_bits != 0) {
+        --count_bits;
+
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 1); // ready for receive!
+
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) { // wait for send confirm
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(logging_tag, "timeout #4236985");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is HIGH
+        }
+        int received_bit = gpio_get_level(JAMES_ATM_TO_ESP_DATA);
+
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0); // received successfully (confirmation)!
+
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) { // wait for slave clock down.
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(logging_tag, "timeout #4236971");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is LOW
+        }
+        if (received_bit) *data |= the_bit;
+        the_bit <<= 1;
+    }
+    return true;
+}
+
 #endif // VALVE_SERVER_JAMES
 
 

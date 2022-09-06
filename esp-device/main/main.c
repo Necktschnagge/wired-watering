@@ -40,6 +40,7 @@ static bool pump_auto = false;
 
 #ifdef ANY_VALVE_SERVER
 static unsigned long global_valve_state = 0;
+static uint16_t global_pressure_value = 0;
 #endif // ANY_VALVE_SERVER
 
 
@@ -119,6 +120,8 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
     }
 
     ESP_LOGI(logging_tag, "Starting to request sensor value....");
+
+
 
 
     /* Set some custom headers */
@@ -572,7 +575,19 @@ again_sync:
 
         ESP_LOGI(logging_tag, "finished sending");
 
+        uint8_t OPCODE_GET_PRESSURE = 2; //4 bit OPCODES
 
+        bool success_3 = send_bits_u8(OPCODE_GET_PRESSURE, 4, t0, 100); // always send LSB first
+        if (!success_3) goto again_sync;
+
+        uint16_t pressure_value;
+
+        bool success_4 = read_bits_u16(&pressure_value, 16, t0, 100);
+        if (!success_4) goto again_sync;
+
+        global_pressure_value = pressure_value;
+
+        ESP_LOGI(logging_tag, "finished receiving pressure value");
         ++cnt;
     }
 
