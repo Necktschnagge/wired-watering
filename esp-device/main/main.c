@@ -147,6 +147,13 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
 }
 #endif //VALVE_SERVER_JAMES
 
+#ifdef VALVE_SERVER_JAMES
+httpd_uri_t pressure_uri = {
+    .uri = "/pressure",
+    .method = HTTP_GET,
+    .handler = pressure_get_handler,
+};
+#endif //VALVE_SERVER_JAMES
 
 /* An HTTP GET handler */
 esp_err_t status_get_handler(httpd_req_t *req)
@@ -288,11 +295,7 @@ httpd_uri_t status_uri = {
     //.user_ctx  = "Hello World!"
 };
 
-httpd_uri_t pressure_uri = {
-    .uri = "/pressure",
-    .method = HTTP_GET,
-    .handler = pressure_get_handler,
-};
+
 
 httpd_handle_t start_webserver(void)
 {
