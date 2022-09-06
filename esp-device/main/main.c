@@ -46,6 +46,7 @@ static uint16_t global_pressure_value = 0;
 
 static bool wifi_connected = false;
 
+#ifdef VALVE_SERVER_JAMES
 /* pressure get handler */
 esp_err_t pressure_get_handler(httpd_req_t* req)
 {
@@ -144,6 +145,7 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
      }*/
     return ESP_OK;
 }
+#endif //VALVE_SERVER_JAMES
 
 
 /* An HTTP GET handler */
