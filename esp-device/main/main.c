@@ -119,9 +119,9 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
         }
     }
 
-    ESP_LOGI(logging_tag, "Starting to request sensor value....");
+    ESP_LOGI(logging_tag, "Answering request for sensor value....");
 
-
+    uint16_t raw_pressure = global_pressure_value;
 
 
     /* Set some custom headers */
@@ -132,13 +132,7 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
      * string passed in user context*/
      //const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
     char resp_str[200] = "";
-#ifdef ANY_VALVE_SERVER
-    int okn = c_for_get_set_valve_answer(resp_str, 200);
-#endif // ANY_VALVE_SERVER
-#ifdef PUMP_RELAY_MAYSON
-    int okn = c_for_get_relay_answer(resp_str, 200);
-#endif // PUMP_RELAY_MAYSON
-
+    int okn = c_for_get_pressure_answer(resp_str, 200, raw_pressure);
 
     //(const char*) custom_answer;
     httpd_resp_send(req, resp_str, strlen(resp_str));

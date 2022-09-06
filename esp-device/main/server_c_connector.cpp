@@ -20,6 +20,11 @@ extern "C" {
         return result;
     }
 
+    int c_for_get_pressure_answer(char* first_char, int length, uint16_t raw_pressure) {
+        int result = get_pressure_answer(first_char, length, raw_pressure);
+        return result;
+    }
+
 #ifdef __cplusplus
 }
 #endif
