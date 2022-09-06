@@ -1,4 +1,4 @@
-#include "gpio_wrapper.h"
+#include "atm_slave_comm.h"
 
 // own project
 #include "gpio_definitions_felix.h"
@@ -8,45 +8,49 @@
 
 #include "config.h"
 
-// libraries
+#include "custom_utils.h"
+
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_log.h"
 #include "driver/gpio.h"
 
-void gpio_init2(void) {
+#ifdef VALVE_SERVER_JAMES
 
-    //ifndef .. throw compile time error #####
 
-    if (GPIO_OUTPUT_LANES != 0) {
-        gpio_config_t output_lanes_config;
-        //disable interrupt
-        output_lanes_config.intr_type = GPIO_INTR_DISABLE;
-        //set as output mode
-        output_lanes_config.mode = GPIO_MODE_OUTPUT;
-        //bit mask of the pins that you want to set,e.g.GPIO15/16
-        output_lanes_config.pin_bit_mask = GPIO_OUTPUT_LANES;
-        //disable pull-down mode
-        output_lanes_config.pull_down_en = 0;
-        //disable pull-up mode
-        output_lanes_config.pull_up_en = 0;
-        //configure GPIO with the given settings
-        gpio_config(&output_lanes_config);
+bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t timeout_difference) {
+    while (count_bits != 0) {
+        --count_bits;
+
+        gpio_set_level(JAMES_ESP_TO_ATM_DATA, data % 2);
+        // data set!
+        data = data / 2;
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 1);
+        // clock set: ready for the receiver to read data bit
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(logging_tag, "timeout #3611133");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is LOW
+        }
+        // receiver has read
+        gpio_set_level(JAMES_ESP_TO_ATM_DATA, 0);
+        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0);
+
+        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
+            if (xTaskGetTickCount() - t0 > timeout_difference) {
+                ESP_LOGI(logging_tag, "timeout #3731134");
+                return false;
+            }
+            wait_to_not_be_busy;
+            //wait until clock in is HIGH
+        }
+        // receiver has confirmed end of bit.
     }
-
-    if (GPIO_INPUT_LANES != 0) {
-        gpio_config_t input_lanes_config;
-        //disable interrupt
-        input_lanes_config.intr_type = GPIO_INTR_DISABLE;
-        //set as input mode
-        input_lanes_config.mode = GPIO_MODE_INPUT;
-        //bit mask of the pins that you want to set,e.g.GPIO15/16
-        input_lanes_config.pin_bit_mask = GPIO_INPUT_LANES;
-        //disable pull-down mode
-        input_lanes_config.pull_down_en = 0;
-        //enable pull-up mode
-        input_lanes_config.pull_up_en = GPIO_PULLUP_ENABLE;
-        //configure GPIO with the given settings
-        gpio_config(&input_lanes_config);
-    }
-
+    return true;
 }
+#endif // VALVE_SERVER_JAMES
 
 

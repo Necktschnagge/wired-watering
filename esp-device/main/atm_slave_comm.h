@@ -1,9 +1,13 @@
 #pragma once
 
-/**
-   Initializes GPIO pins to work as input or output respectively.
-   Definitions for GPIO pins have to be provided in gpio_definitions_*.h
-*/
-void gpio_init2(void);
+#include "select_device.h"
+
+#include "freertos/FreeRTOS.h"
+
+#ifdef VALVE_SERVER_JAMES
+
+bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t timeout_difference);
+
+#endif // VALVE_SERVER_JAMES
 
 
