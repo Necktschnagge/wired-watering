@@ -7,6 +7,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
+#include "freertos/semphr.h"
+
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_netif.h"
@@ -42,6 +44,7 @@ static bool pump_auto = false;
 static unsigned long global_valve_state = 0;
 static uint16_t global_pressure_value = 0;
 #endif // ANY_VALVE_SERVER
+static SemaphoreHandle_t mutex_global_pressure_value;
 
 
 static bool wifi_connected = false;
@@ -122,7 +125,27 @@ esp_err_t pressure_get_handler(httpd_req_t* req)
 
     ESP_LOGI(logging_tag, "Answering request for sensor value....");
 
-    uint16_t raw_pressure = global_pressure_value;
+    uint16_t raw_pressure = 0xFFFF;
+    
+        /* See if we can obtain the semaphore.  If the semaphore is not
+        available wait 10 ticks to see if it becomes free. */
+        if (xSemaphoreTake(mutex_global_pressure_value, (TickType_t)100) == pdTRUE)
+        {
+            /* We were able to obtain the semaphore and can now access the
+            shared resource. */
+
+            raw_pressure = global_pressure_value;
+
+            /* We have finished accessing the shared resource.  Release the
+            semaphore. */
+            xSemaphoreGive(mutex_global_pressure_value);
+        }
+        else
+        {
+            /* We could not obtain the semaphore and can therefore not access
+            the shared resource safely. */
+        }
+
 
 
     /* Set some custom headers */
@@ -332,6 +355,13 @@ global_entities_t GLOBAL;
 
 void init_GLOBAL() {
     GLOBAL.httpd_server_handle = NULL;
+
+    mutex_global_pressure_value = xSemaphoreCreateMutex();
+
+    if (mutex_global_pressure_value == NULL) {
+        while (1) {}
+    }
+
 }
 
 static void disconnect_handler(void* arg, esp_event_base_t event_base, 
@@ -584,7 +614,25 @@ again_sync:
         bool success_4 = read_bits_u16(&pressure_value, 16, t0, 100);
         if (!success_4) goto again_sync;
 
-        global_pressure_value = pressure_value;
+        
+            /* See if we can obtain the semaphore.  If the semaphore is not
+            available wait 10 ticks to see if it becomes free. */
+            if (xSemaphoreTake(mutex_global_pressure_value, (TickType_t)100) == pdTRUE)
+            {
+                /* We were able to obtain the semaphore and can now access the
+                shared resource. */
+
+                global_pressure_value = pressure_value;
+
+                /* We have finished accessing the shared resource.  Release the
+                semaphore. */
+                xSemaphoreGive(mutex_global_pressure_value);
+            }
+            else
+            {
+                /* We could not obtain the semaphore and can therefore not access
+                the shared resource safely. */
+            }
 
         ESP_LOGI(logging_tag, "finished receiving pressure value");
         ++cnt;
