@@ -1,6 +1,12 @@
 [submodule "maya/extern/cpr"]
 	path = maya/extern/cpr
 	url = https://github.com/libcpr/cpr
+[submodule "maya/extern/spdlog"]
+	path = maya/extern/spdlog
+	url = https://github.com/gabime/spdlog
 [submodule "maya/extern/googletest"]
 	path = maya/extern/googletest
 	url = https://github.com/google/googletest
+[submodule "maya/extern/td"]
+	path = maya/extern/td
+	url = https://github.com/tdlib/td.git

@@ -1,0 +1,25 @@
+#include "config.h"
+
+#ifdef VALVE_SERVER_FELIX
+
+
+
+// FELIX_VALVE_0
+#define PIN_D1 5
+#define FELIX_VALVE_0 PIN_D1
+
+// FELIX_VALVE_1
+#define PIN_D2 4
+#define FELIX_VALVE_1 PIN_D2
+
+
+
+#define GPIO_INPUT_LANES (0ULL)
+
+#define GPIO_OUTPUT_LANES ((1ULL<<FELIX_VALVE_0) | (1ULL<<FELIX_VALVE_1))
+
+
+
+#endif // VALVE_SERVER_FELIX
+
+
