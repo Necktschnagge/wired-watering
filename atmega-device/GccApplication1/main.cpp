@@ -1,4 +1,6 @@
 
+#define F_CPU 1000000UL
+
 #include <avr/io.h>
 
 
@@ -9,6 +11,10 @@ void pin_init(){
 
 	DDRB  = 0b00011000; // communication to master : X X X : CLOCK : DATA : SYNC : CLOCK : DATA
 	PORTB = 0b00000111; // pull-up resistors for input lanes.
+	
+	// connect AREF port to VCC
+	DDRC  = 0b00000000; // XXXX XXX[ADC pressure sensor input ADC0]
+	PORTC = 0b00000000; // no pull-up for sensor input
 }
 
 
@@ -75,6 +81,48 @@ namespace fsl {
 	
 }
 
+bool read_10bit_ADC_pressure_sensor(uint16_t& measure_result){
+	bool successfully{ true };
+	
+	PRR &= ~0b00000001;		// Power Reduction Register : Power Reduction ADC : shuts down the ADC when high
+
+	ADCSRA = 0b10010100; /*
+	7: / ADC Control and Status Register A : ADC Enable : 1 == ADC enabled
+	6: Start Conversion
+	5: Auto Trigger enable
+	4: interrupt flag, enabled when conversion completed, disabled by writing a 1, must be disabled before starting a new conversion
+	3: interrupt enable for ADC completion
+	2:0 clock speed pre-scaler (0b100 is pre-scaler 16)
+	*/
+
+	ADMUX = 0b00000000; /*
+	7:6		use AREF as reference
+	5:		result is right adjusted
+	4:		reserved
+	3:0		select input: ADC0
+	*/
+	
+
+	ADCSRA |= 0b01000000;	// ADC Control and Status Register A : ADC Start Conversion : set to 1 to start each conversion
+	// connect AREF and AVCC to 5V	
+
+	uint64_t timeout = F_CPU / 4;
+	while((--timeout>0) && !(ADCSRA & 0b10000)){
+		/* busy waiting */
+	}
+	measure_result = ADCW; // read result
+	if (timeout == 0) {
+		measure_result = 0xFFFF;
+		successfully = false;
+	}
+	
+	ADCSRA &= ~0b10000000; // ADC Control and Status Register A : ADC Enable : 1 == ADC enabled -> disable ADC
+
+	// maybe (re-)enable power reduction. PRR register -> no dont, read ADC "Overview" in docs to know why...
+	
+	return successfully;
+}
+
 
 template<class Integer_Type>
 bool try_read_bits_from_esp(uint8_t count_bits, Integer_Type& read_buffer){
@@ -105,6 +153,34 @@ bool try_read_bits_from_esp(uint8_t count_bits, Integer_Type& read_buffer){
 	return true;
 }
 
+template<class Integer_Type>
+bool try_send_bits_to_esp(uint8_t count_bits, Integer_Type send_bit_sequence){
+	while (count_bits)
+	{
+		// send one bit:
+		while(!is_clock_input_lane_active()){ // wait for receive-ready signal
+			if (is_sync_input_lane_active()){
+				return false;
+			}
+		}
+		
+		set_data_output_lane(send_bit_sequence & 0b1); // send LSB first
+		send_bit_sequence >>= 1; // shift
+		--count_bits;
+		
+		set_clock_output_lane(true); // data_output is set
+		while (is_clock_input_lane_active()){ // wait for receive confirmation
+			if (is_sync_input_lane_active()){
+				return false;
+			}
+		}
+		// got receive confirmation
+		set_clock_output_lane(false);
+		
+	}
+	return true;
+}
+
 int main(void)
 {
 	
@@ -120,7 +196,7 @@ int main(void)
 			goto again_sync;
 		}
 
-		if (opcode == 0b0001){
+		if (opcode == 0b0001){ // set-valves
 			uint8_t valves = 0;
 			if (!try_read_bits_from_esp(8,valves)){
 				goto again_sync;
@@ -128,9 +204,23 @@ int main(void)
 			PORTD = valves;
 			continue;
 		}
+
+		if (opcode == 0b0010){ // read-pressure
+			uint16_t pressure = 0;
+			bool success = read_10bit_ADC_pressure_sensor(pressure);
+			if (success){
+				pressure &= 0x0FFF;
+			}
+			if (!success){
+				pressure = 0x8000;
+			}
+			if (!try_send_bits_to_esp(16, pressure)){
+				goto again_sync;
+			}
+			continue;
+		}
 		
 		goto again_sync; // no valid opcode
-		
 	}
 	
 	PORTD = 0;
@@ -138,5 +228,4 @@ int main(void)
 	while (true)
 	{
 	}
-	
 }

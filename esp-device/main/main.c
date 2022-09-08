@@ -1,9 +1,14 @@
 
+#include "atm_slave_comm.h"
+#include "config.h"
+
 #include <sys/param.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
+#include "freertos/semphr.h"
+
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_netif.h"
@@ -17,7 +22,6 @@
 #include <string.h>
 
 
-#include "config.h"
 #include "gpio_definitions_felix.h"
 #include "gpio_definitions_lucas.h"
 #include "gpio_definitions_james.h"
@@ -25,9 +29,10 @@
 #include "gpio_wrapper.h"
 #include "server_c_connector.h"
 
+#include "custom_utils.h"
+
 static const char* string_on = "on";
 static const char* string_off = "off";
-
 
 #ifdef PUMP_RELAY_MAYSON
 static bool pump_system = true;
@@ -37,10 +42,141 @@ static bool pump_auto = false;
 
 #ifdef ANY_VALVE_SERVER
 static unsigned long global_valve_state = 0;
+static uint16_t global_pressure_value = 0;
 #endif // ANY_VALVE_SERVER
+static SemaphoreHandle_t mutex_global_pressure_value;
 
 
 static bool wifi_connected = false;
+
+#ifdef VALVE_SERVER_JAMES
+/* pressure get handler */
+esp_err_t pressure_get_handler(httpd_req_t* req)
+{
+    char* buf;
+    size_t buf_len;
+    bool abort_on_wrong_target_name = false;
+
+    /* Get header value string length and allocate memory for length + 1,
+     * extra byte for null termination */
+    buf_len = httpd_req_get_hdr_value_len(req, "Host") + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        /* Copy null terminated value string into buffer */
+        if (httpd_req_get_hdr_value_str(req, "Host", buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found header => Host: %s", buf);
+        }
+        free(buf);
+    }
+
+    buf_len = httpd_req_get_hdr_value_len(req, "target-name") + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        if (httpd_req_get_hdr_value_str(req, "target-name", buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found header => target-name: %s", buf);
+            if (strcmp(buf, string_server_name) != 0) {
+                ESP_LOGI(logging_tag, "Header target-name does not match device name \"%s\". Ignoring request.", string_server_name);
+                abort_on_wrong_target_name = true;
+            }
+        }
+        free(buf);
+    }
+
+    if (abort_on_wrong_target_name) {
+        /* Set some custom headers */
+        //httpd_resp_set_hdr(req, "Custom-Header-1", "Custom-Value-1");
+        //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+
+        /* Send response with custom headers and body set as the
+         * string passed in user context*/
+        const char* resp_str = "{\n \"error\":\"wrong target name\"\n}";
+        httpd_resp_send(req, resp_str, strlen(resp_str));
+
+        /* After sending the HTTP response the old HTTP request
+         * headers are lost. Check if HTTP request headers can be read now. */
+         /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+             ESP_LOGI(logging_tag, "Request headers lost");
+         }
+         */
+        return ESP_OK;
+    }
+
+    /* Read URL query string length and allocate memory for length + 1,
+     * extra byte for null termination */
+    buf_len = httpd_req_get_url_query_len(req) + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
+            ESP_LOGI(logging_tag, "Found URL query => %s", buf);
+            char param[32];
+            /* Get value of expected key from query string */
+
+#if false
+            if (httpd_query_key_value(buf, "valves", param, sizeof(param)) == ESP_OK) {
+                const char* end;
+                unsigned long valve_value = strtoul(param, &end, 10);
+                global_valve_state = valve_value;
+                ESP_LOGI(logging_tag, "got valves =%s", param);
+            }
+#endif // inactive
+            free(buf);
+        }
+    }
+
+    ESP_LOGI(logging_tag, "Answering request for sensor value....");
+
+    uint16_t raw_pressure = 0xFFFF;
+    
+        /* See if we can obtain the semaphore.  If the semaphore is not
+        available wait 10 ticks to see if it becomes free. */
+        if (xSemaphoreTake(mutex_global_pressure_value, (TickType_t)100) == pdTRUE)
+        {
+            /* We were able to obtain the semaphore and can now access the
+            shared resource. */
+
+            raw_pressure = global_pressure_value;
+
+            /* We have finished accessing the shared resource.  Release the
+            semaphore. */
+            xSemaphoreGive(mutex_global_pressure_value);
+        }
+        else
+        {
+            /* We could not obtain the semaphore and can therefore not access
+            the shared resource safely. */
+        }
+
+
+
+    /* Set some custom headers */
+    httpd_resp_set_hdr(req, "server-name", string_server_name);
+    //httpd_resp_set_hdr(req, "Custom-Header-2", "Custom-Value-2");
+
+    /* Send response with custom headers and body set as the
+     * string passed in user context*/
+     //const char* resp_str = "{\n \"server-name\" : \"pump-relay-mayson\"\n \"manual\" : XXXXX\n \"auto\" : XXXXX\n \"system\" : XXXXX\n}";
+    char resp_str[200] = "";
+    int okn = c_for_get_pressure_answer(resp_str, 200, raw_pressure);
+
+    //(const char*) custom_answer;
+    httpd_resp_send(req, resp_str, strlen(resp_str));
+
+    /* After sending the HTTP response the old HTTP request
+     * headers are lost. Check if HTTP request headers can be read now. */
+     /*if (httpd_req_get_hdr_value_len(req, "Host") == 0) {
+         ESP_LOGI(logging_tag, "Request headers lost");
+     }*/
+    return ESP_OK;
+}
+#endif //VALVE_SERVER_JAMES
+
+#ifdef VALVE_SERVER_JAMES
+httpd_uri_t pressure_uri = {
+    .uri = "/pressure",
+    .method = HTTP_GET,
+    .handler = pressure_get_handler,
+};
+#endif //VALVE_SERVER_JAMES
 
 /* An HTTP GET handler */
 esp_err_t status_get_handler(httpd_req_t *req)
@@ -182,6 +318,8 @@ httpd_uri_t status_uri = {
     //.user_ctx  = "Hello World!"
 };
 
+
+
 httpd_handle_t start_webserver(void)
 {
     httpd_handle_t server = NULL;
@@ -193,8 +331,9 @@ httpd_handle_t start_webserver(void)
         // Set URI handlers
         ESP_LOGI(logging_tag, "Registering URI handlers");
         httpd_register_uri_handler(server, &status_uri);
-        //httpd_register_uri_handler(server, &echo);
-        //httpd_register_uri_handler(server, &ctrl);
+#ifdef VALVE_SERVER_JAMES
+        httpd_register_uri_handler(server, &pressure_uri);
+#endif // VALVE_SERVER_JAMES
         return server;
     }
 
@@ -216,6 +355,13 @@ global_entities_t GLOBAL;
 
 void init_GLOBAL() {
     GLOBAL.httpd_server_handle = NULL;
+
+    mutex_global_pressure_value = xSemaphoreCreateMutex();
+
+    if (mutex_global_pressure_value == NULL) {
+        while (1) {}
+    }
+
 }
 
 static void disconnect_handler(void* arg, esp_event_base_t event_base, 
@@ -359,46 +505,6 @@ void connect_wifi(void) {
     */
 }
 
-#ifdef VALVE_SERVER_JAMES
-
-#define wait_to_not_be_busy vTaskDelay(1) /// otherwise we block other tasks and watchdog kills the whole system -> reboot(?)
-
-bool send_bits_u8(uint8_t data, uint8_t count_bits, TickType_t t0, TickType_t timeout_difference) {
-    while (count_bits != 0) {
-        --count_bits;
-        
-        gpio_set_level(JAMES_ESP_TO_ATM_DATA, data % 2);
-        // data set!
-        data = data / 2;
-        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 1);
-        // clock set: ready for the receiver to read data bit
-        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 1) {
-            if (xTaskGetTickCount() - t0 > timeout_difference) {
-                ESP_LOGI(logging_tag, "timeout #3611133");
-                return false;
-            }
-            wait_to_not_be_busy;
-            //wait until clock in is LOW
-        }
-        // receiver has read
-        gpio_set_level(JAMES_ESP_TO_ATM_DATA, 0);
-        gpio_set_level(JAMES_ESP_TO_ATM_CLOCK, 0);
-
-        while (gpio_get_level(JAMES_ATM_TO_ESP_CLOCK) == 0) {
-            if (xTaskGetTickCount() - t0 > timeout_difference) {
-                ESP_LOGI(logging_tag, "timeout #3731134");
-                return false;
-            }
-            wait_to_not_be_busy;
-            //wait until clock in is HIGH
-        }
-        // receiver has confirmed end of bit.
-    }
-    return true;
-}
-#endif // VALVE_SERVER_JAMES
-
-
 void gpio_actor(void) {
 
 #ifdef PUMP_RELAY_MAYSON
@@ -498,7 +604,37 @@ again_sync:
 
         ESP_LOGI(logging_tag, "finished sending");
 
+        uint8_t OPCODE_GET_PRESSURE = 2; //4 bit OPCODES
 
+        bool success_3 = send_bits_u8(OPCODE_GET_PRESSURE, 4, t0, 100); // always send LSB first
+        if (!success_3) goto again_sync;
+
+        uint16_t pressure_value;
+
+        bool success_4 = read_bits_u16(&pressure_value, 16, t0, 100);
+        if (!success_4) goto again_sync;
+
+        
+            /* See if we can obtain the semaphore.  If the semaphore is not
+            available wait 10 ticks to see if it becomes free. */
+            if (xSemaphoreTake(mutex_global_pressure_value, (TickType_t)100) == pdTRUE)
+            {
+                /* We were able to obtain the semaphore and can now access the
+                shared resource. */
+
+                global_pressure_value = pressure_value;
+
+                /* We have finished accessing the shared resource.  Release the
+                semaphore. */
+                xSemaphoreGive(mutex_global_pressure_value);
+            }
+            else
+            {
+                /* We could not obtain the semaphore and can therefore not access
+                the shared resource safely. */
+            }
+
+        ESP_LOGI(logging_tag, "finished receiving pressure value");
         ++cnt;
     }
 
