@@ -1,3 +1,4 @@
+#pragma once
 
 /**
    Initializes GPIO pins to work as input or output respectively.

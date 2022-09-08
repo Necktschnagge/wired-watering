@@ -11,8 +11,44 @@ trigger:
     exclude:
     - artifacts
 
-
 stages:
+ - stage: Atmega_device
+   
+   dependsOn: []
+   
+   jobs:
+   
+    - job: Compile_AVR
+      strategy:
+        matrix:
+          ubuntu_22_04:
+            os_image: 'ubuntu-22.04'
+            agent_pool: 'Azure Pipelines'
+      pool:
+        vmImage: $(os_image)
+        name: $(agent_pool)
+      
+      
+      condition: true
+      timeoutInMinutes: 50
+      steps:
+       - script: git submodule update --init --recursive
+         displayName: "Init Git Submodules"
+         condition: succeeded()
+       - script: sudo apt-get install binutils gcc-avr avr-libc
+         displayName: "Dependencies: apt-get install"
+         condition: succeeded()
+       - script: mkdir -p atmega-device/build ##### try to remove this step!
+         displayName: "mkdir build"
+         condition: succeeded()
+       - script: cmake -S atmega-device -B atmega-device/build #-DCMAKE_TOOLCHAIN_FILE= relative path starting from -S directory !!!!
+         displayName: "CMake: Create Project"
+         condition: succeeded()
+       - script: cd ./atmega-device/build && make
+         displayName: "CMake: Compile and Link"
+         condition: succeeded()
+
+
  - stage: ESP8266_device
    
    dependsOn: [] #build
@@ -225,7 +261,7 @@ stages:
 
 
  - stage: Maya_Commander
-   
+
    dependsOn: [] #build
    
 
