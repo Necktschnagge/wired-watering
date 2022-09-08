@@ -257,9 +257,6 @@ stages:
           mac_11:
             os_image: 'macos-11'
             agent_pool: 'Azure Pipelines'
-          mac_10_15:
-            os_image: 'macos-10.15'
-            agent_pool: 'Azure Pipelines'
       
           windows_2022:
             os_image: 'windows-2022'
