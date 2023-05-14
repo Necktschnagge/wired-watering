@@ -277,33 +277,38 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 }
 
 void connect_wifi(void) {
-    
+    const char* const local_tag = "connect-WLAN";
     s_wifi_event_group = xEventGroupCreate(); // event group for signals about wifi being connected or not
 
-    ESP_LOGI(logging_tag, "initializing adapter...");
 
+    ESP_LOGI(local_tag, "Initializing TCP-IP adapter...");
     tcpip_adapter_init();
 
+
+    ESP_LOGI(local_tag, "Getting sta_ip and sta_mac...");
     tcpip_adapter_ip_info_t sta_ip;
     uint8_t sta_mac[6];
 
     ESP_ERROR_CHECK(esp_wifi_get_mac(ESP_IF_WIFI_STA, sta_mac)); //<<<<< needed?
     ESP_ERROR_CHECK(tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip)); //<<<<< needed?
 
-    ESP_LOGI(logging_tag, "setting static ip adresses...");
 
+    ESP_LOGI(local_tag, "Setting static IP adresses...");
     /* set static ip, gateway and netmask */
-    IP_CLIENT_CONFIG;
+    IP_CLIENT_CONFIG; // overwrites sta_ip !
 
+    ESP_LOGI(local_tag, "Stopping DHCP client...");
     ESP_ERROR_CHECK(tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA)); // stop DHCP client in order to use static ip addresses.
+
+    ESP_LOGI(local_tag, "Applying static IP configuration...");
     ESP_ERROR_CHECK(tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip));
 
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    ESP_ERROR_CHECK(esp_event_loop_create_default()); //<<<<< should be moved into main loop???
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
-    ESP_LOGI(logging_tag, "registering wifi handlers...");
+    ESP_LOGI(local_tag, "registering wifi handlers...");
 
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
@@ -327,7 +332,7 @@ void connect_wifi(void) {
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    ESP_LOGI(logging_tag, "issued wifi start");
+    ESP_LOGI(local_tag, "issued wifi start");
 
     /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
      * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
@@ -341,15 +346,15 @@ void connect_wifi(void) {
      * happened. */
     if (bits & WIFI_CONNECTED_BIT) {
         wifi_connected = true;
-        ESP_LOGI(logging_tag, "connected to ap SSID:%s",
+        ESP_LOGI(local_tag, "connected to ap SSID:%s",
             WIFI_SSID);
     }
     else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGI(logging_tag, "Failed to connect to SSID:%s",
+        ESP_LOGI(local_tag, "Failed to connect to SSID:%s",
             WIFI_SSID);
     }
     else {
-        ESP_LOGE(logging_tag, "UNEXPECTED EVENT");
+        ESP_LOGE(local_tag, "UNEXPECTED EVENT");
     }
 
     /* finish wifi
