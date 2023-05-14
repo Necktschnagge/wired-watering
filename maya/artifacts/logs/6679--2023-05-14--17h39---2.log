@@ -1,0 +1,13 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist 1 Commit vor 'origin/maya-productive'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+> sudo -u mayadm git pull
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   6d9a420272fe02a790afebeb2e5e9aaa3a4ab40a
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   0s
+=====================================================================================================
