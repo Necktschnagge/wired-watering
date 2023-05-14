@@ -167,6 +167,8 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
+	(void) days_since_epoch;
+
 	//pumpe an
 	send_mayson(0, 0, 0);
 
