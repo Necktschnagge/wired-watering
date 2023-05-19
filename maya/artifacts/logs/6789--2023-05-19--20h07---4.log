@@ -1,0 +1,22 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-05-19 20:07:42.030] [main] [info] Pinging Pump Server Mayson...
+[2023-05-19 20:07:42.101] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-05-19 20:07:42.101] [main] [info] Pinging all valve stations...
+[2023-05-19 20:07:42.408] [main] [info] Pinging all valve stations   ...DONE!
+[2023-05-19 20:07:42.408] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1684519662408575420
+get_seconds_since_epoch(bool verbose /* true */)   :   1684519662
+minutes since epoch   :   28075327
+minute of day   :   1087
+minute of hour   :   7
+hour of day   :   18
+[2023-05-19 20:07:42.408] [main] [info] Checking timestamp.txt...
+[2023-05-19 20:07:42.408] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28071490
+[2023-05-19 20:07:42.408] [main] [info] Checking timestamp.txt   ...DONE!
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   0s
+=====================================================================================================
