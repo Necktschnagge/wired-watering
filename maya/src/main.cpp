@@ -47,13 +47,13 @@
 //static const std::string 
 
 bool ping(const std::string& ip_address) {
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 	std::string bash_command{ "ping -c1 -s3 " };
 	bash_command.append(ip_address);
 	bash_command.append("  > /dev/null 2>&1");
 	int x = system(bash_command.c_str());
 	return (x == 0);
-#endif // __linux__
+#endif // defined(__linux__) || defined(__APPLE__)
 #ifdef _WIN32
 	std::string batch_command{ "ping -n 1 " };
 	batch_command.append(ip_address);
