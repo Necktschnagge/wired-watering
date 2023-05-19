@@ -247,10 +247,6 @@ stages:
             os_image: 'ubuntu-20.04'
             agent_pool: 'Azure Pipelines'
       
-          ubuntu_18_04_gcc_8:
-            os_image: 'ubuntu-18.04'
-            agent_pool: 'Azure Pipelines'
-      
           mac_12:
             os_image: 'macos-12'
             agent_pool: 'Azure Pipelines'
