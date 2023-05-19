@@ -167,13 +167,15 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
+	(void) days_since_epoch;
+
 	//pumpe an
 	send_mayson(0, 0, 0);
 
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
-
+#if false
 	if ((days_since_epoch % 2)) {
 
 		// TOMA - Mara simultan
@@ -270,6 +272,10 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
 		wait_for(60 * 20);
 	}
+#endif
+	// just to demonstrate:
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
+	wait_for(60 * 3);
 
 	// valves off:
 	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
@@ -282,8 +288,8 @@ void watering(const int64_t& seconds_since_epoch) {
 
 	// let capacitor run dry:
 	send_valves(
-		IP_ADDRESS_VALVE_SERVER_JAMES,
-		JAMES_GURKE_ERBSE
+		IP_ADDRESS_VALVE_SERVER_FELIX,
+		FELIX_EIBEN
 	);
 	wait_for(60 * 3);
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
@@ -417,8 +423,8 @@ int main(int argc, char** argv) {
 	standard_logger()->info("Checking timestamp.txt   ...DONE!");
 
 	if (
-		(minute_of_the_day > (4 - 2) * 60) // 4:00 // -2 == UTC 
-		&& (minute_of_the_day < (7 - 2) * 60) // 7:00
+		(minute_of_the_day > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
+		&& (minute_of_the_day < (6 - 2) * 60 + 30) // 6:30
 		&& (previous_timestamp + 3 * 60 + 1 < minutes_since_epoch) // 3 hours gone since last watering
 		)
 	{
