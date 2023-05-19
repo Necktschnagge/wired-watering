@@ -18,6 +18,8 @@
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
 
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.23" };
+
 [[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 
 [[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
@@ -167,7 +169,7 @@ void watering(const int64_t& seconds_since_epoch) {
 	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
 	const int64_t days_since_epoch{ hours_since_epoch / 24 };
 
-	(void) days_since_epoch;
+	(void)days_since_epoch;
 
 	//pumpe an
 	send_mayson(0, 0, 0);
@@ -372,6 +374,63 @@ class schedule {
 
 #endif
 
+bool check_all_servers_using_ping() {
+
+	standard_logger()->info("Pinging Pump Server Mayson...");
+
+	const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
+	if (!MAYSON_AVAILABLE) {
+		standard_logger()->error("Fatal: Pump Server not available!");
+	}
+	else {
+		standard_logger()->info("Pump Server ping OK!");
+	}
+
+	standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+
+	standard_logger()->info("Pinging all valve stations...");
+	const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
+	const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
+	const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+
+	if (!JAMES_AVAILABLE) {
+		standard_logger()->error("Fatal: James not available!");
+	}
+	else {
+		standard_logger()->info("James ping OK!");
+	}
+	if (!LUCAS_AVAILABLE) {
+		standard_logger()->error("Fatal:Lucas not available!");
+	}
+	else {
+		standard_logger()->info("Lucas ping OK!");
+	}
+	if (!FELIX_AVAILABLE) {
+		standard_logger()->error("Fatal: Felix not available!");
+	}
+	else {
+		standard_logger()->info("Felix ping OK!");
+	}
+
+	standard_logger()->info("Pinging all valve stations   ...DONE!");
+
+	
+	standard_logger()->info("Pinging Non-Existing Test Server...");
+
+	const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
+	
+	if (!TEST_SERVER_UNAVAILABLE) {
+		standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+	}
+	else {
+		standard_logger()->info("Pinging Non-Existing Test Server OK!");
+	}
+
+	standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+
+	return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
+}
+
 int main(int argc, char** argv) {
 
 	(void)argc;
@@ -379,15 +438,9 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	standard_logger()->info("Pinging Pump Server Mayson...");
-	ping(IP_ADDRESS_PUMP_SERVER_MAYSON);
-	standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+	const bool PING_OK{ check_all_servers_using_ping() };
 
-	standard_logger()->info("Pinging all valve stations...");
-	ping(IP_ADDRESS_VALVE_SERVER_JAMES);
-	ping(IP_ADDRESS_VALVE_SERVER_LUCAS);
-	ping(IP_ADDRESS_VALVE_SERVER_FELIX);
-	standard_logger()->info("Pinging all valve stations   ...DONE!");
+	(void)PING_OK;
 
 	standard_logger()->info("Fetching timestamp...");
 	int64_t seconds_since_epoch = get_seconds_since_epoch(true);
