@@ -47,16 +47,20 @@
 //static const std::string 
 
 bool ping(const std::string& ip_address) {
+#ifdef __linux__
+	// LINUX
 	std::string bash_command{ "ping -c1 -s3 " };
 	bash_command.append(ip_address);
 	bash_command.append("  > /dev/null 2>&1");
-#ifdef __linux__
 	int x = system(bash_command.c_str());
 	return (x == 0);
-#else
-	standard_logger()->warn("Ping skipped, not on Linux");
-	return false;
-#endif // LINUX
+#endif // __linux__
+#ifdef _WIN32
+	std::string batch_command{ "ping -n 1 " };
+	batch_command.append(ip_address);
+	int x = system(batch_command.c_str());
+	return (x == 0);
+#endif // _WIN32
 }
 
 int64_t get_seconds_since_epoch(bool verbose = false) {
@@ -414,11 +418,11 @@ bool check_all_servers_using_ping() {
 
 	standard_logger()->info("Pinging all valve stations   ...DONE!");
 
-	
+
 	standard_logger()->info("Pinging Non-Existing Test Server...");
 
 	const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
-	
+
 	if (!TEST_SERVER_UNAVAILABLE) {
 		standard_logger()->error("Got successful PING from Device that should not exists on local network!");
 	}
