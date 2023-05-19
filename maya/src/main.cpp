@@ -48,7 +48,6 @@
 
 bool ping(const std::string& ip_address) {
 #ifdef __linux__
-	// LINUX
 	std::string bash_command{ "ping -c1 -s3 " };
 	bash_command.append(ip_address);
 	bash_command.append("  > /dev/null 2>&1");
@@ -58,6 +57,7 @@ bool ping(const std::string& ip_address) {
 #ifdef _WIN32
 	std::string batch_command{ "ping -n 1 " };
 	batch_command.append(ip_address);
+	batch_command.append("  > nul 2>&1");
 	int x = system(batch_command.c_str());
 	return (x == 0);
 #endif // _WIN32
@@ -404,7 +404,7 @@ bool check_all_servers_using_ping() {
 		standard_logger()->info("James ping OK!");
 	}
 	if (!LUCAS_AVAILABLE) {
-		standard_logger()->error("Fatal:Lucas not available!");
+		standard_logger()->error("Fatal: Lucas not available!");
 	}
 	else {
 		standard_logger()->info("Lucas ping OK!");
