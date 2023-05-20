@@ -379,62 +379,136 @@ class schedule {
 
 #endif
 
-bool check_all_servers_using_ping() {
+class ping_checker {
 
-	standard_logger()->info("Pinging Pump Server Mayson...");
+	static bool check_all_servers_using_ping_once() {
 
-	const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
-	if (!MAYSON_AVAILABLE) {
-		standard_logger()->error("Fatal: Pump Server not available!");
+		standard_logger()->info("Pinging Pump Server Mayson...");
+
+		const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
+		if (!MAYSON_AVAILABLE) {
+			standard_logger()->error("Fatal: Pump Server not available!");
+		}
+		else {
+			standard_logger()->info("Pump Server ping OK!");
+		}
+
+		standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+
+		standard_logger()->info("Pinging all valve stations...");
+		const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
+		const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
+		const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+
+		if (!JAMES_AVAILABLE) {
+			standard_logger()->error("Fatal: James not available!");
+		}
+		else {
+			standard_logger()->info("James ping OK!");
+		}
+		if (!LUCAS_AVAILABLE) {
+			standard_logger()->error("Fatal: Lucas not available!");
+		}
+		else {
+			standard_logger()->info("Lucas ping OK!");
+		}
+		if (!FELIX_AVAILABLE) {
+			standard_logger()->error("Fatal: Felix not available!");
+		}
+		else {
+			standard_logger()->info("Felix ping OK!");
+		}
+
+		standard_logger()->info("Pinging all valve stations   ...DONE!");
+
+
+		standard_logger()->info("Pinging Non-Existing Test Server...");
+
+		const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
+
+		if (!TEST_SERVER_UNAVAILABLE) {
+			standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+		}
+		else {
+			standard_logger()->info("Pinging Non-Existing Test Server OK!");
+		}
+
+		standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+
+		return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
 	}
-	else {
-		standard_logger()->info("Pump Server ping OK!");
+
+public:
+	static bool check_ping_devices() {
+		for (std::size_t i{ 0 }; i < 20; ++i) {
+			const bool PING_OK{ check_all_servers_using_ping_once() };
+			if (PING_OK)
+				return true;
+		}
+		return false;
 	}
 
-	standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+};
 
-	standard_logger()->info("Pinging all valve stations...");
-	const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
-	const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
-	const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+class telegram_interface {
 
-	if (!JAMES_AVAILABLE) {
-		standard_logger()->error("Fatal: James not available!");
-	}
-	else {
-		standard_logger()->info("James ping OK!");
-	}
-	if (!LUCAS_AVAILABLE) {
-		standard_logger()->error("Fatal: Lucas not available!");
-	}
-	else {
-		standard_logger()->info("Lucas ping OK!");
-	}
-	if (!FELIX_AVAILABLE) {
-		standard_logger()->error("Fatal: Felix not available!");
-	}
-	else {
-		standard_logger()->info("Felix ping OK!");
-	}
+	const std::string bot_secret;
 
-	standard_logger()->info("Pinging all valve stations   ...DONE!");
-
-
-	standard_logger()->info("Pinging Non-Existing Test Server...");
-
-	const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
-
-	if (!TEST_SERVER_UNAVAILABLE) {
-		standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+	std::string get_base_url() const noexcept {
+		return std::string("https://api.telegram.org/bot") + bot_secret;
 	}
-	else {
-		standard_logger()->info("Pinging Non-Existing Test Server OK!");
+	class endpoints {
+		friend class telegram_interface;
+		inline static const std::string getMe{ "/getMe" };
+		inline static const std::string getUpdates{ "/getUpdates" };
+	};
+
+	class exceptions {
+	public:
+
+		template<int ERROR_CODE>
+		class unexpected_response_status_code : public std::runtime_error {
+		public:
+			unexpected_response_status_code(int actual_status_code) : std::runtime_error(
+				std::string("Got HTTP response code ") + std::to_string(actual_status_code) + ". Expected status code was " + std::to_string(ERROR_CODE) + "."
+			) {}
+		};
+	};
+
+public:
+	telegram_interface(const std::string& bot_secret) : bot_secret(bot_secret) {
+
 	}
 
-	standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+	nlohmann::json getMe() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getMe },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
 
-	return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
-}
+	nlohmann::json getUpdates() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getUpdates },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
+
+
+
+
+
+};
 
 int main(int argc, char** argv) {
 
@@ -443,11 +517,9 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	for (std::size_t i{ 0 }; i < 20; ++i) {
-		const bool PING_OK{ check_all_servers_using_ping() };
-		if (PING_OK)
-			break;
-	}
+	bool devices_available = ping_checker::check_ping_devices();
+
+	(void)devices_available;
 
 	standard_logger()->info("Fetching timestamp...");
 	int64_t seconds_since_epoch = get_seconds_since_epoch(true);
