@@ -2,6 +2,7 @@
 #include "logger.h"
 
 
+#include <nlohmann/json>
 #include "cpr/cpr.h"
 
 #include <string>
