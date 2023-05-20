@@ -442,9 +442,11 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	const bool PING_OK{ check_all_servers_using_ping() };
-
-	(void)PING_OK;
+	for (std::size_t i{ 0 }; i < 20; ++i) {
+		const bool PING_OK{ check_all_servers_using_ping() };
+		if (PING_OK)
+			break;
+	}
 
 	standard_logger()->info("Fetching timestamp...");
 	int64_t seconds_since_epoch = get_seconds_since_epoch(true);
