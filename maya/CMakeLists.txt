@@ -66,7 +66,9 @@ include_directories(SYSTEM extern/spdlog/include)
 #include_directories(SYSTEM extern/cpr/include)
 #include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
-#add_subdirectory(extern/td)
+
+add_subdirectory(extern/td)
+target_link_libraries(YourTarget PRIVATE Td::TdStatic)
 
 #add_subdirectory(extern/cpr)
 
