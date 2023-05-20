@@ -1,0 +1,17 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   bffb0cfdb..f69d69450  maya-productive -> origin/maya-productive
+Aktualisiere bffb0cfdb..f69d69450
+Fast-forward
+ maya/src/main.cpp | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+Pulling maya-productive successfully!
+Last commit is:   f69d69450b03bc5ffd5e0a1cbfdcc7eb35501f6a
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================
