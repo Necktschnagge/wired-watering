@@ -63,6 +63,7 @@ FetchContent_MakeAvailable(cpr)
 
 ############### Libraries ###############
 include_directories(SYSTEM extern/spdlog/include)
+include_directories(SYSTEM extern/json/include)
 #include_directories(SYSTEM extern/cpr/include)
 #include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
