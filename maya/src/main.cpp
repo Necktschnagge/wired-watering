@@ -1,6 +1,6 @@
 
 #include "logger.h"
-
+#include "configs.h"
 
 #include "cpr/cpr.h"
 #include <nlohmann/json.hpp>
@@ -461,6 +461,14 @@ class telegram_interface {
 		friend class telegram_interface;
 		inline static const std::string getMe{ "/getMe" };
 		inline static const std::string getUpdates{ "/getUpdates" };
+		inline static const std::string getChat{ "/getChat" };
+		inline static const std::string sendMessage{ "/sendMessage" };
+	};
+	class keys {
+		friend class telegram_interface;
+		inline static const std::string chat_id{ "chat_id" };
+		inline static const std::string text{ "text" };
+		inline static const std::string disable_notification{ "disable_notification" };
 	};
 
 	class exceptions {
@@ -504,9 +512,33 @@ public:
 		return nlohmann::json::parse(r.text);
 	}
 
+	nlohmann::json getChat(long long chat_id) {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getChat },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
 
-
-
+	nlohmann::json sendMessage(long long chat_id, const std::string& text, bool disable_notification = false) {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		params.Add(cpr::Parameter(keys::text, text));
+		params.Add(cpr::Parameter(keys::disable_notification, disable_notification ? "true" : "false"));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::sendMessage },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
 
 };
 
@@ -516,6 +548,25 @@ int main(int argc, char** argv) {
 	(void)argv;
 
 	init_logger();
+
+	// load telegram secrets:
+
+	if (!std::filesystem::exists(maya::config::PATH_TO_TELEGRAM_JSON)) {
+		standard_logger()->error("Telegram secret config does not exist!");
+		standard_logger()->error(
+			//std::filesystem::canonical(
+			std::filesystem::absolute(
+				std::filesystem::path(
+					maya::config::PATH_TO_TELEGRAM_JSON
+				)
+			)
+			//)
+			.string());
+		return 1;
+	}
+	auto telegram_secret_istream = std::ifstream(maya::config::PATH_TO_TELEGRAM_JSON);
+	auto telegram_json = nlohmann::json::parse(std::istream_iterator<char>(telegram_secret_istream), std::istream_iterator<char>());
+	auto telegram_config = maya::telegram_config(telegram_json);
 
 	bool devices_available = ping_checker::check_ping_devices();
 
