@@ -2,8 +2,8 @@
 #include "logger.h"
 
 
-#include <nlohmann/json>
 #include "cpr/cpr.h"
+#include <nlohmann/json.hpp>
 
 #include <string>
 #include <iostream>
