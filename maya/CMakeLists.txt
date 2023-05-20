@@ -68,7 +68,7 @@ include_directories(SYSTEM extern/spdlog/include)
 add_subdirectory(extern/googletest)
 
 add_subdirectory(extern/td)
-target_link_libraries(YourTarget PRIVATE Td::TdStatic)
+target_link_libraries(${PROJECT_NAME} PRIVATE Td::TdStatic)
 
 #add_subdirectory(extern/cpr)
 
