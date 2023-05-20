@@ -181,6 +181,21 @@ void watering(const int64_t& seconds_since_epoch) {
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
+
+
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_1); // new strawberries
+	
+	wait_for(60 * 20);
+	
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_3);
+	
+	wait_for(60 * 4);
+	
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
+
 #if false
 	if ((days_since_epoch % 2)) {
 
@@ -280,8 +295,8 @@ void watering(const int64_t& seconds_since_epoch) {
 	}
 #endif
 	// just to demonstrate:
-	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
-	wait_for(60 * 3);
+	//send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
+	//wait_for(60 * 3);
 
 	// valves off:
 	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
@@ -297,7 +312,10 @@ void watering(const int64_t& seconds_since_epoch) {
 		IP_ADDRESS_VALVE_SERVER_FELIX,
 		FELIX_EIBEN
 	);
-	wait_for(60 * 3);
+	wait_for(60 * 2);
+
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 }
 
@@ -494,7 +512,7 @@ int main(int argc, char** argv) {
 			s << minutes_since_epoch << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
 
-			constexpr bool global_watering_enable{ false };
+			constexpr bool global_watering_enable{ true };
 			if (global_watering_enable) {
 				watering(seconds_since_epoch);
 			}
