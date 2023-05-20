@@ -1,0 +1,18 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   849aae1bd..bffb0cfdb  maya-productive      -> origin/maya-productive
+   51c627415..a3c1f82d6  telegram-integration -> origin/telegram-integration
+Aktualisiere 849aae1bd..bffb0cfdb
+Fast-forward
+ maya/src/main.cpp | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+Pulling maya-productive successfully!
+Last commit is:   bffb0cfdb401f4147ed4ac45fa390cb0bacb574a
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================
