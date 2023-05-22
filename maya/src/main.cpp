@@ -218,6 +218,10 @@ void watering(const time_helper& start_time) {
 
 		wait_for(10 * 60);
 
+		send_mayson(0);
+		wait_for(10);
+		send_mayson(1);
+
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0); // carrot off
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA | FELIX_EIBEN); // eibe
 
@@ -231,6 +235,10 @@ void watering(const time_helper& start_time) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0); // eibe off
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
+	
+	send_mayson(0);
+	wait_for(10);
+	send_mayson(1);
 
 	const uint8_t LUCAS_ADD_BLUEBERRIES{ (start_time.get_days_since_epoch() % 4 == 0) ? LUCAS_VALVE_3 : uint8_t(0) };
 
@@ -244,7 +252,14 @@ void watering(const time_helper& start_time) {
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 
 	if (LUCAS_ADD_BLUEBERRIES) {
-		wait_for(45 * 60);
+		wait_for(15 * 60);
+
+		send_mayson(0);
+		wait_for(10);
+		send_mayson(1);
+
+		wait_for(30 * 60);
+
 	}
 
 
