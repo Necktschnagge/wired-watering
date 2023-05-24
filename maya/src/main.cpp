@@ -63,38 +63,68 @@ bool ping(const std::string& ip_address) {
 #endif // _WIN32
 }
 
-int64_t get_seconds_since_epoch(bool verbose = false) {
-	auto time_since_0 = std::chrono::system_clock::now().time_since_epoch();
-	std::chrono::seconds seconds_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
+class time_helper {
+public:
+	static int64_t get_seconds_since_epoch_now(bool verbose = false) {
+		auto time_since_0 = std::chrono::system_clock::now().time_since_epoch();
 
-	if (verbose) {
-		std::cout
-			<< "std::chrono::system_clock::now().time_since_epoch()   :   "
-			<< time_since_0.count()
-			<< std::endl;
-		std::cout
-			<< "get_seconds_since_epoch(bool verbose /* true */)   :   "
-			<< seconds_since_epoch.count()
-			<< std::endl;
-		std::cout
-			<< "minutes since epoch   :   "
-			<< (seconds_since_epoch.count() / 60)
-			<< std::endl;
-		std::cout
-			<< "minute of day   :   "
-			<< (seconds_since_epoch.count() / 60) % (24 * 60)
-			<< std::endl;
-		std::cout
-			<< "minute of hour   :   "
-			<< (seconds_since_epoch.count() / 60) % (60)
-			<< std::endl;
-		std::cout
-			<< "hour of day   :   "
-			<< (seconds_since_epoch.count() / 60 / 60) % (24)
-			<< std::endl;
+		std::chrono::seconds seconds_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(time_since_0);
+
+		if (verbose) {
+			std::cout
+				<< "std::chrono::system_clock::now().time_since_epoch()   :   "
+				<< time_since_0.count()
+				<< std::endl;
+			std::cout
+				<< "get_seconds_since_epoch_now(bool verbose /* true */)   :   "
+				<< seconds_since_epoch.count()
+				<< std::endl;
+			std::cout
+				<< "minutes since epoch   :   "
+				<< (seconds_since_epoch.count() / 60)
+				<< std::endl;
+			std::cout
+				<< "minute of day   :   "
+				<< (seconds_since_epoch.count() / 60) % (24 * 60)
+				<< std::endl;
+			std::cout
+				<< "minute of hour   :   "
+				<< (seconds_since_epoch.count() / 60) % (60)
+				<< std::endl;
+			std::cout
+				<< "hour of day   :   "
+				<< (seconds_since_epoch.count() / 60 / 60) % (24)
+				<< std::endl;
+		}
+		return seconds_since_epoch.count();
 	}
-	return seconds_since_epoch.count();
-}
+private:
+	int64_t seconds_since_epoch;
+public:
+
+	time_helper(bool verbose = false) : seconds_since_epoch(get_seconds_since_epoch_now(verbose)) {}
+
+	time_helper(int64_t seconds_since_epoch) : seconds_since_epoch(seconds_since_epoch) {}
+
+	inline int64_t get_seconds_since_epoch() const {
+		return seconds_since_epoch;
+	}
+	inline int64_t get_minutes_since_epoch() const {
+		return (get_seconds_since_epoch() / 60);
+	}
+	inline int64_t get_hours_since_epoch() const {
+		return (get_minutes_since_epoch() / 60);
+	}
+	inline int64_t get_days_since_epoch() const {
+		return (get_hours_since_epoch() / 24);
+	}
+
+	inline int64_t get_minute_intra_day() const {
+		return get_minutes_since_epoch() % (24 * 60);
+	}
+
+};
+
 
 //static uint8_t james_valves{ 0 };
 
@@ -125,7 +155,7 @@ void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on =
 }
 
 void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log = true) {
-	auto seconds = get_seconds_since_epoch();
+	auto seconds = time_helper::get_seconds_since_epoch_now();
 	if (enable_log) std::cout << "Send valves at " << seconds << std::endl;
 	std::string url{ "http://" };
 	url += ip_address;
@@ -160,20 +190,15 @@ void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log 
 
 }
 
-void wait_for(int64_t dur_sec) {
-	auto start_time = get_seconds_since_epoch();
+void wait_for(int64_t duration_in_seconds) {
+	auto start_time = time_helper::get_seconds_since_epoch_now();
 
-	while (get_seconds_since_epoch() < start_time + dur_sec) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	while (time_helper::get_seconds_since_epoch_now() < start_time + duration_in_seconds) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
-void watering(const int64_t& seconds_since_epoch) {
-	const int64_t minutes_since_epoch{ seconds_since_epoch / 60 };
-	const int64_t hours_since_epoch{ minutes_since_epoch / 60 };
-	const int64_t days_since_epoch{ hours_since_epoch / 24 };
-
-	(void)days_since_epoch;
+void watering(const time_helper& start_time) {
 
 	//pumpe an
 	send_mayson(0, 0, 0);
@@ -181,6 +206,63 @@ void watering(const int64_t& seconds_since_epoch) {
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
+
+	if (start_time.get_days_since_epoch() % 2 == 1) {
+
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_1); // carrot
+		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_2); // potato
+
+		wait_for(10 * 60);
+
+		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA); // mara
+
+		wait_for(10 * 60);
+
+		send_mayson(0);
+		wait_for(10);
+		send_mayson(1);
+
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0); // carrot off
+		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA | FELIX_EIBEN); // eibe
+
+		wait_for(10 * 60);
+
+		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN); // mara off
+
+		wait_for(10 * 60);
+
+		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0); // potato off
+		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0); // eibe off
+		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+	}
+	
+	send_mayson(0);
+	wait_for(10);
+	send_mayson(1);
+
+	const uint8_t LUCAS_ADD_BLUEBERRIES{ (start_time.get_days_since_epoch() % 4 == 0) ? LUCAS_VALVE_3 : uint8_t(0) };
+
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_2 | JAMES_VALVE_3); // cucumber + tomato
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_1 | LUCAS_ADD_BLUEBERRIES); // new stawberries
+
+	wait_for(15 * 60);
+
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ADD_BLUEBERRIES);
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+
+	if (LUCAS_ADD_BLUEBERRIES) {
+		wait_for(15 * 60);
+
+		send_mayson(0);
+		wait_for(10);
+		send_mayson(1);
+
+		wait_for(30 * 60);
+
+	}
+
+
 #if false
 	if ((days_since_epoch % 2)) {
 
@@ -277,11 +359,11 @@ void watering(const int64_t& seconds_since_epoch) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
 		wait_for(60 * 20);
-	}
+}
 #endif
 	// just to demonstrate:
-	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
-	wait_for(60 * 3);
+	//send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
+	//wait_for(60 * 3);
 
 	// valves off:
 	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
@@ -297,7 +379,10 @@ void watering(const int64_t& seconds_since_epoch) {
 		IP_ADDRESS_VALVE_SERVER_FELIX,
 		FELIX_EIBEN
 	);
-	wait_for(60 * 3);
+	wait_for(60 * 2);
+
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 }
 
@@ -435,25 +520,7 @@ bool check_all_servers_using_ping() {
 	return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
 }
 
-int main(int argc, char** argv) {
-
-	(void)argc;
-	(void)argv;
-
-	init_logger();
-
-	for (std::size_t i{ 0 }; i < 20; ++i) {
-		const bool PING_OK{ check_all_servers_using_ping() };
-		if (PING_OK)
-			break;
-	}
-
-	standard_logger()->info("Fetching timestamp...");
-	int64_t seconds_since_epoch = get_seconds_since_epoch(true);
-	int64_t minutes_since_epoch = (seconds_since_epoch / 60);
-	int64_t minute_of_the_day = (seconds_since_epoch / 60) % (24 * 60);
-
-
+int64_t load_timestamp_file() {
 	standard_logger()->info("Checking timestamp.txt...");
 	standard_logger()->debug("The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.");
 	int64_t previous_timestamp = 0;
@@ -481,31 +548,64 @@ int main(int argc, char** argv) {
 	std::cout << "previous time_stamp:   " << previous_timestamp << std::endl;
 	standard_logger()->info("Checking timestamp.txt   ...DONE!");
 
+	return previous_timestamp;
+}
+
+bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp) {
+	bool result{ false };
 	if (
-		(minute_of_the_day > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
-		&& (minute_of_the_day < (6 - 2) * 60 + 30) // 6:30
-		&& (previous_timestamp + 3 * 60 + 1 < minutes_since_epoch) // 3 hours gone since last watering
+		(start_time.get_minute_intra_day() > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
+		&& (start_time.get_minute_intra_day() < (6 - 2) * 60 + 30) // 6:30
+		&& (previous_timestamp + 3 * 60 + 1 < start_time.get_minutes_since_epoch()) // 3 hours gone since last watering
 		)
 	{
 		// save last timestamp:
 		std::ofstream s;
 		s.open("../../artifacts/timestamp.txt");
 		if (s.good()) {
-			s << minutes_since_epoch << std::endl;
+			s << start_time.get_minutes_since_epoch() << std::endl;
 			std::cout << "Wrote to timestamp.txt" << std::endl;
-
-			constexpr bool global_watering_enable{ false };
-			if (global_watering_enable) {
-				watering(seconds_since_epoch);
-			}
-
-
-
+			result = true;
 		}
 		else {
 			std::cout << "error timestamp writing";
 		}
 	}
+	else {
+		standard_logger()->info("It's not time for watering now!");
+		standard_logger()->info(std::string("Minute Intraday:   ") + std::to_string(start_time.get_minute_intra_day()));
+		standard_logger()->info(std::string("Days since Epoch:   ") + std::to_string(start_time.get_days_since_epoch()));
+	}
+
+	return result;
+}
+
+int main(int argc, char** argv) {
+
+	(void)argc;
+	(void)argv;
+
+	init_logger();
+
+	for (std::size_t i{ 0 }; i < 20; ++i) {
+		const bool PING_OK{ check_all_servers_using_ping() };
+		if (PING_OK)
+			break;
+	}
+
+	standard_logger()->info("Fetching timestamp...");
+	const auto start_time = time_helper(true);
+
+	const int64_t previous_timestamp = load_timestamp_file();
+
+	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
+
+	constexpr bool global_watering_enable{ true };
+
+	if (global_watering_enable && is_time_for_watering) {
+		watering(start_time);
+	}
+
 
 	return 0;
 }
