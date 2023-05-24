@@ -6,7 +6,7 @@ set(PROJECT_NAME Maya-Commander)
 
 
 ############### Preprocessor Macros ###############
-add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/automatic-watering")
+add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/wired-watering")
 
 
 ############### Project Decklaration ###############
