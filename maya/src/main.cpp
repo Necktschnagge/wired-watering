@@ -235,7 +235,7 @@ void watering(const time_helper& start_time) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0); // eibe off
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	}
-	
+
 	send_mayson(0);
 	wait_for(10);
 	send_mayson(1);
@@ -249,18 +249,17 @@ void watering(const time_helper& start_time) {
 
 	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ADD_BLUEBERRIES);
 	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_2);
 
-	if (LUCAS_ADD_BLUEBERRIES) {
-		wait_for(15 * 60);
+	wait_for(15 * 60);
 
-		send_mayson(0);
-		wait_for(10);
-		send_mayson(1);
+	send_mayson(0);
+	wait_for(10);
+	send_mayson(1);
 
-		wait_for(30 * 60);
+	wait_for(30 * 60);
 
-	}
+
 
 
 #if false
@@ -359,7 +358,7 @@ void watering(const time_helper& start_time) {
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
 		wait_for(60 * 20);
-}
+	}
 #endif
 	// just to demonstrate:
 	//send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
