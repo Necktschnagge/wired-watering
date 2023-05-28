@@ -1,0 +1,36 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/7092-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/7091-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-05-28--13h54"
+[artifacts b7789ed75] logs at 2023-05-28--13h54
+ 6 files changed, 286 insertions(+)
+ create mode 100644 maya/artifacts/logs/7091--2023-05-28--13h44---6.log
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---1.log
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---2.log
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---3.log
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---4.log
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---5.log
+> sudo -u mayadm git push
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
