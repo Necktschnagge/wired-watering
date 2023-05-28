@@ -229,7 +229,7 @@ void watering(const time_helper& start_time) {
 
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN); // mara off
 
-		wait_for(10 * 60);
+		wait_for(25 * 60);
 
 		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0); // potato off
 		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0); // eibe off
