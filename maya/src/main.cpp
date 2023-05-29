@@ -38,8 +38,11 @@
 [[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ JAMES_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN{ JAMES_VALVE_4 };
 
-[[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
+//[[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
+//[[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
+[[maybe_unused]] static constexpr uint8_t LUC_HEIDELBEEREN{ LUCAS_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t LUC_KARTOFFELN_UND_ERDBEEREN{ LUCAS_VALVE_3 };
 
 [[maybe_unused]] static constexpr uint8_t FELIX_MARA{ FELIX_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ FELIX_VALVE_1 };
@@ -210,7 +213,7 @@ void watering(const time_helper& start_time) {
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_1); // carrot
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_2); // potato
+		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUC_KARTOFFELN_UND_ERDBEEREN); // potato
 
 		wait_for(10 * 60);
 
@@ -240,10 +243,10 @@ void watering(const time_helper& start_time) {
 	wait_for(10);
 	send_mayson(1);
 
-	const uint8_t LUCAS_ADD_BLUEBERRIES{ (start_time.get_days_since_epoch() % 4 == 0) ? LUCAS_VALVE_3 : uint8_t(0) };
+	const uint8_t LUCAS_ADD_BLUEBERRIES{ (start_time.get_days_since_epoch() % 4 == 0) ? LUC_HEIDELBEEREN : uint8_t(0) };
 
 	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_2 | JAMES_VALVE_3); // cucumber + tomato
-	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_VALVE_1 | LUCAS_ADD_BLUEBERRIES); // new stawberries
+	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUC_NEUE_ERDBEEREN_AN_DER_ROSE | LUCAS_ADD_BLUEBERRIES); // new stawberries
 
 	wait_for(15 * 60);
 
