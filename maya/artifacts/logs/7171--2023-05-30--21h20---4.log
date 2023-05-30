@@ -1,0 +1,32 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-05-30 21:20:35.854] [main] [info] Pinging Pump Server Mayson...
+[2023-05-30 21:20:35.933] [main] [info] Pump Server ping OK!
+[2023-05-30 21:20:35.933] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-05-30 21:20:35.933] [main] [info] Pinging all valve stations...
+[2023-05-30 21:20:37.261] [main] [info] James ping OK!
+[2023-05-30 21:20:37.261] [main] [info] Lucas ping OK!
+[2023-05-30 21:20:37.261] [main] [info] Felix ping OK!
+[2023-05-30 21:20:37.261] [main] [info] Pinging all valve stations   ...DONE!
+[2023-05-30 21:20:37.261] [main] [info] Pinging Non-Existing Test Server...
+[2023-05-30 21:20:40.316] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-05-30 21:20:40.316] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-05-30 21:20:40.316] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1685474440316066218
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1685474440
+minutes since epoch   :   28091240
+minute of day   :   1160
+minute of hour   :   20
+hour of day   :   19
+[2023-05-30 21:20:40.316] [main] [info] Checking timestamp.txt...
+[2023-05-30 21:20:40.316] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28090188
+[2023-05-30 21:20:40.316] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-05-30 21:20:40.316] [main] [info] It's not time for watering now!
+[2023-05-30 21:20:40.316] [main] [info] Minute Intraday:   1160
+[2023-05-30 21:20:40.316] [main] [info] Days since Epoch:   19507
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   5s
+=====================================================================================================
