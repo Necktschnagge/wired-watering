@@ -68,8 +68,6 @@ namespace CONF {
 [[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_3 };
 [[maybe_unused]] static constexpr uint8_t JAMES_FREI{ JAMES_VALVE_4 };
 
-//[[maybe_unused]] static constexpr uint8_t LUCAS_KAROTTEN{ LUCAS_VALVE_1 };
-//[[maybe_unused]] static constexpr uint8_t LUCAS_ERDBEEREN{ LUCAS_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
 [[maybe_unused]] static constexpr uint8_t LUC_HEIDELBEEREN{ LUCAS_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t LUC_KARTOFFELN_UND_ERDBEEREN{ LUCAS_VALVE_3 };
@@ -207,18 +205,6 @@ void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log 
 
 
 namespace k1 {
-
-	/*
-		class valve {
-			std::string label;
-			uint8_t index_intra_valve_sation;
-
-		public:
-			valve(const std::string& _label, uint8_t _valve_bit_mask) : label(_label), index_intra_valve_sation(_valve_bit_mask) {}
-
-		};
-	*/
-
 
 	class valve_station {
 		std::string label;
