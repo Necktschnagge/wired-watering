@@ -34,6 +34,9 @@
 [[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
 [[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
+[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Eiben Klee" };
+[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara Sabine" };
+
 [[maybe_unused]] static constexpr uint8_t JAMES_GURKE_ERBSE{ JAMES_VALVE_1 };
 [[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ JAMES_VALVE_2 };
 [[maybe_unused]] static constexpr uint8_t JAMES_BOHNEN{ JAMES_VALVE_4 };
@@ -129,6 +132,68 @@ public:
 };
 
 
+
+namespace k1 {
+
+
+	class valve {
+		std::string ip_address;
+		std::string label;
+		uint8_t index_intra_valve_sation;
+
+	public:
+		valve(const std::string& _ip_address, const std::string& _label, uint8_t _valve_bit_mask) : ip_address(_ip_address), label (_label), index_intra_valve_sation(_valve_bit_mask){}
+
+	};
+
+	class valve_station {
+		std::vector<valve> valves;
+
+		friend class landscape;
+
+		valve_station(std::vector<valve>&& valves) : valves(std::move(valves)) {
+
+		}
+		
+	public:
+
+	};
+
+
+
+	class landscape {
+		std::vector<valve_station> stations;
+		static std::optional<landscape> singleton_instance;
+
+
+		landscape() {
+			standard_logger()->info("Creating Landscape...");
+
+			// Felix:
+			auto felix_vector = std::vector<valve>{valve(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_VALVE_1_LABEL, 1<<0)};
+			stations.emplace_back(std::move(felix_vector));
+
+		}
+
+	public:
+
+		valve_station& felix() { return stations.at(0); }
+		valve_station& james() { return stations.at(0); }
+		valve_station& lucas() { return stations.at(0); }
+
+
+		inline static landscape& instance() {
+			if (!singleton_instance.has_value()) {
+				singleton_instance.emplace();
+			}
+			return singleton_instance.value();
+		}
+
+	};
+
+}
+
+
 //static uint8_t james_valves{ 0 };
 
 void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on = 2) {
@@ -174,24 +239,6 @@ void send_valves(const std::string& ip_address, uint8_t valves, bool enable_log 
 	}
 }
 
-[[deprecated]] void send_james(uint8_t valves) {
-	std::cout << "send valves james\n";
-	std::string url{ "http://" };
-	url += IP_ADDRESS_VALVE_SERVER_JAMES;
-	url += ":80/status";
-	cpr::Response r = cpr::Get(
-		cpr::Url{ url },
-		//cpr::Authentication{ "user", "pass", cpr::AuthMode::BASIC },
-		cpr::Parameters{ {"valves", std::to_string(valves) } }
-	);
-	//r.status_code;                  // 200
-	//r.header["content-type"];       // application/json; charset=utf-8
-	//r.text;
-
-	std::cout << r.text << std::endl;
-	std::cout << r.status_code << std::endl;
-
-}
 
 void wait_for(int64_t duration_in_seconds) {
 	auto start_time = time_helper::get_seconds_since_epoch_now();
@@ -594,6 +641,10 @@ int main(int argc, char** argv) {
 		if (PING_OK)
 			break;
 	}
+
+	standard_logger()->info("Creating Landscape...");
+
+	k1::landscape& garden = k1::landscape::instance();
 
 	standard_logger()->info("Fetching timestamp...");
 	const auto start_time = time_helper(true);
