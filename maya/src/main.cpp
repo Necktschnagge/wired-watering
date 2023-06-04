@@ -239,6 +239,7 @@ namespace k1 {
 		}
 
 		void turn(bool on, uint8_t valve_bit_mask) {
+			standard_logger()->info("-------------------------------------");
 			const uint8_t old_state{ valves_state };
 			if (on)
 				valves_state |= valve_bit_mask;
@@ -251,7 +252,36 @@ namespace k1 {
 					accumulated_ms[i] += now - last_switching_time;
 				}
 			}
+			std::string message {
+				"Switched the following valves: --->\n"
+			};
+
+			for (uint8_t i = 0; i < valves.size(); ++i) {
+				const uint8_t mask{ static_cast<uint8_t>(uint8_t(1) << i) };
+				const bool switched = (old_state & mask) != (valves_state & mask);
+				const std::string next_string = (valves_state & mask) ? "ON" : "OFF";
+				const std::string prev_string = (valves_state & mask) ? "OFF" : "ON";
+				if (switched)
+					message += label + ":   " + valves.at(i) + "   " + prev_string + " -> " + next_string;
+			}
+			message +=
+				"                                   <---";
+
+			standard_logger()->info(message);
+
 			last_switching_time = now;
+		}
+
+		inline uint8_t mask_all() {
+			uint8_t mask{ 0 };
+			for (std::size_t i = 0; i < valves.size(); ++i) {
+				mask += uint8_t(1) << i;
+			}
+			return mask;
+		}
+
+		inline void turn_all(bool on) {
+			return turn(on, mask_all());
 		}
 
 		valve_station(const std::string& _label, const std::string& _ip_address, std::vector<std::string>&& _valves) :
@@ -289,7 +319,7 @@ namespace k1 {
 
 
 			inline void turn(bool on) const {
-				return station.turn(on, valve_bit_mask);
+				return station.turn_all(on);
 			}
 
 			inline void turn_on() const {
@@ -336,12 +366,24 @@ namespace k1 {
 
 			friend class landscape;
 
-			felix_view(valve_station& _station) : station(_station){}
+			felix_view(valve_station& _station) : station(_station) {}
 
 		public:
 
 			valve_station::valve_view Eiben() { return station.get_view(FELIX_EIBEN); }
 			valve_station::valve_view MaraSabine() { return station.get_view(FELIX_MARA); }
+
+			inline void turn(bool on) const {
+				return station.turn_all(on);
+			}
+
+			inline void turn_on() const {
+				return turn(true);
+			}
+
+			inline void turn_off() const {
+				return turn(false);
+			}
 		};
 
 		class james_view {
@@ -357,7 +399,19 @@ namespace k1 {
 			valve_station::valve_view Gurken() { return station.get_view(JAMES_GURKEN); }
 			valve_station::valve_view Tomaten() { return station.get_view(JAMES_TOMATEN); }
 			valve_station::valve_view Frei() { return station.get_view(JAMES_FREI); }
-		
+
+			inline void turn(bool on) const {
+				return station.turn_all(on);
+			}
+
+			inline void turn_on() const {
+				return turn(true);
+			}
+
+			inline void turn_off() const {
+				return turn(false);
+			}
+
 		};
 
 		class lucas_view {
@@ -372,14 +426,26 @@ namespace k1 {
 			valve_station::valve_view FliederErdbeeren() { return station.get_view(LUCAS_VALVE_1); }
 			valve_station::valve_view Heidelbeeren() { return station.get_view(LUCAS_VALVE_2); }
 			valve_station::valve_view Kartoffeln() { return station.get_view(LUCAS_VALVE_3); }
-		
+
+
+			inline void turn(bool on) const {
+				return station.turn_all(on);
+			}
+
+			inline void turn_on() const {
+				return turn(true);
+			}
+
+			inline void turn_off() const {
+				return turn(false);
+			}
 		};
 
 
 		felix_view Felix() { return felix_view(stations.at(0)); }
 		james_view James() { return james_view(stations.at(1)); }
 		lucas_view Lucas() { return lucas_view(stations.at(2)); }
-		
+
 
 		inline static landscape& instance() {
 			if (!singleton_instance.has_value()) {
@@ -392,6 +458,8 @@ namespace k1 {
 
 }
 
+std::optional<k1::landscape> k1::landscape::singleton_instance;
+
 
 
 void wait_for(int64_t duration_in_seconds) {
@@ -402,7 +470,7 @@ void wait_for(int64_t duration_in_seconds) {
 	}
 }
 
-void watering(const time_helper& start_time) {
+void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 	//pumpe an
 	send_mayson(0, 0, 0);
@@ -413,12 +481,12 @@ void watering(const time_helper& start_time) {
 
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_1); // carrot
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUC_KARTOFFELN_UND_ERDBEEREN); // potato
+		landscape.James().Karotten().turn_on();
+		landscape.Lucas().Kartoffeln().turn_on();
 
 		wait_for(10 * 60);
 
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA); // mara
+		landscape.Felix().MaraSabine().turn_on();
 
 		wait_for(10 * 60);
 
@@ -426,34 +494,39 @@ void watering(const time_helper& start_time) {
 		wait_for(10);
 		send_mayson(1);
 
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0); // carrot off
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA | FELIX_EIBEN); // eibe
+		landscape.James().Karotten().turn_off();
+		landscape.Felix().Eiben().turn_on();
 
 		wait_for(10 * 60);
 
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN); // mara off
+		landscape.Felix().MaraSabine().turn_off();
 
 		wait_for(25 * 60);
 
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0); // potato off
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0); // eibe off
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+		landscape.Felix().turn_off();
+		landscape.James().turn_off();
+		landscape.Lucas().turn_off();
 	}
 
 	send_mayson(0);
 	wait_for(10);
 	send_mayson(1);
 
-	const uint8_t LUCAS_ADD_BLUEBERRIES{ (start_time.get_days_since_epoch() % 4 == 0) ? LUC_HEIDELBEEREN : uint8_t(0) };
+	const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
 
-	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_2 | JAMES_VALVE_3); // cucumber + tomato
-	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUC_NEUE_ERDBEEREN_AN_DER_ROSE | LUCAS_ADD_BLUEBERRIES); // new stawberries
+	landscape.James().Gurken().turn_on();
+	landscape.James().Tomaten().turn_on();
+	landscape.Lucas().FliederErdbeeren().turn_on();
+	if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
 
-	wait_for(15 * 60);
+	wait_for(20 * 60);
 
-	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ADD_BLUEBERRIES);
-	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_VALVE_2);
+	landscape.Lucas().FliederErdbeeren().turn_off();
+	landscape.James().Tomaten().turn_off();
+
+	send_mayson(0);
+	wait_for(10);
+	send_mayson(1);
 
 	wait_for(15 * 60);
 
@@ -461,132 +534,30 @@ void watering(const time_helper& start_time) {
 	wait_for(10);
 	send_mayson(1);
 
-	wait_for(30 * 60);
+	wait_for(25 * 60);
 
 
 
+	// END OF WATERING
 
-#if false
-	if ((days_since_epoch % 2)) {
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
 
-		// TOMA - Mara simultan
-		// GURK  0 : TOMA  0  : ERDBE  0 : BOHN  0 // 0
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_TOMATE | JAMES_BOHNEN
-		);
-		wait_for(60 * 5);
-		// GURK  5 : TOMA  5  : ERDBE  0 : BOHN  5 // 5
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_BOHNEN
-		);
-		wait_for(60 * 15);
-		// GURK 20 : TOMA  5  : ERDBE 15 : BOHN  20 // 20
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_TOMATE
-		);
-		wait_for(60 * 5);
-		// GURK 20 : TOMA  10  : ERDBE 20 : BOHN  20 // 25
-
-		// restart pump
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_TOMATE | JAMES_GURKE_ERBSE
-		); // let water capacitor run dry while pump off
-		send_mayson(0);
-		std::this_thread::sleep_for(std::chrono::seconds(100));
-		send_mayson(1);
-		//restart pump end
-
-		// GURK 20 : TOMA  10  : ERDBE 20 : BOHN  20 // 25
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_GURKE_ERBSE | JAMES_BOHNEN
-		);
-		wait_for(60 * 10);
-		// GURK 30 : TOMA  10  : ERDBE 20 : BOHN  30 // 35
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_TOMATE | JAMES_GURKE_ERBSE
-		);
-		wait_for(60 * 5);
-		// GURK 35 : TOMA  15  : ERDBE 25 : BOHN  30 // 40
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_BOHNEN
-		);
-		wait_for(60 * 15);
-		// GURK 35 : TOMA  15  : ERDBE 40 : BOHN  45 // 55
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_ERDBEEREN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_MARA);
-		send_valves(
-			IP_ADDRESS_VALVE_SERVER_JAMES,
-			JAMES_TOMATE | JAMES_GURKE_ERBSE
-		);
-		wait_for(60 * 5);
-		// GURK 40 : TOMA  20  : ERDBE 45 : BOHN  45 // 60 (whole time)
-	}
-	else {
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_KAROTTEN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
-		wait_for(60 * 20);
-
-		// wait for pressure reached
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
-		wait_for(30);
-
-		send_mayson(0); // restart pump
-		std::this_thread::sleep_for(std::chrono::seconds(5 * 60)); // ... minutes pause
-		send_mayson(1);
-
-		send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, LUCAS_KAROTTEN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
-		send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, JAMES_GURKE_ERBSE);
-		wait_for(60 * 20);
-	}
-#endif
-	// just to demonstrate:
-	//send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, FELIX_EIBEN);
-	//wait_for(60 * 3);
-
-	// valves off:
-	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
 	// wait for pressure reached
 	wait_for(30);
 	//pumpe aus
 	send_mayson(0);
 
+
 	// let capacitor run dry:
-	send_valves(
-		IP_ADDRESS_VALVE_SERVER_FELIX,
-		FELIX_EIBEN
-	);
+	landscape.Felix().Eiben().turn_on();
 	wait_for(60 * 2);
 
-	send_valves(IP_ADDRESS_VALVE_SERVER_LUCAS, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_FELIX, 0);
-	send_valves(IP_ADDRESS_VALVE_SERVER_JAMES, 0);
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
 }
 
 #if false
@@ -810,7 +781,7 @@ int main(int argc, char** argv) {
 	constexpr bool global_watering_enable{ true };
 
 	if (global_watering_enable && is_time_for_watering) {
-		watering(start_time);
+		watering(start_time, garden);
 	}
 
 
