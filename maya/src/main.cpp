@@ -319,7 +319,7 @@ namespace k1 {
 
 
 			inline void turn(bool on) const {
-				return station.turn_all(on);
+				return station.turn(on, valve_bit_mask);
 			}
 
 			inline void turn_on() const {
