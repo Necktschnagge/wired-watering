@@ -449,7 +449,7 @@ namespace k1 {
 
 		inline static landscape& instance() {
 			if (!singleton_instance.has_value()) {
-				singleton_instance = std::make_optional<landscape>(landscape::landscape());
+				singleton_instance = std::make_optional<landscape>(landscape());
 			}
 			return singleton_instance.value();
 		}
