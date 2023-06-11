@@ -224,7 +224,7 @@ namespace k1 {
 		friend class landscape;
 		friend class valve_view;
 
-		std::string get_duration_table() {
+		std::string get_duration_table() const {
 			std::string table;
 			for (std::size_t i = 0; i < valves.size(); ++i) {
 				std::string padded_station_label = label;
@@ -268,8 +268,8 @@ namespace k1 {
 			for (uint8_t i = 0; i < valves.size(); ++i) {
 				const uint8_t mask{ static_cast<uint8_t>(uint8_t(1) << i) };
 				const bool switched = (old_state & mask) != (valves_state & mask);
-				const std::string next_string = (valves_state & mask) ? "ON" : "OFF";
-				const std::string prev_string = (valves_state & mask) ? "OFF" : "ON";
+				const std::string next_string = (valves_state & mask) ? "ON " : "OFF";
+				const std::string prev_string = (valves_state & mask) ? "OFF" : " ON";
 				if (switched)
 					message += "          " + label + ":   " + valves.at(i) + "   " + prev_string + " -> " + next_string + "\n";
 			}
@@ -463,7 +463,7 @@ namespace k1 {
 			return singleton_instance.value();
 		}
 
-		std::string get_duration_table() {
+		std::string get_duration_table() const {
 			std::string table;
 			for (std::size_t i = 0; i < stations.size(); ++i) {
 				table += stations[i].get_duration_table();
