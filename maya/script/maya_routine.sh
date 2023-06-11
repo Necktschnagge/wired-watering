@@ -53,10 +53,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		echo "===     Starting with run #${run_counter}..."
 		echo "====================================================================================================="
 		echo "====================================================================================================="
-		echo "> ls -la ../../.."
-		ls -la ../../..
-		echo "> ls -la ../../../secrets"
-		ls -la ../../../secrets
 		echo "> echo \"${run_counter}\" | sudo -u mayadm tee ${run_counter_file_path}"
 				echo "${run_counter}" | sudo -u mayadm tee ${run_counter_file_path}
 		echo "> date"
