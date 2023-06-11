@@ -12,6 +12,9 @@
 #include <fstream>
 #include <optional>
 
+#include <sstream>
+#include <iomanip>
+
 static constexpr bool MANUAL_TEST{ false };
 
 namespace CONF {
@@ -221,6 +224,24 @@ namespace k1 {
 		friend class landscape;
 		friend class valve_view;
 
+		std::string get_duration_table() {
+			std::string table;
+			for (std::size_t i = 0; i < valves.size(); ++i) {
+				std::string padded_station_label = label;
+				padded_station_label.insert(padded_station_label.end(), 8 - padded_station_label.size(), ' ');
+				std::string padded_valve_label = valves[i];
+				padded_valve_label.insert(padded_valve_label.begin(), 20 - padded_valve_label.size(), ' ');
+
+				const auto duration_minutes = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<60, 1>>>(accumulated_ms[i]).count();
+				std::stringstream duration_minutes_ss;
+				duration_minutes_ss << std::fixed << std::setprecision(2) << duration_minutes;
+				std::string padded_duration{ duration_minutes_ss.str() };
+				padded_duration.insert(padded_duration.begin(), 10 - padded_duration.size(), ' ');
+
+				table += padded_station_label+ ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
+			}
+			return table;
+		}
 
 		void send(bool enable_log = true) {
 			send_valves(ip_address, valves_state, enable_log);
@@ -440,6 +461,14 @@ namespace k1 {
 				singleton_instance = std::make_optional<landscape>(landscape());
 			}
 			return singleton_instance.value();
+		}
+
+		std::string get_duration_table() {
+			std::string table;
+			for (std::size_t i = 0; i < stations.size(); ++i) {
+				table += stations[i].get_duration_table();
+			}
+			return table;
 		}
 
 	};
@@ -779,6 +808,7 @@ int main(int argc, char** argv) {
 		watering(start_time, garden);
 	}
 
+	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
 
 	return 0;
 }
