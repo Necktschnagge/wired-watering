@@ -227,7 +227,7 @@ namespace k1 {
 		}
 
 		void turn(bool on, uint8_t valve_bit_mask) {
-			standard_logger()->info("-------------------------------------");
+			standard_logger()->info("\n--------------------------------------------------------------");
 			const uint8_t old_state{ valves_state };
 			if (on)
 				valves_state |= valve_bit_mask;
@@ -241,7 +241,7 @@ namespace k1 {
 				}
 			}
 			std::string message{
-				"Switched the following valves: --->\n"
+				"\nSwitched the following valves: --->\n"
 			};
 
 			for (uint8_t i = 0; i < valves.size(); ++i) {
@@ -250,7 +250,7 @@ namespace k1 {
 				const std::string next_string = (valves_state & mask) ? "ON" : "OFF";
 				const std::string prev_string = (valves_state & mask) ? "OFF" : "ON";
 				if (switched)
-					message += label + ":   " + valves.at(i) + "   " + prev_string + " -> " + next_string;
+					message += "          " + label + ":   " + valves.at(i) + "   " + prev_string + " -> " + next_string + "\n";
 			}
 			message +=
 				"                                   <---";
@@ -263,7 +263,7 @@ namespace k1 {
 		inline uint8_t mask_all() {
 			uint8_t mask{ 0 };
 			for (std::size_t i = 0; i < valves.size(); ++i) {
-				mask += uint8_t(1) << i;
+				mask |= uint8_t(1) << i;
 			}
 			return mask;
 		}
