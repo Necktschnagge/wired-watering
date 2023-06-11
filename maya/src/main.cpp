@@ -502,7 +502,6 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
-
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
