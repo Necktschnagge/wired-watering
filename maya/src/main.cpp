@@ -12,14 +12,16 @@
 #include <fstream>
 #include <optional>
 
+#define MANUAL_TEST
+
 namespace CONF {
 
 
 	// server names / device names:
-	[[maybe_unused]] inline static const std::string FELIX{ "Felix"};
-	[[maybe_unused]] inline static const std::string JAMES{ "James"};
-	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas"};
-	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson"};
+	[[maybe_unused]] inline static const std::string FELIX{ "Felix" };
+	[[maybe_unused]] inline static const std::string JAMES{ "James" };
+	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas" };
+	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson" };
 
 
 	// valve patch infos:
@@ -46,7 +48,7 @@ namespace CONF {
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
 
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.23" };
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.254" };
 
 [[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 
@@ -64,8 +66,8 @@ namespace CONF {
 
 
 [[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ JAMES_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_3 };
+[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_3 };
 [[maybe_unused]] static constexpr uint8_t JAMES_FREI{ JAMES_VALVE_4 };
 
 [[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
@@ -86,7 +88,7 @@ bool ping(const std::string& ip_address) {
 	return (x == 0);
 #endif // defined(__linux__) || defined(__APPLE__)
 #ifdef _WIN32
-	std::string batch_command{ "ping -n 1 " };
+	std::string batch_command{ "Test-Connection -Count 1 -ErrorAction Stop " };
 	batch_command.append(ip_address);
 	batch_command.append("  > nul 2>&1");
 	int x = system(batch_command.c_str());
@@ -238,7 +240,7 @@ namespace k1 {
 					accumulated_ms[i] += now - last_switching_time;
 				}
 			}
-			std::string message {
+			std::string message{
 				"Switched the following valves: --->\n"
 			};
 
@@ -319,8 +321,8 @@ namespace k1 {
 		};
 
 		valve_view get_view(uint8_t valve_id) {
-			(void)valves.at(valve_id); // check out of range!
-			return valve_view(*this, static_cast<uint8_t>(1) << valve_id);
+			//(void)valves.at(valve_id); // check out of range!
+			return valve_view(*this, valve_id);
 		}
 
 	};
@@ -450,6 +452,10 @@ std::optional<k1::landscape> k1::landscape::singleton_instance;
 
 void wait_for(int64_t duration_in_seconds) {
 	auto start_time = time_helper::get_seconds_since_epoch_now();
+
+#ifdef MANUAL_TEST
+	duration_in_seconds /= 60;
+#endif
 
 	while (time_helper::get_seconds_since_epoch_now() < start_time + duration_in_seconds) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -747,7 +753,7 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	for (std::size_t i{ 0 }; i < 20; ++i) {
+	for (std::size_t i{ 0 }; i < 2; ++i) {
 		const bool PING_OK{ check_all_servers_using_ping() };
 		if (PING_OK)
 			break;
@@ -766,9 +772,13 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
+#ifndef MANUAL_TEST
 	if (global_watering_enable && is_time_for_watering) {
+#endif // !MANUAL_TEST
 		watering(start_time, garden);
+#ifndef MANUAL_TEST
 	}
+#endif // !MANUAL_TEST
 
 
 	return 0;
