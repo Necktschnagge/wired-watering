@@ -36,9 +36,9 @@ namespace CONF {
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Tomaten" };
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "-frei-" };
 
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeerren Flieder" };
+	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeeren Flieder" };
 	[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartofffeln" };
+	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartoffeln" };
 
 
 	// ip addresses:
