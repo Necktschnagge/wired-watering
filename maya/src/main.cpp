@@ -12,14 +12,16 @@
 #include <fstream>
 #include <optional>
 
+static constexpr bool MANUAL_TEST{ false };
+
 namespace CONF {
 
 
 	// server names / device names:
-	[[maybe_unused]] inline static const std::string FELIX{ "Felix"};
-	[[maybe_unused]] inline static const std::string JAMES{ "James"};
-	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas"};
-	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson"};
+	[[maybe_unused]] inline static const std::string FELIX{ "Felix" };
+	[[maybe_unused]] inline static const std::string JAMES{ "James" };
+	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas" };
+	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson" };
 
 
 	// valve patch infos:
@@ -64,8 +66,8 @@ namespace CONF {
 
 
 [[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ JAMES_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_3 };
+[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_2 };
+[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_3 };
 [[maybe_unused]] static constexpr uint8_t JAMES_FREI{ JAMES_VALVE_4 };
 
 [[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
@@ -86,7 +88,7 @@ bool ping(const std::string& ip_address) {
 	return (x == 0);
 #endif // defined(__linux__) || defined(__APPLE__)
 #ifdef _WIN32
-	std::string batch_command{ "ping -n 1 " };
+	std::string batch_command{ "Test-Connection -Count 1 -ErrorAction Stop " };
 	batch_command.append(ip_address);
 	batch_command.append("  > nul 2>&1");
 	int x = system(batch_command.c_str());
@@ -238,7 +240,7 @@ namespace k1 {
 					accumulated_ms[i] += now - last_switching_time;
 				}
 			}
-			std::string message {
+			std::string message{
 				"Switched the following valves: --->\n"
 			};
 
@@ -318,9 +320,9 @@ namespace k1 {
 
 		};
 
-		valve_view get_view(uint8_t valve_id) {
-			(void)valves.at(valve_id); // check out of range!
-			return valve_view(*this, static_cast<uint8_t>(1) << valve_id);
+		valve_view get_view(uint8_t valve_bit_mask) {
+			//(void)valves.at(valve_id); // check out of range!
+			return valve_view(*this, valve_bit_mask);
 		}
 
 	};
@@ -450,6 +452,13 @@ std::optional<k1::landscape> k1::landscape::singleton_instance;
 
 void wait_for(int64_t duration_in_seconds) {
 	auto start_time = time_helper::get_seconds_since_epoch_now();
+
+	if constexpr (MANUAL_TEST) {
+		duration_in_seconds /= 60;
+		if (duration_in_seconds < 5) {
+			duration_in_seconds = 5;
+		}
+	}
 
 	while (time_helper::get_seconds_since_epoch_now() < start_time + duration_in_seconds) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -766,7 +775,7 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
-	if (global_watering_enable && is_time_for_watering) {
+	if (MANUAL_TEST || (global_watering_enable && is_time_for_watering)) {
 		watering(start_time, garden);
 	}
 
