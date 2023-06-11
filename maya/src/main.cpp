@@ -12,7 +12,7 @@
 #include <fstream>
 #include <optional>
 
-#define MANUAL_TEST
+static constexpr bool MANUAL_TEST{ false };
 
 namespace CONF {
 
@@ -48,7 +48,7 @@ namespace CONF {
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
 [[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
 
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.254" };
+[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.23" };
 
 [[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
 
@@ -320,9 +320,9 @@ namespace k1 {
 
 		};
 
-		valve_view get_view(uint8_t valve_id) {
+		valve_view get_view(uint8_t valve_bit_mask) {
 			//(void)valves.at(valve_id); // check out of range!
-			return valve_view(*this, valve_id);
+			return valve_view(*this, valve_bit_mask);
 		}
 
 	};
@@ -453,9 +453,12 @@ std::optional<k1::landscape> k1::landscape::singleton_instance;
 void wait_for(int64_t duration_in_seconds) {
 	auto start_time = time_helper::get_seconds_since_epoch_now();
 
-#ifdef MANUAL_TEST
-	duration_in_seconds /= 60;
-#endif
+	if constexpr (MANUAL_TEST) {
+		duration_in_seconds /= 60;
+		if (duration_in_seconds < 5) {
+			duration_in_seconds = 5;
+		}
+	}
 
 	while (time_helper::get_seconds_since_epoch_now() < start_time + duration_in_seconds) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -753,7 +756,7 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	for (std::size_t i{ 0 }; i < 2; ++i) {
+	for (std::size_t i{ 0 }; i < 20; ++i) {
 		const bool PING_OK{ check_all_servers_using_ping() };
 		if (PING_OK)
 			break;
@@ -772,13 +775,9 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
-#ifndef MANUAL_TEST
-	if (global_watering_enable && is_time_for_watering) {
-#endif // !MANUAL_TEST
+	if (MANUAL_TEST || (global_watering_enable && is_time_for_watering)) {
 		watering(start_time, garden);
-#ifndef MANUAL_TEST
 	}
-#endif // !MANUAL_TEST
 
 
 	return 0;
