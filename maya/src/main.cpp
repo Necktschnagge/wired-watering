@@ -20,6 +20,17 @@ static constexpr bool MANUAL_TEST{ false };
 
 namespace CONF {
 
+	namespace IP_ADDRESS {
+		[[maybe_unused]] static const std::string PUMP_SERVER_MAYSON{ "192.168.1.10" };
+
+		[[maybe_unused]] static const std::string VALVE_SERVER_JAMES{ "192.168.1.20" };
+		[[maybe_unused]] static const std::string VALVE_SERVER_LUCAS{ "192.168.1.21" };
+		[[maybe_unused]] static const std::string VALVE_SERVER_FELIX{ "192.168.1.22" };
+
+		[[maybe_unused]] static const std::string VALVE_SERVER_TEST{ "192.168.1.23" };
+
+		[[maybe_unused]] static const std::string TEST_PING_FAIL{ "192.168.2.233" };
+	}
 
 	// server names / device names:
 	[[maybe_unused]] inline static const std::string FELIX{ "Felix" };
@@ -27,59 +38,55 @@ namespace CONF {
 	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas" };
 	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson" };
 
+	namespace RAW_VALVES {
 
-	// valve patch infos:
-	[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Eiben Klee" };
-	[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara Sabine" };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
 
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Karotten" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Tomaten" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "-frei-" };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
 
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeeren Flieder" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartoffeln" };
+		[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
+	}
+	namespace VALVE_MAP {
 
-	// ip addresses:
+		// valve patch infos:
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Eiben-Klee" };
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara-alt" };
+
+		[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ RAW_VALVES::FELIX_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ RAW_VALVES::FELIX_VALVE_2 };
+
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Karotten" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Tomaten" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Kartoffeln" };
+
+		[[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ RAW_VALVES::JAMES_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ RAW_VALVES::JAMES_VALVE_2 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ RAW_VALVES::JAMES_VALVE_3 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_KARTOFFELN{ RAW_VALVES::JAMES_VALVE_4 };
+
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erbsen" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Bohnen-Flieder" };
+
+		[[maybe_unused]] static constexpr uint8_t LUCAS_ERBSEN{ RAW_VALVES::LUCAS_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_HEIDELBEEREN{ RAW_VALVES::LUCAS_VALVE_2 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_BOHNEN_UND_FLIEDER{ RAW_VALVES::LUCAS_VALVE_3 };
+
+	}
 
 }
 
-[[maybe_unused]] static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
-
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
-
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.23" };
-
-[[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
-
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
-
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
-
-[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
 
-[[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ JAMES_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_3 };
-[[maybe_unused]] static constexpr uint8_t JAMES_FREI{ JAMES_VALVE_4 };
 
-[[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t LUC_HEIDELBEEREN{ LUCAS_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t LUC_KARTOFFELN_UND_ERDBEEREN{ LUCAS_VALVE_3 };
-
-[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ FELIX_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ FELIX_VALVE_1 };
 
 //static const std::string 
 
@@ -167,7 +174,7 @@ public:
 
 void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on = 2) {
 	std::string url{ "http://" };
-	url += IP_ADDRESS_PUMP_SERVER_MAYSON;
+	url += CONF::IP_ADDRESS::PUMP_SERVER_MAYSON;
 	url += ":80/status";
 	auto params = cpr::Parameters();
 	if (auto_on < 2) params.Add({ "auto", auto_on == 1 ? "on" : "off" });
@@ -360,13 +367,13 @@ namespace k1 {
 			standard_logger()->info("Creating Landscape...");
 
 			standard_logger()->info("Creating Felix...");
-			stations.push_back(valve_station(CONF::FELIX, IP_ADDRESS_VALVE_SERVER_FELIX, std::vector<std::string>{ CONF::FELIX_VALVE_1_LABEL, CONF::FELIX_VALVE_2_LABEL}));
+			stations.push_back(valve_station(CONF::FELIX, CONF::IP_ADDRESS::VALVE_SERVER_FELIX, std::vector<std::string>{ CONF::VALVE_MAP::FELIX_VALVE_1_LABEL, CONF::VALVE_MAP::FELIX_VALVE_2_LABEL}));
 
 			standard_logger()->info("Creating James...");
-			stations.push_back(valve_station(CONF::JAMES, IP_ADDRESS_VALVE_SERVER_JAMES, std::vector<std::string>{ CONF::JAMES_VALVE_1_LABEL, CONF::JAMES_VALVE_2_LABEL, CONF::JAMES_VALVE_3_LABEL, CONF::JAMES_VALVE_4_LABEL}));
+			stations.push_back(valve_station(CONF::JAMES, CONF::IP_ADDRESS::VALVE_SERVER_JAMES, std::vector<std::string>{ CONF::VALVE_MAP::JAMES_VALVE_1_LABEL, CONF::VALVE_MAP::JAMES_VALVE_2_LABEL, CONF::VALVE_MAP::JAMES_VALVE_3_LABEL, CONF::VALVE_MAP::JAMES_VALVE_4_LABEL}));
 
 			standard_logger()->info("Creating Lucas...");
-			stations.push_back(valve_station(CONF::LUCAS, IP_ADDRESS_VALVE_SERVER_LUCAS, std::vector<std::string>{ CONF::LUCAS_VALVE_1_LABEL, CONF::LUCAS_VALVE_2_LABEL, CONF::LUCAS_VALVE_3_LABEL}));
+			stations.push_back(valve_station(CONF::LUCAS, CONF::IP_ADDRESS::VALVE_SERVER_LUCAS, std::vector<std::string>{ CONF::VALVE_MAP::LUCAS_VALVE_1_LABEL, CONF::VALVE_MAP::LUCAS_VALVE_2_LABEL, CONF::VALVE_MAP::LUCAS_VALVE_3_LABEL}));
 		}
 
 	public:
@@ -380,8 +387,8 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Eiben() { return station.get_view(FELIX_EIBEN); }
-			valve_station::valve_view MaraSabine() { return station.get_view(FELIX_MARA); }
+			valve_station::valve_view Eiben() { return station.get_view(CONF::VALVE_MAP::FELIX_EIBEN); }
+			valve_station::valve_view MaraAlt() { return station.get_view(CONF::VALVE_MAP::FELIX_MARA); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -405,10 +412,10 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Karotten() { return station.get_view(JAMES_KAROTTEN); }
-			valve_station::valve_view Gurken() { return station.get_view(JAMES_GURKEN); }
-			valve_station::valve_view Tomaten() { return station.get_view(JAMES_TOMATEN); }
-			valve_station::valve_view Frei() { return station.get_view(JAMES_FREI); }
+			valve_station::valve_view Karotten() { return station.get_view(CONF::VALVE_MAP::JAMES_KAROTTEN); }
+			valve_station::valve_view Gurken() { return station.get_view(CONF::VALVE_MAP::JAMES_GURKEN); }
+			valve_station::valve_view Tomaten() { return station.get_view(CONF::VALVE_MAP::JAMES_TOMATEN); }
+			valve_station::valve_view Kartoffeln() { return station.get_view(CONF::VALVE_MAP::JAMES_KARTOFFELN); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -433,9 +440,9 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view FliederErdbeeren() { return station.get_view(LUCAS_VALVE_1); }
-			valve_station::valve_view Heidelbeeren() { return station.get_view(LUCAS_VALVE_2); }
-			valve_station::valve_view Kartoffeln() { return station.get_view(LUCAS_VALVE_3); }
+			valve_station::valve_view Erbsen() { return station.get_view(CONF::VALVE_MAP::LUCAS_ERBSEN); }
+			valve_station::valve_view Heidelbeeren() { return station.get_view(CONF::VALVE_MAP::LUCAS_HEIDELBEEREN); }
+			valve_station::valve_view BohnenFlieder() { return station.get_view(CONF::VALVE_MAP::LUCAS_BOHNEN_UND_FLIEDER); }
 
 
 			inline void turn(bool on) const {
@@ -507,11 +514,11 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
-		landscape.Lucas().Kartoffeln().turn_on();
+		landscape.James().Kartoffeln().turn_on();
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraSabine().turn_on();
+		landscape.Felix().MaraAlt().turn_on();
 
 		wait_for(10 * 60);
 
@@ -524,7 +531,8 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraSabine().turn_off();
+		landscape.Felix().MaraAlt().turn_off();
+		landscape.Lucas().BohnenFlieder().turn_on(); // alle 2 Tage 30min
 
 		wait_for(25 * 60);
 
@@ -541,13 +549,14 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 	landscape.James().Gurken().turn_on();
 	landscape.James().Tomaten().turn_on();
-	landscape.Lucas().FliederErdbeeren().turn_on();
+	landscape.Lucas().Erbsen().turn_on();
+
 	if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
 
 	wait_for(20 * 60);
 
-	landscape.Lucas().FliederErdbeeren().turn_off();
 	landscape.James().Tomaten().turn_off();
+	landscape.Lucas().Erbsen().turn_off();
 
 	send_mayson(0);
 	wait_for(10);
@@ -560,8 +569,6 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	send_mayson(1);
 
 	wait_for(20 * 60);
-
-
 
 	// END OF WATERING
 
@@ -668,7 +675,7 @@ class ping_checker {
 
 		standard_logger()->info("Pinging Pump Server Mayson...");
 
-		const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
+		const bool MAYSON_AVAILABLE{ ping(CONF::IP_ADDRESS::PUMP_SERVER_MAYSON) };
 		if (!MAYSON_AVAILABLE) {
 			standard_logger()->error("Fatal: Pump Server not available!");
 		}
@@ -679,9 +686,9 @@ class ping_checker {
 		standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
 
 		standard_logger()->info("Pinging all valve stations...");
-		const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
-		const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
-		const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+		const bool JAMES_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_JAMES) };
+		const bool LUCAS_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_LUCAS) };
+		const bool FELIX_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_FELIX) };
 
 		if (!JAMES_AVAILABLE) {
 			standard_logger()->error("Fatal: James not available!");
@@ -707,7 +714,7 @@ class ping_checker {
 
 		standard_logger()->info("Pinging Non-Existing Test Server...");
 
-		const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
+		const bool TEST_SERVER_UNAVAILABLE{ !ping(CONF::IP_ADDRESS::VALVE_SERVER_TEST) };
 
 		if (!TEST_SERVER_UNAVAILABLE) {
 			standard_logger()->error("Got successful PING from Device that should not exists on local network!");
@@ -930,6 +937,7 @@ int main(int argc, char** argv) {
 		tel.emplace(tel_config.value().bot_secret);
 	}
 
+	/*
 	if (tel) {
 		try {
 			tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
@@ -938,6 +946,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
+	*/
 	bool devices_available = ping_checker::check_ping_devices();
 
 	(void)devices_available;
