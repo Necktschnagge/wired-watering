@@ -750,8 +750,9 @@ class telegram_interface {
 	class keys {
 		friend class telegram_interface;
 		inline static const std::string chat_id{ "chat_id" };
-		inline static const std::string text{ "text" };
 		inline static const std::string disable_notification{ "disable_notification" };
+		inline static const std::string parse_mode{ "parse_mode" };
+		inline static const std::string text{ "text" };
 	};
 
 	class exceptions {
@@ -814,11 +815,12 @@ public:
 		return nlohmann::json::parse(r.text);
 	}
 
-	nlohmann::json sendMessage(long long chat_id, const std::string& text, bool disable_notification = false) {
+	nlohmann::json sendMessage(long long chat_id, const std::string& text, bool disable_notification = false, const std::string& parse_mode = "MarkdownV2") {
 		auto params = cpr::Parameters();
 		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
 		params.Add(cpr::Parameter(keys::text, text));
 		params.Add(cpr::Parameter(keys::disable_notification, disable_notification ? "true" : "false"));
+		params.Add(cpr::Parameter(keys::parse_mode, parse_mode));
 		cpr::Response r = cpr::Get(
 			cpr::Url{ get_base_url() + endpoints::sendMessage },
 			params
@@ -929,7 +931,11 @@ int main(int argc, char** argv) {
 	}
 
 	if (tel) {
-		tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+		try {
+			tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+		}
+		catch (...) {
+		}
 	}
 
 	bool devices_available = ping_checker::check_ping_devices();
@@ -952,7 +958,12 @@ int main(int argc, char** argv) {
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
 	if (START_WATERING) {
-		if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now!");
+		try {
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now\\!");
+		}
+		catch (...)
+		{
+		}
 		watering(start_time, garden);
 	}
 
@@ -961,9 +972,14 @@ int main(int argc, char** argv) {
 	if (tel
 		&& START_WATERING
 		) {
-		std::string message{ "Finished watering now!\n\n" };
-		message += garden.get_duration_table();
-		tel.value().sendMessage(tel_config.value().main_chat_id, message);
+		try {
+			std::string message{ "Finished watering now\\!\n\n```\n" };
+			message += garden.get_duration_table();
+			message += "```";
+			tel.value().sendMessage(tel_config.value().main_chat_id, message);
+		}
+		catch (...) {
+		}
 	}
 
 	return 0;
