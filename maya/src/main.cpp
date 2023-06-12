@@ -772,10 +772,10 @@ public:
 	}
 
 	telegram_interface(const telegram_interface&) = default;
-	telegram_interface(telegram_interface&&) = default;
+	telegram_interface(telegram_interface&&) = delete;
 
 	telegram_interface& operator = (const telegram_interface&) = default;
-	telegram_interface& operator = (telegram_interface&&) = default;
+	telegram_interface& operator = (telegram_interface&&) = delete; // also const member implicitly deletes this
 
 	nlohmann::json getMe() {
 		auto params = cpr::Parameters();
