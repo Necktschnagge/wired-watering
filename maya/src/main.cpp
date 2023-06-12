@@ -239,7 +239,7 @@ namespace k1 {
 				std::string padded_duration{ duration_minutes_ss.str() };
 				padded_duration.insert(padded_duration.begin(), 10 - padded_duration.size(), ' ');
 
-				table += padded_station_label+ ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
+				table += padded_station_label + ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
 			}
 			return table;
 		}
@@ -770,6 +770,12 @@ public:
 
 	}
 
+	telegram_interface(const telegram_interface&) = default;
+	telegram_interface(telegram_interface&&) = default;
+
+	telegram_interface& operator = (const telegram_interface&) = default;
+	telegram_interface& operator = (telegram_interface&&) = default;
+
 	nlohmann::json getMe() {
 		auto params = cpr::Parameters();
 		cpr::Response r = cpr::Get(
@@ -819,7 +825,7 @@ public:
 		if (r.status_code != 200) {
 			throw exceptions::unexpected_response_status_code<200>(r.status_code);
 		}
-		return nlohmann::json::parse(r.text);
+		return nlohmann::json::parse(r.text); // check parse error
 	}
 
 };
@@ -884,14 +890,7 @@ bool check_if_in_watering_time_window(const time_helper& start_time, int64_t pre
 	return result;
 }
 
-int main(int argc, char** argv) {
-
-	(void)argc;
-	(void)argv;
-
-	init_logger();
-	
-	// load telegram secrets:
+std::optional<maya::telegram_config> load_telegram_config() {
 
 	if (!std::filesystem::exists(maya::config::PATH_TO_TELEGRAM_JSON)) {
 		standard_logger()->error("Telegram secret config does not exist!");
@@ -904,12 +903,33 @@ int main(int argc, char** argv) {
 			)
 			//)
 			.string());
-		return 1;
+		return std::optional<maya::telegram_config>();
 	}
 
 	auto telegram_secret_istream = std::ifstream(maya::config::PATH_TO_TELEGRAM_JSON);
-	auto telegram_json = nlohmann::json::parse(std::istream_iterator<char>(telegram_secret_istream), std::istream_iterator<char>());
-	auto telegram_config = maya::telegram_config(telegram_json);
+	auto telegram_json = nlohmann::json::parse(std::istream_iterator<char>(telegram_secret_istream), std::istream_iterator<char>()); // check for errors!
+	return std::make_optional<maya::telegram_config>(telegram_json);
+}
+
+int main(int argc, char** argv) {
+
+	(void)argc;
+	(void)argv;
+
+	init_logger();
+
+	// load telegram secrets:
+
+	std::optional<maya::telegram_config> tel_config = load_telegram_config();
+
+	std::optional<telegram_interface> tel;
+	if (tel_config) {
+		tel.emplace(tel_config.value().bot_secret);
+	}
+
+	if (tel) {
+		tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+	}
 
 	bool devices_available = ping_checker::check_ping_devices();
 
@@ -928,11 +948,21 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
-	if (MANUAL_TEST || (global_watering_enable && is_time_for_watering)) {
+	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
+
+	if (START_WATERING) {
+		if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now!");
 		watering(start_time, garden);
 	}
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
+	if (tel 
+		&& START_WATERING
+		) {
+		std::string message{ "Finsihed watering now!\n\n" };
+		message += garden.get_duration_table();
+		tel.value().sendMessage(tel_config.value().main_chat_id, message);
+	}
 
 	return 0;
 }
