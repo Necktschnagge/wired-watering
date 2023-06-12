@@ -33,8 +33,8 @@ namespace CONF {
 	[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara Sabine" };
 
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Karotten" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Gurken" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Tomaten" };
+	[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Tomaten" };
+	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "-frei-" };
 
 	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeeren Flieder" };
@@ -503,6 +503,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(6));
+
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
@@ -956,7 +957,8 @@ int main(int argc, char** argv) {
 	}
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
-	if (tel 
+
+	if (tel
 		&& START_WATERING
 		) {
 		std::string message{ "Finsihed watering now!\n\n" };
