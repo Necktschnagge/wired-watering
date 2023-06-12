@@ -1,8 +1,9 @@
 
 #include "logger.h"
-
+#include "configs.h"
 
 #include "cpr/cpr.h"
+#include <nlohmann/json.hpp>
 
 #include <vector>
 #include <string>
@@ -36,9 +37,9 @@ namespace CONF {
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
 	[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "-frei-" };
 
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeerren Flieder" };
+	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeeren Flieder" };
 	[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartofffeln" };
+	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartoffeln" };
 
 
 	// ip addresses:
@@ -238,7 +239,7 @@ namespace k1 {
 				std::string padded_duration{ duration_minutes_ss.str() };
 				padded_duration.insert(padded_duration.begin(), 10 - padded_duration.size(), ' ');
 
-				table += padded_station_label+ ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
+				table += padded_station_label + ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
 			}
 			return table;
 		}
@@ -661,62 +662,176 @@ class schedule {
 
 #endif
 
-bool check_all_servers_using_ping() {
+class ping_checker {
 
-	standard_logger()->info("Pinging Pump Server Mayson...");
+	static bool check_all_servers_using_ping_once() {
 
-	const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
-	if (!MAYSON_AVAILABLE) {
-		standard_logger()->error("Fatal: Pump Server not available!");
+		standard_logger()->info("Pinging Pump Server Mayson...");
+
+		const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
+		if (!MAYSON_AVAILABLE) {
+			standard_logger()->error("Fatal: Pump Server not available!");
+		}
+		else {
+			standard_logger()->info("Pump Server ping OK!");
+		}
+
+		standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+
+		standard_logger()->info("Pinging all valve stations...");
+		const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
+		const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
+		const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+
+		if (!JAMES_AVAILABLE) {
+			standard_logger()->error("Fatal: James not available!");
+		}
+		else {
+			standard_logger()->info("James ping OK!");
+		}
+		if (!LUCAS_AVAILABLE) {
+			standard_logger()->error("Fatal: Lucas not available!");
+		}
+		else {
+			standard_logger()->info("Lucas ping OK!");
+		}
+		if (!FELIX_AVAILABLE) {
+			standard_logger()->error("Fatal: Felix not available!");
+		}
+		else {
+			standard_logger()->info("Felix ping OK!");
+		}
+
+		standard_logger()->info("Pinging all valve stations   ...DONE!");
+
+
+		standard_logger()->info("Pinging Non-Existing Test Server...");
+
+		const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
+
+		if (!TEST_SERVER_UNAVAILABLE) {
+			standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+		}
+		else {
+			standard_logger()->info("Pinging Non-Existing Test Server OK!");
+		}
+
+		standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+
+		return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
 	}
-	else {
-		standard_logger()->info("Pump Server ping OK!");
+
+public:
+	static bool check_ping_devices() {
+		for (std::size_t i{ 0 }; i < 20; ++i) {
+			const bool PING_OK{ check_all_servers_using_ping_once() };
+			if (PING_OK)
+				return true;
+		}
+		return false;
 	}
 
-	standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+};
 
-	standard_logger()->info("Pinging all valve stations...");
-	const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
-	const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
-	const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+class telegram_interface {
 
-	if (!JAMES_AVAILABLE) {
-		standard_logger()->error("Fatal: James not available!");
+	std::string bot_secret;
+
+	std::string get_base_url() const noexcept {
+		return std::string("https://api.telegram.org/bot") + bot_secret;
 	}
-	else {
-		standard_logger()->info("James ping OK!");
-	}
-	if (!LUCAS_AVAILABLE) {
-		standard_logger()->error("Fatal: Lucas not available!");
-	}
-	else {
-		standard_logger()->info("Lucas ping OK!");
-	}
-	if (!FELIX_AVAILABLE) {
-		standard_logger()->error("Fatal: Felix not available!");
-	}
-	else {
-		standard_logger()->info("Felix ping OK!");
+	class endpoints {
+		friend class telegram_interface;
+		inline static const std::string getMe{ "/getMe" };
+		inline static const std::string getUpdates{ "/getUpdates" };
+		inline static const std::string getChat{ "/getChat" };
+		inline static const std::string sendMessage{ "/sendMessage" };
+	};
+	class keys {
+		friend class telegram_interface;
+		inline static const std::string chat_id{ "chat_id" };
+		inline static const std::string disable_notification{ "disable_notification" };
+		inline static const std::string parse_mode{ "parse_mode" };
+		inline static const std::string text{ "text" };
+	};
+
+	class exceptions {
+	public:
+
+		template<int ERROR_CODE>
+		class unexpected_response_status_code : public std::runtime_error {
+		public:
+			unexpected_response_status_code(int actual_status_code) : std::runtime_error(
+				std::string("Got HTTP response code ") + std::to_string(actual_status_code) + ". Expected status code was " + std::to_string(ERROR_CODE) + "."
+			) {}
+		};
+	};
+
+public:
+	telegram_interface(const std::string& bot_secret) : bot_secret(bot_secret) {
+
 	}
 
-	standard_logger()->info("Pinging all valve stations   ...DONE!");
+	telegram_interface(const telegram_interface&) = default;
+	telegram_interface(telegram_interface&&) = default;
 
+	telegram_interface& operator = (const telegram_interface&) = default;
+	telegram_interface& operator = (telegram_interface&&) = default;
 
-	standard_logger()->info("Pinging Non-Existing Test Server...");
-
-	const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
-
-	if (!TEST_SERVER_UNAVAILABLE) {
-		standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+	nlohmann::json getMe() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getMe },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
 	}
-	else {
-		standard_logger()->info("Pinging Non-Existing Test Server OK!");
+
+	nlohmann::json getUpdates() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getUpdates },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
 	}
 
-	standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+	nlohmann::json getChat(long long chat_id) {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getChat },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
 
-	return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
-}
+	nlohmann::json sendMessage(long long chat_id, const std::string& text, bool disable_notification = false, const std::string& parse_mode = "MarkdownV2") {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		params.Add(cpr::Parameter(keys::text, text));
+		params.Add(cpr::Parameter(keys::disable_notification, disable_notification ? "true" : "false"));
+		params.Add(cpr::Parameter(keys::parse_mode, parse_mode));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::sendMessage },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text); // check parse error
+	}
+
+};
 
 int64_t load_timestamp_file() {
 	standard_logger()->info("Checking timestamp.txt...");
@@ -778,6 +893,27 @@ bool check_if_in_watering_time_window(const time_helper& start_time, int64_t pre
 	return result;
 }
 
+std::optional<maya::telegram_config> load_telegram_config() {
+
+	if (!std::filesystem::exists(maya::config::PATH_TO_TELEGRAM_JSON)) {
+		standard_logger()->error("Telegram secret config does not exist!");
+		standard_logger()->error(
+			//std::filesystem::canonical(
+			std::filesystem::absolute(
+				std::filesystem::path(
+					maya::config::PATH_TO_TELEGRAM_JSON
+				)
+			)
+			//)
+			.string());
+		return std::optional<maya::telegram_config>();
+	}
+
+	auto telegram_secret_istream = std::ifstream(maya::config::PATH_TO_TELEGRAM_JSON);
+	auto telegram_json = nlohmann::json::parse(std::istream_iterator<char>(telegram_secret_istream), std::istream_iterator<char>()); // check for errors!
+	return std::make_optional<maya::telegram_config>(telegram_json);
+}
+
 int main(int argc, char** argv) {
 
 	(void)argc;
@@ -785,11 +921,26 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	for (std::size_t i{ 0 }; i < 20; ++i) {
-		const bool PING_OK{ check_all_servers_using_ping() };
-		if (PING_OK)
-			break;
+	// load telegram secrets:
+
+	std::optional<maya::telegram_config> tel_config = load_telegram_config();
+
+	std::optional<telegram_interface> tel;
+	if (tel_config) {
+		tel.emplace(tel_config.value().bot_secret);
 	}
+
+	if (tel) {
+		try {
+			tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+		}
+		catch (...) {
+		}
+	}
+
+	bool devices_available = ping_checker::check_ping_devices();
+
+	(void)devices_available;
 
 	standard_logger()->info("Creating Landscape...");
 
@@ -804,11 +955,32 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
-	if (MANUAL_TEST || (global_watering_enable && is_time_for_watering)) {
+	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
+
+	if (START_WATERING) {
+		try {
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now\\!");
+		}
+		catch (...)
+		{
+		}
 		watering(start_time, garden);
 	}
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
+
+	if (tel
+		&& START_WATERING
+		) {
+		try {
+			std::string message{ "Finished watering now\\!\n\n```\n" };
+			message += garden.get_duration_table();
+			message += "```";
+			tel.value().sendMessage(tel_config.value().main_chat_id, message);
+		}
+		catch (...) {
+		}
+	}
 
 	return 0;
 }

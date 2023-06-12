@@ -10,3 +10,6 @@
 [submodule "maya/extern/td"]
 	path = maya/extern/td
 	url = https://github.com/tdlib/td.git
+[submodule "maya/extern/json"]
+	path = maya/extern/json
+	url = https://github.com/nlohmann/json
