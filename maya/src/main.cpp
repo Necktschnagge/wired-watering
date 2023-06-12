@@ -961,7 +961,7 @@ int main(int argc, char** argv) {
 	if (tel
 		&& START_WATERING
 		) {
-		std::string message{ "Finsihed watering now!\n\n" };
+		std::string message{ "Finished watering now!\n\n" };
 		message += garden.get_duration_table();
 		tel.value().sendMessage(tel_config.value().main_chat_id, message);
 	}
