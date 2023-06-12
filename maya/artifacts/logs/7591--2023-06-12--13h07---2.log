@@ -1,0 +1,16 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+ * [neuer Branch]        experimental-telegram -> origin/experimental-telegram
+   9b304d875..6d7871564  feature-telegram-with-api-directly -> origin/feature-telegram-with-api-directly
+   0bf2cf60e..5c31904d4  maya-fallback         -> origin/maya-fallback
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   5c31904d47215b2a341025adf830e6e55b804fa0
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================
