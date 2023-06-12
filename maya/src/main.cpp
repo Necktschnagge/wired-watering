@@ -735,7 +735,7 @@ public:
 
 class telegram_interface {
 
-	const std::string bot_secret;
+	std::string bot_secret;
 
 	std::string get_base_url() const noexcept {
 		return std::string("https://api.telegram.org/bot") + bot_secret;
@@ -772,10 +772,10 @@ public:
 	}
 
 	telegram_interface(const telegram_interface&) = default;
-	telegram_interface(telegram_interface&&) = delete;
+	telegram_interface(telegram_interface&&) = default;
 
 	telegram_interface& operator = (const telegram_interface&) = default;
-	telegram_interface& operator = (telegram_interface&&) = delete; // also const member implicitly deletes this
+	telegram_interface& operator = (telegram_interface&&) = default;
 
 	nlohmann::json getMe() {
 		auto params = cpr::Parameters();
