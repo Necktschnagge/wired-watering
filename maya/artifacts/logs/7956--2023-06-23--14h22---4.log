@@ -1,0 +1,104 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-06-23 14:22:50.263] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:22:50.320] [main] [info] Pump Server ping OK!
+[2023-06-23 14:22:50.320] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:22:50.320] [main] [info] Pinging all valve stations...
+[2023-06-23 14:22:53.608] [main] [error] Fatal: James not available!
+[2023-06-23 14:22:53.608] [main] [info] Lucas ping OK!
+[2023-06-23 14:22:53.608] [main] [info] Felix ping OK!
+[2023-06-23 14:22:53.608] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:22:53.608] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:22:56.673] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:22:56.673] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:22:56.673] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:22:56.782] [main] [info] Pump Server ping OK!
+[2023-06-23 14:22:56.782] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:22:56.782] [main] [info] Pinging all valve stations...
+[2023-06-23 14:23:00.067] [main] [error] Fatal: James not available!
+[2023-06-23 14:23:00.067] [main] [info] Lucas ping OK!
+[2023-06-23 14:23:00.067] [main] [info] Felix ping OK!
+[2023-06-23 14:23:00.067] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:23:00.067] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:23:03.136] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:23:03.137] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:23:03.137] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:23:03.232] [main] [info] Pump Server ping OK!
+[2023-06-23 14:23:03.232] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:23:03.232] [main] [info] Pinging all valve stations...
+[2023-06-23 14:23:06.505] [main] [error] Fatal: James not available!
+[2023-06-23 14:23:06.505] [main] [info] Lucas ping OK!
+[2023-06-23 14:23:06.505] [main] [info] Felix ping OK!
+[2023-06-23 14:23:06.505] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:23:06.505] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:23:09.569] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:23:09.569] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:23:09.569] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:23:09.669] [main] [info] Pump Server ping OK!
+[2023-06-23 14:23:09.669] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:23:09.669] [main] [info] Pinging all valve stations...
+[2023-06-23 14:23:12.945] [main] [error] Fatal: James not available!
+[2023-06-23 14:23:12.945] [main] [info] Lucas ping OK!
+[2023-06-23 14:23:12.945] [main] [info] Felix ping OK!
+[2023-06-23 14:23:12.945] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:23:12.945] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:23:16.001] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:23:16.001] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:23:16.001] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:23:16.112] [main] [info] Pump Server ping OK!
+[2023-06-23 14:23:16.112] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:23:16.112] [main] [info] Pinging all valve stations...
+[2023-06-23 14:23:19.389] [main] [error] Fatal: James not available!
+[2023-06-23 14:23:19.389] [main] [info] Lucas ping OK!
+[2023-06-23 14:23:19.389] [main] [info] Felix ping OK!
+[2023-06-23 14:23:19.389] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:23:19.389] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:23:22.465] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:23:22.465] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:23:22.465] [main] [info] Pinging Pump Server Mayson...
+[2023-06-23 14:23:22.557] [main] [info] Pump Server ping OK!
+[2023-06-23 14:23:22.557] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-23 14:23:22.557] [main] [info] Pinging all valve stations...
+[2023-06-23 14:23:24.301] [main] [info] James ping OK!
+[2023-06-23 14:23:24.301] [main] [info] Lucas ping OK!
+[2023-06-23 14:23:24.301] [main] [info] Felix ping OK!
+[2023-06-23 14:23:24.301] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-23 14:23:24.301] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-23 14:23:27.361] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-23 14:23:27.361] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-23 14:23:27.361] [main] [info] Creating Landscape...
+[2023-06-23 14:23:27.361] [main] [info] Creating Landscape...
+[2023-06-23 14:23:27.361] [main] [info] Creating Felix...
+[2023-06-23 14:23:27.361] [main] [info] Creating James...
+[2023-06-23 14:23:27.361] [main] [info] Creating Lucas...
+[2023-06-23 14:23:27.361] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1687523007361316186
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1687523007
+minutes since epoch   :   28125383
+minute of day   :   743
+minute of hour   :   23
+hour of day   :   12
+[2023-06-23 14:23:27.361] [main] [info] Checking timestamp.txt...
+[2023-06-23 14:23:27.361] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28124732
+[2023-06-23 14:23:27.361] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-06-23 14:23:27.361] [main] [info] It's not time for watering now!
+[2023-06-23 14:23:27.361] [main] [info] Minute Intraday:   743
+[2023-06-23 14:23:27.361] [main] [info] Days since Epoch:   19531
+[2023-06-23 14:23:27.361] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben-Klee  :      0.00 min
+Felix   :            Mara-alt  :      0.00 min
+James   :            Karotten  :      0.00 min
+James   :             Tomaten  :      0.00 min
+James   :              Gurken  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+Lucas   :              Erbsen  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :      Bohnen-Flieder  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   37s
+=====================================================================================================
