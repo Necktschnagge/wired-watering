@@ -964,7 +964,7 @@ int main(int argc, char** argv) {
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
 
-	constexpr bool global_watering_enable{ false };
+	constexpr bool global_watering_enable{ true };
 
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
