@@ -514,7 +514,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
-		landscape.James().Kartoffeln().turn_on();
+		//landscape.James().Kartoffeln().turn_on();
 
 		wait_for(10 * 60);
 
@@ -533,7 +533,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 		landscape.Felix().MaraAlt().turn_off();
 		landscape.Lucas().BohnenFlieder().turn_on(); // alle 2 Tage 30min
-		landscape.James().Kartoffeln().turn_off();
+		//landscape.James().Kartoffeln().turn_off();
 
 
 		wait_for(25 * 60);
