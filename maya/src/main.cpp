@@ -520,7 +520,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 		landscape.Felix().MaraAlt().turn_on();
 
-		wait_for(10 * 60);
+		wait_for(5 * 60);
 
 		send_mayson(0);
 		wait_for(10);
@@ -536,7 +536,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		//landscape.James().Kartoffeln().turn_off();
 
 
-		wait_for(25 * 60);
+		wait_for(10 * 60);
 
 		landscape.Felix().turn_off();
 		landscape.James().turn_off();
@@ -547,15 +547,15 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	wait_for(10);
 	send_mayson(1);
 
-	const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
+	//const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
 
-	landscape.James().Gurken().turn_on();
+	//landscape.James().Gurken().turn_on();
 	landscape.James().Tomaten().turn_on();
-	landscape.Lucas().Erbsen().turn_on();
+	//landscape.Lucas().Erbsen().turn_on();
 
-	if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
+	//if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
 
-	wait_for(20 * 60);
+	wait_for(10 * 60);
 
 	landscape.James().Tomaten().turn_off();
 	landscape.Lucas().Erbsen().turn_off();
