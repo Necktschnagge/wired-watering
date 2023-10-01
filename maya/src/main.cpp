@@ -547,7 +547,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	wait_for(10);
 	send_mayson(1);
 
-	const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
+	//const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
 
 	//landscape.James().Gurken().turn_on();
 	landscape.James().Tomaten().turn_on();
