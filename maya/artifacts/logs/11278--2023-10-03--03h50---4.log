@@ -1,0 +1,397 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-10-03 03:51:15.503] [main] [info] Pinging Pump Server Mayson...
+[2023-10-03 03:51:25.509] [main] [error] Fatal: Pump Server not available!
+[2023-10-03 03:51:25.509] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-10-03 03:51:25.509] [main] [info] Pinging all valve stations...
+[2023-10-03 03:51:25.752] [main] [info] James ping OK!
+[2023-10-03 03:51:25.752] [main] [info] Lucas ping OK!
+[2023-10-03 03:51:25.752] [main] [info] Felix ping OK!
+[2023-10-03 03:51:25.752] [main] [info] Pinging all valve stations   ...DONE!
+[2023-10-03 03:51:25.752] [main] [info] Pinging Non-Existing Test Server...
+[2023-10-03 03:51:28.824] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-10-03 03:51:28.824] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-10-03 03:51:28.824] [main] [info] Pinging Pump Server Mayson...
+[2023-10-03 03:51:28.931] [main] [info] Pump Server ping OK!
+[2023-10-03 03:51:28.931] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-10-03 03:51:28.931] [main] [info] Pinging all valve stations...
+[2023-10-03 03:51:29.337] [main] [info] James ping OK!
+[2023-10-03 03:51:29.337] [main] [info] Lucas ping OK!
+[2023-10-03 03:51:29.337] [main] [info] Felix ping OK!
+[2023-10-03 03:51:29.337] [main] [info] Pinging all valve stations   ...DONE!
+[2023-10-03 03:51:29.337] [main] [info] Pinging Non-Existing Test Server...
+[2023-10-03 03:51:32.408] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-10-03 03:51:32.408] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-10-03 03:51:32.408] [main] [info] Creating Landscape...
+[2023-10-03 03:51:32.408] [main] [info] Creating Landscape...
+[2023-10-03 03:51:32.408] [main] [info] Creating Felix...
+[2023-10-03 03:51:32.408] [main] [info] Creating James...
+[2023-10-03 03:51:32.408] [main] [info] Creating Lucas...
+[2023-10-03 03:51:32.408] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1696297892408566487
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1696297892
+minutes since epoch   :   28271631
+minute of day   :   111
+minute of hour   :   51
+hour of day   :   1
+[2023-10-03 03:51:32.408] [main] [info] Checking timestamp.txt...
+[2023-10-03 03:51:32.408] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28270174
+[2023-10-03 03:51:32.408] [main] [info] Checking timestamp.txt   ...DONE!
+Wrote to timestamp.txt
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off&system=off&manual=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on&system=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2023-10-03 03:51:42.138] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696297902
+http://192.168.1.20:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 03:51:42.295] [main] [info] 
+Switched the following valves: --->
+          James:   Karotten   OFF -> ON 
+                                   <---
+[2023-10-03 04:01:42.014] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696298502
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 04:01:42.107] [main] [info] 
+Switched the following valves: --->
+          Felix:   Mara-alt   OFF -> ON 
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2023-10-03 04:06:52.200] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696298812
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 04:06:52.378] [main] [info] 
+Switched the following valves: --->
+          James:   Karotten    ON -> OFF
+                                   <---
+[2023-10-03 04:06:52.378] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696298812
+http://192.168.1.22:80/status?valves=3
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 04:06:52.514] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben-Klee   OFF -> ON 
+                                   <---
+[2023-10-03 04:16:52.097] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696299412
+http://192.168.1.22:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 04:16:52.150] [main] [info] 
+Switched the following valves: --->
+          Felix:   Mara-alt    ON -> OFF
+                                   <---
+[2023-10-03 04:16:52.150] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696299412
+http://192.168.1.21:80/status?valves=4
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2023-10-03 04:16:52.250] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Bohnen-Flieder   OFF -> ON 
+                                   <---
+[2023-10-03 04:26:52.024] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300012
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 04:26:52.101] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben-Klee    ON -> OFF
+                                   <---
+[2023-10-03 04:26:52.101] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300012
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 04:26:52.203] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2023-10-03 04:26:52.203] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300012
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2023-10-03 04:26:52.404] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Bohnen-Flieder    ON -> OFF
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2023-10-03 04:27:02.137] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300022
+http://192.168.1.20:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 04:27:02.247] [main] [info] 
+Switched the following valves: --->
+          James:   Tomaten   OFF -> ON 
+                                   <---
+[2023-10-03 04:37:02.014] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300622
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 04:37:02.137] [main] [info] 
+Switched the following valves: --->
+          James:   Tomaten    ON -> OFF
+                                   <---
+[2023-10-03 04:37:02.137] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696300622
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2023-10-03 04:37:02.222] [main] [info] 
+Switched the following valves: --->
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2023-10-03 05:17:22.080] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303042
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 05:17:22.237] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2023-10-03 05:17:22.237] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303042
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 05:17:22.334] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2023-10-03 05:17:22.334] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303042
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2023-10-03 05:17:22.445] [main] [info] 
+Switched the following valves: --->
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2023-10-03 05:17:52.138] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303072
+http://192.168.1.22:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 05:17:52.337] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben-Klee   OFF -> ON 
+                                   <---
+[2023-10-03 05:19:52.086] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303192
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2023-10-03 05:19:52.151] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben-Klee    ON -> OFF
+                                   <---
+[2023-10-03 05:19:52.152] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303192
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2023-10-03 05:19:52.245] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2023-10-03 05:19:52.245] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1696303192
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2023-10-03 05:19:52.360] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2023-10-03 05:19:52.360] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben-Klee  :     21.99 min
+Felix   :            Mara-alt  :     15.17 min
+James   :            Karotten  :     15.17 min
+James   :             Tomaten  :     10.00 min
+James   :              Gurken  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+Lucas   :              Erbsen  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :      Bohnen-Flieder  :     10.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   5317s
+=====================================================================================================
