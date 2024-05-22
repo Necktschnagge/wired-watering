@@ -507,15 +507,24 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	//pumpe an
 	send_mayson(0, 0, 0);
 
-	//landscape.Felix().Eiben2024().turn_on();
-	//landscape.Felix().MaraAlt2024().turn_on();
-	//landscape.James().Kartoffel2024().turn_on();
+	landscape.Felix().Eiben2024().turn_on();
+	landscape.Felix().MaraAlt2024().turn_on();
+	landscape.James().Kartoffel2024().turn_on();
 	landscape.James().Tomate2024().turn_on();
 
 
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
-	std::this_thread::sleep_for(std::chrono::seconds(6));
+	std::this_thread::sleep_for(std::chrono::seconds(60));
+
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
+	//landscape.Felix().Eiben2024().turn_on();
+	//landscape.Felix().MaraAlt2024().turn_on();
+	//landscape.James().Kartoffel2024().turn_on();
+	landscape.James().Tomate2024().turn_on();
 
 	wait_for(30 * 60);
 	landscape.James().Kartoffel2024().turn_off();
