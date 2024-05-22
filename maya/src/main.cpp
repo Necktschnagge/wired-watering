@@ -62,15 +62,15 @@ namespace CONF {
 		[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ RAW_VALVES::FELIX_VALVE_1 };
 		[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ RAW_VALVES::FELIX_VALVE_2 };
 
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Karotten" };
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Tomaten" };
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Kartoffeln" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "JAMES_VALVE_1_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Kartoffeln" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "JAMES_VALVE_3_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Tomaten" };
 
-		[[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ RAW_VALVES::JAMES_VALVE_1 };
-		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ RAW_VALVES::JAMES_VALVE_2 };
-		[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ RAW_VALVES::JAMES_VALVE_3 };
-		[[maybe_unused]] static constexpr uint8_t JAMES_KARTOFFELN{ RAW_VALVES::JAMES_VALVE_4 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_1___{ RAW_VALVES::JAMES_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_KARTOFFEL{ RAW_VALVES::JAMES_VALVE_2 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_3___{ RAW_VALVES::JAMES_VALVE_3 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ RAW_VALVES::JAMES_VALVE_4 };
 
 		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erbsen" };
 		[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
@@ -387,8 +387,8 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Eiben() { return station.get_view(CONF::VALVE_MAP::FELIX_EIBEN); }
-			valve_station::valve_view MaraAlt() { return station.get_view(CONF::VALVE_MAP::FELIX_MARA); }
+			valve_station::valve_view Eiben2024() { return station.get_view(CONF::VALVE_MAP::FELIX_EIBEN); }
+			valve_station::valve_view MaraAlt2024() { return station.get_view(CONF::VALVE_MAP::FELIX_MARA); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -412,10 +412,10 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Karotten() { return station.get_view(CONF::VALVE_MAP::JAMES_KAROTTEN); }
-			valve_station::valve_view Gurken() { return station.get_view(CONF::VALVE_MAP::JAMES_GURKEN); }
-			valve_station::valve_view Tomaten() { return station.get_view(CONF::VALVE_MAP::JAMES_TOMATEN); }
-			valve_station::valve_view Kartoffeln() { return station.get_view(CONF::VALVE_MAP::JAMES_KARTOFFELN); }
+			valve_station::valve_view Karotten() { return station.get_view(CONF::VALVE_MAP::JAMES_1___); }
+			valve_station::valve_view Gurken() { return station.get_view(CONF::VALVE_MAP::JAMES_3___); }
+			valve_station::valve_view Kartoffel2024() { return station.get_view(CONF::VALVE_MAP::JAMES_KARTOFFEL); }
+			valve_station::valve_view Tomate2024() { return station.get_view(CONF::VALVE_MAP::JAMES_TOMATE); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -503,14 +503,37 @@ void wait_for(int64_t duration_in_seconds) {
 }
 
 void watering(const time_helper& start_time, k1::landscape& landscape) {
+	(void)start_time;
 
 	//pumpe an
 	send_mayson(0, 0, 0);
 
+	landscape.Felix().Eiben2024().turn_on();
+	landscape.Felix().MaraAlt2024().turn_on();
+	landscape.James().Kartoffel2024().turn_on();
+	landscape.James().Tomate2024().turn_on();
+
+
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
-	std::this_thread::sleep_for(std::chrono::seconds(6));
+	std::this_thread::sleep_for(std::chrono::seconds(60));
 
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
+	//landscape.Felix().Eiben2024().turn_on();
+	//landscape.Felix().MaraAlt2024().turn_on();
+	//landscape.James().Kartoffel2024().turn_on();
+	landscape.James().Tomate2024().turn_on();
+
+	wait_for(30 * 60);
+	landscape.James().Kartoffel2024().turn_off();
+	wait_for(15 * 60);
+
+
+
+	/*
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
@@ -518,7 +541,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraAlt().turn_on();
+		landscape.Felix().MaraAlt2024().turn_on();
 
 		wait_for(5 * 60);
 
@@ -527,11 +550,11 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		send_mayson(1);
 
 		landscape.James().Karotten().turn_off();
-		landscape.Felix().Eiben().turn_on();
+		landscape.Felix().Eiben2024().turn_on();
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraAlt().turn_off();
+		landscape.Felix().MaraAlt2024().turn_off();
 		landscape.Lucas().BohnenFlieder().turn_on(); // alle 2 Tage 30min
 		//landscape.James().Kartoffeln().turn_off();
 
@@ -550,14 +573,14 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	//const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
 
 	//landscape.James().Gurken().turn_on();
-	landscape.James().Tomaten().turn_on();
+	landscape.James().Kartoffel2024().turn_on();
 	//landscape.Lucas().Erbsen().turn_on();
 
 	//if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
 
 	wait_for(10 * 60);
 
-	landscape.James().Tomaten().turn_off();
+	landscape.James().Kartoffel2024().turn_off();
 	landscape.Lucas().Erbsen().turn_off();
 
 	send_mayson(0);
@@ -572,6 +595,8 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 	wait_for(20 * 60);
 
+	
+	*/
 	// END OF WATERING
 
 	landscape.Felix().turn_off();
@@ -585,13 +610,12 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 
 	// let capacitor run dry:
-	landscape.Felix().Eiben().turn_on();
+	landscape.Felix().Eiben2024().turn_on();
 	wait_for(60 * 2);
 
 	landscape.Felix().turn_off();
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
-
 }
 
 #if false
@@ -876,9 +900,9 @@ int64_t load_timestamp_file() {
 bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp) {
 	bool result{ false };
 	if (
-		(start_time.get_minute_intra_day() > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
-		&& (start_time.get_minute_intra_day() < (6 - 2) * 60 + 30) // 6:30
-		&& (previous_timestamp + 3 * 60 + 1 < start_time.get_minutes_since_epoch()) // 3 hours gone since last watering
+		(start_time.get_minute_intra_day() > (10 - 2) * 60 + 30) // 10:30 // -2 == UTC 
+		&& (start_time.get_minute_intra_day() < (14 - 2) * 60 + 30) // 14:30
+		&& (previous_timestamp +8 * 60 + 1 < start_time.get_minutes_since_epoch()) // 8 hours gone since last watering
 		)
 	{
 		// save last timestamp:
@@ -964,7 +988,7 @@ int main(int argc, char** argv) {
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
 
-	constexpr bool global_watering_enable{ false };
+	constexpr bool global_watering_enable{ true };
 
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
