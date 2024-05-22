@@ -503,6 +503,7 @@ void wait_for(int64_t duration_in_seconds) {
 }
 
 void watering(const time_helper& start_time, k1::landscape& landscape) {
+	(void)start_time;
 
 	//pumpe an
 	send_mayson(0, 0, 0);
