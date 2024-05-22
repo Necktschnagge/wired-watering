@@ -6,7 +6,7 @@ set(PROJECT_NAME Maya-Commander)
 
 
 ############### Preprocessor Macros ###############
-add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/automatic-watering")
+add_compile_definitions(GIT_REPOSITORY_URL="https://github.com/Necktschnagge/wired-watering")
 
 
 ############### Project Decklaration ###############
@@ -63,6 +63,7 @@ FetchContent_MakeAvailable(cpr)
 
 ############### Libraries ###############
 include_directories(SYSTEM extern/spdlog/include)
+include_directories(SYSTEM extern/json/include)
 #include_directories(SYSTEM extern/cpr/include)
 #include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
@@ -87,3 +88,6 @@ endif()
 
 ############### Visual Studio ###############
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})#Set Visualo Studio start-up project, so that one can directly run the debugger.
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES
+	VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
