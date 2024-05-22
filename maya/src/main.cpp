@@ -1,8 +1,9 @@
 
 #include "logger.h"
-
+#include "configs.h"
 
 #include "cpr/cpr.h"
+#include <nlohmann/json.hpp>
 
 #include <vector>
 #include <string>
@@ -19,6 +20,17 @@ static constexpr bool MANUAL_TEST{ false };
 
 namespace CONF {
 
+	namespace IP_ADDRESS {
+		[[maybe_unused]] static const std::string PUMP_SERVER_MAYSON{ "192.168.1.10" };
+
+		[[maybe_unused]] static const std::string VALVE_SERVER_JAMES{ "192.168.1.20" };
+		[[maybe_unused]] static const std::string VALVE_SERVER_LUCAS{ "192.168.1.21" };
+		[[maybe_unused]] static const std::string VALVE_SERVER_FELIX{ "192.168.1.22" };
+
+		[[maybe_unused]] static const std::string VALVE_SERVER_TEST{ "192.168.1.23" };
+
+		[[maybe_unused]] static const std::string TEST_PING_FAIL{ "192.168.2.233" };
+	}
 
 	// server names / device names:
 	[[maybe_unused]] inline static const std::string FELIX{ "Felix" };
@@ -26,59 +38,55 @@ namespace CONF {
 	[[maybe_unused]] inline static const std::string LUCAS{ "Lucas" };
 	[[maybe_unused]] inline static const std::string MAYSON{ "Mayson" };
 
+	namespace RAW_VALVES {
 
-	// valve patch infos:
-	[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Eiben Klee" };
-	[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara Sabine" };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
 
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Karotten" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Gurken" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Tomaten" };
-	[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "-frei-" };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
 
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erdbeeren Flieder" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
-	[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Kartoffeln" };
+		[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
+		[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
+	}
+	namespace VALVE_MAP {
 
-	// ip addresses:
+		// valve patch infos:
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Eiben-Klee" };
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Mara-alt" };
+
+		[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ RAW_VALVES::FELIX_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ RAW_VALVES::FELIX_VALVE_2 };
+
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "JAMES_VALVE_1_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Kartoffeln" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "JAMES_VALVE_3_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Tomaten" };
+
+		[[maybe_unused]] static constexpr uint8_t JAMES_1___{ RAW_VALVES::JAMES_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_KARTOFFEL{ RAW_VALVES::JAMES_VALVE_2 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_3___{ RAW_VALVES::JAMES_VALVE_3 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ RAW_VALVES::JAMES_VALVE_4 };
+
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Erbsen" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Bohnen-Flieder" };
+
+		[[maybe_unused]] static constexpr uint8_t LUCAS_ERBSEN{ RAW_VALVES::LUCAS_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_HEIDELBEEREN{ RAW_VALVES::LUCAS_VALVE_2 };
+		[[maybe_unused]] static constexpr uint8_t LUCAS_BOHNEN_UND_FLIEDER{ RAW_VALVES::LUCAS_VALVE_3 };
+
+	}
 
 }
 
-[[maybe_unused]] static const std::string IP_ADDRESS_PUMP_SERVER_MAYSON{ "192.168.1.10" };
-
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_JAMES{ "192.168.1.20" };
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_LUCAS{ "192.168.1.21" };
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_FELIX{ "192.168.1.22" };
-
-[[maybe_unused]] static const std::string IP_ADDRESS_VALVE_SERVER_TEST{ "192.168.1.23" };
-
-[[maybe_unused]] static const std::string TEST_ADRESS_PING_FAIL{ "192.168.2.233" };
-
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_2{ 0b00000010 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_3{ 0b00000100 };
-[[maybe_unused]] static constexpr uint8_t JAMES_VALVE_4{ 0b00001000 };
-
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_2{ 0b00000010 };
-[[maybe_unused]] static constexpr uint8_t LUCAS_VALVE_3{ 0b00000100 };
-
-[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_1{ 0b00000001 };
-[[maybe_unused]] static constexpr uint8_t FELIX_VALVE_2{ 0b00000010 };
 
 
-[[maybe_unused]] static constexpr uint8_t JAMES_KAROTTEN{ JAMES_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t JAMES_TOMATEN{ JAMES_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ JAMES_VALVE_3 };
-[[maybe_unused]] static constexpr uint8_t JAMES_FREI{ JAMES_VALVE_4 };
 
-[[maybe_unused]] static constexpr uint8_t LUC_NEUE_ERDBEEREN_AN_DER_ROSE{ LUCAS_VALVE_1 };
-[[maybe_unused]] static constexpr uint8_t LUC_HEIDELBEEREN{ LUCAS_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t LUC_KARTOFFELN_UND_ERDBEEREN{ LUCAS_VALVE_3 };
-
-[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ FELIX_VALVE_2 };
-[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ FELIX_VALVE_1 };
 
 //static const std::string 
 
@@ -166,7 +174,7 @@ public:
 
 void send_mayson(uint8_t auto_on = 2, uint8_t system_on = 2, uint8_t manual_on = 2) {
 	std::string url{ "http://" };
-	url += IP_ADDRESS_PUMP_SERVER_MAYSON;
+	url += CONF::IP_ADDRESS::PUMP_SERVER_MAYSON;
 	url += ":80/status";
 	auto params = cpr::Parameters();
 	if (auto_on < 2) params.Add({ "auto", auto_on == 1 ? "on" : "off" });
@@ -238,7 +246,7 @@ namespace k1 {
 				std::string padded_duration{ duration_minutes_ss.str() };
 				padded_duration.insert(padded_duration.begin(), 10 - padded_duration.size(), ' ');
 
-				table += padded_station_label+ ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
+				table += padded_station_label + ":" + padded_valve_label + "  :" + padded_duration + " min" + "\n";
 			}
 			return table;
 		}
@@ -359,13 +367,13 @@ namespace k1 {
 			standard_logger()->info("Creating Landscape...");
 
 			standard_logger()->info("Creating Felix...");
-			stations.push_back(valve_station(CONF::FELIX, IP_ADDRESS_VALVE_SERVER_FELIX, std::vector<std::string>{ CONF::FELIX_VALVE_1_LABEL, CONF::FELIX_VALVE_2_LABEL}));
+			stations.push_back(valve_station(CONF::FELIX, CONF::IP_ADDRESS::VALVE_SERVER_FELIX, std::vector<std::string>{ CONF::VALVE_MAP::FELIX_VALVE_1_LABEL, CONF::VALVE_MAP::FELIX_VALVE_2_LABEL}));
 
 			standard_logger()->info("Creating James...");
-			stations.push_back(valve_station(CONF::JAMES, IP_ADDRESS_VALVE_SERVER_JAMES, std::vector<std::string>{ CONF::JAMES_VALVE_1_LABEL, CONF::JAMES_VALVE_2_LABEL, CONF::JAMES_VALVE_3_LABEL, CONF::JAMES_VALVE_4_LABEL}));
+			stations.push_back(valve_station(CONF::JAMES, CONF::IP_ADDRESS::VALVE_SERVER_JAMES, std::vector<std::string>{ CONF::VALVE_MAP::JAMES_VALVE_1_LABEL, CONF::VALVE_MAP::JAMES_VALVE_2_LABEL, CONF::VALVE_MAP::JAMES_VALVE_3_LABEL, CONF::VALVE_MAP::JAMES_VALVE_4_LABEL}));
 
 			standard_logger()->info("Creating Lucas...");
-			stations.push_back(valve_station(CONF::LUCAS, IP_ADDRESS_VALVE_SERVER_LUCAS, std::vector<std::string>{ CONF::LUCAS_VALVE_1_LABEL, CONF::LUCAS_VALVE_2_LABEL, CONF::LUCAS_VALVE_3_LABEL}));
+			stations.push_back(valve_station(CONF::LUCAS, CONF::IP_ADDRESS::VALVE_SERVER_LUCAS, std::vector<std::string>{ CONF::VALVE_MAP::LUCAS_VALVE_1_LABEL, CONF::VALVE_MAP::LUCAS_VALVE_2_LABEL, CONF::VALVE_MAP::LUCAS_VALVE_3_LABEL}));
 		}
 
 	public:
@@ -379,8 +387,8 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Eiben() { return station.get_view(FELIX_EIBEN); }
-			valve_station::valve_view MaraSabine() { return station.get_view(FELIX_MARA); }
+			valve_station::valve_view Eiben2024() { return station.get_view(CONF::VALVE_MAP::FELIX_EIBEN); }
+			valve_station::valve_view MaraAlt2024() { return station.get_view(CONF::VALVE_MAP::FELIX_MARA); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -404,10 +412,10 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Karotten() { return station.get_view(JAMES_KAROTTEN); }
-			valve_station::valve_view Gurken() { return station.get_view(JAMES_GURKEN); }
-			valve_station::valve_view Tomaten() { return station.get_view(JAMES_TOMATEN); }
-			valve_station::valve_view Frei() { return station.get_view(JAMES_FREI); }
+			valve_station::valve_view Karotten() { return station.get_view(CONF::VALVE_MAP::JAMES_1___); }
+			valve_station::valve_view Gurken() { return station.get_view(CONF::VALVE_MAP::JAMES_3___); }
+			valve_station::valve_view Kartoffel2024() { return station.get_view(CONF::VALVE_MAP::JAMES_KARTOFFEL); }
+			valve_station::valve_view Tomate2024() { return station.get_view(CONF::VALVE_MAP::JAMES_TOMATE); }
 
 			inline void turn(bool on) const {
 				return station.turn_all(on);
@@ -432,9 +440,9 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view FliederErdbeeren() { return station.get_view(LUCAS_VALVE_1); }
-			valve_station::valve_view Heidelbeeren() { return station.get_view(LUCAS_VALVE_2); }
-			valve_station::valve_view Kartoffeln() { return station.get_view(LUCAS_VALVE_3); }
+			valve_station::valve_view Erbsen() { return station.get_view(CONF::VALVE_MAP::LUCAS_ERBSEN); }
+			valve_station::valve_view Heidelbeeren() { return station.get_view(CONF::VALVE_MAP::LUCAS_HEIDELBEEREN); }
+			valve_station::valve_view BohnenFlieder() { return station.get_view(CONF::VALVE_MAP::LUCAS_BOHNEN_UND_FLIEDER); }
 
 
 			inline void turn(bool on) const {
@@ -495,36 +503,63 @@ void wait_for(int64_t duration_in_seconds) {
 }
 
 void watering(const time_helper& start_time, k1::landscape& landscape) {
+	(void)start_time;
 
 	//pumpe an
 	send_mayson(0, 0, 0);
 
+	landscape.Felix().Eiben2024().turn_on();
+	landscape.Felix().MaraAlt2024().turn_on();
+	landscape.James().Kartoffel2024().turn_on();
+	landscape.James().Tomate2024().turn_on();
+
+
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	send_mayson(1, 1);
-	std::this_thread::sleep_for(std::chrono::seconds(6));
+	std::this_thread::sleep_for(std::chrono::seconds(60));
+
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
+	//landscape.Felix().Eiben2024().turn_on();
+	//landscape.Felix().MaraAlt2024().turn_on();
+	//landscape.James().Kartoffel2024().turn_on();
+	landscape.James().Tomate2024().turn_on();
+
+	wait_for(30 * 60);
+	landscape.James().Kartoffel2024().turn_off();
+	wait_for(15 * 60);
+
+
+
+	/*
 	if (start_time.get_days_since_epoch() % 2 == 1) {
 
 		landscape.James().Karotten().turn_on();
-		landscape.Lucas().Kartoffeln().turn_on();
+		//landscape.James().Kartoffeln().turn_on();
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraSabine().turn_on();
+		landscape.Felix().MaraAlt2024().turn_on();
 
-		wait_for(10 * 60);
+		wait_for(5 * 60);
 
 		send_mayson(0);
 		wait_for(10);
 		send_mayson(1);
 
 		landscape.James().Karotten().turn_off();
-		landscape.Felix().Eiben().turn_on();
+		landscape.Felix().Eiben2024().turn_on();
 
 		wait_for(10 * 60);
 
-		landscape.Felix().MaraSabine().turn_off();
+		landscape.Felix().MaraAlt2024().turn_off();
+		landscape.Lucas().BohnenFlieder().turn_on(); // alle 2 Tage 30min
+		//landscape.James().Kartoffeln().turn_off();
 
-		wait_for(25 * 60);
+
+		wait_for(10 * 60);
 
 		landscape.Felix().turn_off();
 		landscape.James().turn_off();
@@ -535,23 +570,18 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	wait_for(10);
 	send_mayson(1);
 
-	const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
+	//const bool BLAUBEER_TAG{ (start_time.get_days_since_epoch() % 4 == 0) };
 
-	landscape.James().Gurken().turn_on();
-	landscape.James().Tomaten().turn_on();
-	landscape.Lucas().FliederErdbeeren().turn_on();
-	if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
+	//landscape.James().Gurken().turn_on();
+	landscape.James().Kartoffel2024().turn_on();
+	//landscape.Lucas().Erbsen().turn_on();
 
-	wait_for(20 * 60);
+	//if (BLAUBEER_TAG) landscape.Lucas().Heidelbeeren().turn_on();
 
-	landscape.Lucas().FliederErdbeeren().turn_off();
-	landscape.James().Tomaten().turn_off();
+	wait_for(10 * 60);
 
-	send_mayson(0);
-	wait_for(10);
-	send_mayson(1);
-
-	wait_for(20 * 60);
+	landscape.James().Kartoffel2024().turn_off();
+	landscape.Lucas().Erbsen().turn_off();
 
 	send_mayson(0);
 	wait_for(10);
@@ -559,8 +589,14 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 	wait_for(20 * 60);
 
+	send_mayson(0);
+	wait_for(10);
+	send_mayson(1);
 
+	wait_for(20 * 60);
 
+	
+	*/
 	// END OF WATERING
 
 	landscape.Felix().turn_off();
@@ -574,13 +610,12 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 
 	// let capacitor run dry:
-	landscape.Felix().Eiben().turn_on();
+	landscape.Felix().Eiben2024().turn_on();
 	wait_for(60 * 2);
 
 	landscape.Felix().turn_off();
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
-
 }
 
 #if false
@@ -660,62 +695,176 @@ class schedule {
 
 #endif
 
-bool check_all_servers_using_ping() {
+class ping_checker {
 
-	standard_logger()->info("Pinging Pump Server Mayson...");
+	static bool check_all_servers_using_ping_once() {
 
-	const bool MAYSON_AVAILABLE{ ping(IP_ADDRESS_PUMP_SERVER_MAYSON) };
-	if (!MAYSON_AVAILABLE) {
-		standard_logger()->error("Fatal: Pump Server not available!");
+		standard_logger()->info("Pinging Pump Server Mayson...");
+
+		const bool MAYSON_AVAILABLE{ ping(CONF::IP_ADDRESS::PUMP_SERVER_MAYSON) };
+		if (!MAYSON_AVAILABLE) {
+			standard_logger()->error("Fatal: Pump Server not available!");
+		}
+		else {
+			standard_logger()->info("Pump Server ping OK!");
+		}
+
+		standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+
+		standard_logger()->info("Pinging all valve stations...");
+		const bool JAMES_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_JAMES) };
+		const bool LUCAS_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_LUCAS) };
+		const bool FELIX_AVAILABLE{ ping(CONF::IP_ADDRESS::VALVE_SERVER_FELIX) };
+
+		if (!JAMES_AVAILABLE) {
+			standard_logger()->error("Fatal: James not available!");
+		}
+		else {
+			standard_logger()->info("James ping OK!");
+		}
+		if (!LUCAS_AVAILABLE) {
+			standard_logger()->error("Fatal: Lucas not available!");
+		}
+		else {
+			standard_logger()->info("Lucas ping OK!");
+		}
+		if (!FELIX_AVAILABLE) {
+			standard_logger()->error("Fatal: Felix not available!");
+		}
+		else {
+			standard_logger()->info("Felix ping OK!");
+		}
+
+		standard_logger()->info("Pinging all valve stations   ...DONE!");
+
+
+		standard_logger()->info("Pinging Non-Existing Test Server...");
+
+		const bool TEST_SERVER_UNAVAILABLE{ !ping(CONF::IP_ADDRESS::VALVE_SERVER_TEST) };
+
+		if (!TEST_SERVER_UNAVAILABLE) {
+			standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+		}
+		else {
+			standard_logger()->info("Pinging Non-Existing Test Server OK!");
+		}
+
+		standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+
+		return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
 	}
-	else {
-		standard_logger()->info("Pump Server ping OK!");
+
+public:
+	static bool check_ping_devices() {
+		for (std::size_t i{ 0 }; i < 20; ++i) {
+			const bool PING_OK{ check_all_servers_using_ping_once() };
+			if (PING_OK)
+				return true;
+		}
+		return false;
 	}
 
-	standard_logger()->info("Pinging Pump Server Mayson   ...DONE!");
+};
 
-	standard_logger()->info("Pinging all valve stations...");
-	const bool JAMES_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_JAMES) };
-	const bool LUCAS_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_LUCAS) };
-	const bool FELIX_AVAILABLE{ ping(IP_ADDRESS_VALVE_SERVER_FELIX) };
+class telegram_interface {
 
-	if (!JAMES_AVAILABLE) {
-		standard_logger()->error("Fatal: James not available!");
+	std::string bot_secret;
+
+	std::string get_base_url() const noexcept {
+		return std::string("https://api.telegram.org/bot") + bot_secret;
 	}
-	else {
-		standard_logger()->info("James ping OK!");
-	}
-	if (!LUCAS_AVAILABLE) {
-		standard_logger()->error("Fatal: Lucas not available!");
-	}
-	else {
-		standard_logger()->info("Lucas ping OK!");
-	}
-	if (!FELIX_AVAILABLE) {
-		standard_logger()->error("Fatal: Felix not available!");
-	}
-	else {
-		standard_logger()->info("Felix ping OK!");
+	class endpoints {
+		friend class telegram_interface;
+		inline static const std::string getMe{ "/getMe" };
+		inline static const std::string getUpdates{ "/getUpdates" };
+		inline static const std::string getChat{ "/getChat" };
+		inline static const std::string sendMessage{ "/sendMessage" };
+	};
+	class keys {
+		friend class telegram_interface;
+		inline static const std::string chat_id{ "chat_id" };
+		inline static const std::string disable_notification{ "disable_notification" };
+		inline static const std::string parse_mode{ "parse_mode" };
+		inline static const std::string text{ "text" };
+	};
+
+	class exceptions {
+	public:
+
+		template<int ERROR_CODE>
+		class unexpected_response_status_code : public std::runtime_error {
+		public:
+			unexpected_response_status_code(int actual_status_code) : std::runtime_error(
+				std::string("Got HTTP response code ") + std::to_string(actual_status_code) + ". Expected status code was " + std::to_string(ERROR_CODE) + "."
+			) {}
+		};
+	};
+
+public:
+	telegram_interface(const std::string& bot_secret) : bot_secret(bot_secret) {
+
 	}
 
-	standard_logger()->info("Pinging all valve stations   ...DONE!");
+	telegram_interface(const telegram_interface&) = default;
+	telegram_interface(telegram_interface&&) = default;
 
+	telegram_interface& operator = (const telegram_interface&) = default;
+	telegram_interface& operator = (telegram_interface&&) = default;
 
-	standard_logger()->info("Pinging Non-Existing Test Server...");
-
-	const bool TEST_SERVER_UNAVAILABLE{ !ping(IP_ADDRESS_VALVE_SERVER_TEST) };
-
-	if (!TEST_SERVER_UNAVAILABLE) {
-		standard_logger()->error("Got successful PING from Device that should not exists on local network!");
+	nlohmann::json getMe() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getMe },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
 	}
-	else {
-		standard_logger()->info("Pinging Non-Existing Test Server OK!");
+
+	nlohmann::json getUpdates() {
+		auto params = cpr::Parameters();
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getUpdates },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
 	}
 
-	standard_logger()->info("Pinging Non-Existing Test Server   ...DONE!");
+	nlohmann::json getChat(long long chat_id) {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::getChat },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text);
+	}
 
-	return MAYSON_AVAILABLE && JAMES_AVAILABLE && LUCAS_AVAILABLE && FELIX_AVAILABLE && TEST_SERVER_UNAVAILABLE;
-}
+	nlohmann::json sendMessage(long long chat_id, const std::string& text, bool disable_notification = false, const std::string& parse_mode = "MarkdownV2") {
+		auto params = cpr::Parameters();
+		params.Add(cpr::Parameter(keys::chat_id, std::to_string(chat_id)));
+		params.Add(cpr::Parameter(keys::text, text));
+		params.Add(cpr::Parameter(keys::disable_notification, disable_notification ? "true" : "false"));
+		params.Add(cpr::Parameter(keys::parse_mode, parse_mode));
+		cpr::Response r = cpr::Get(
+			cpr::Url{ get_base_url() + endpoints::sendMessage },
+			params
+		);
+		if (r.status_code != 200) {
+			throw exceptions::unexpected_response_status_code<200>(r.status_code);
+		}
+		return nlohmann::json::parse(r.text); // check parse error
+	}
+
+};
 
 int64_t load_timestamp_file() {
 	standard_logger()->info("Checking timestamp.txt...");
@@ -751,9 +900,9 @@ int64_t load_timestamp_file() {
 bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp) {
 	bool result{ false };
 	if (
-		(start_time.get_minute_intra_day() > (3 - 2) * 60 + 30) // 3:30 // -2 == UTC 
-		&& (start_time.get_minute_intra_day() < (6 - 2) * 60 + 30) // 6:30
-		&& (previous_timestamp + 3 * 60 + 1 < start_time.get_minutes_since_epoch()) // 3 hours gone since last watering
+		(start_time.get_minute_intra_day() > (10 - 2) * 60 + 30) // 10:30 // -2 == UTC 
+		&& (start_time.get_minute_intra_day() < (14 - 2) * 60 + 30) // 14:30
+		&& (previous_timestamp +8 * 60 + 1 < start_time.get_minutes_since_epoch()) // 8 hours gone since last watering
 		)
 	{
 		// save last timestamp:
@@ -777,6 +926,27 @@ bool check_if_in_watering_time_window(const time_helper& start_time, int64_t pre
 	return result;
 }
 
+std::optional<maya::telegram_config> load_telegram_config() {
+
+	if (!std::filesystem::exists(maya::config::PATH_TO_TELEGRAM_JSON)) {
+		standard_logger()->error("Telegram secret config does not exist!");
+		standard_logger()->error(
+			//std::filesystem::canonical(
+			std::filesystem::absolute(
+				std::filesystem::path(
+					maya::config::PATH_TO_TELEGRAM_JSON
+				)
+			)
+			//)
+			.string());
+		return std::optional<maya::telegram_config>();
+	}
+
+	auto telegram_secret_istream = std::ifstream(maya::config::PATH_TO_TELEGRAM_JSON);
+	auto telegram_json = nlohmann::json::parse(std::istream_iterator<char>(telegram_secret_istream), std::istream_iterator<char>()); // check for errors!
+	return std::make_optional<maya::telegram_config>(telegram_json);
+}
+
 int main(int argc, char** argv) {
 
 	(void)argc;
@@ -784,11 +954,28 @@ int main(int argc, char** argv) {
 
 	init_logger();
 
-	for (std::size_t i{ 0 }; i < 20; ++i) {
-		const bool PING_OK{ check_all_servers_using_ping() };
-		if (PING_OK)
-			break;
+	// load telegram secrets:
+
+	std::optional<maya::telegram_config> tel_config = load_telegram_config();
+
+	std::optional<telegram_interface> tel;
+	if (tel_config) {
+		tel.emplace(tel_config.value().bot_secret);
 	}
+
+	/*
+	if (tel) {
+		try {
+			tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+		}
+		catch (...) {
+		}
+	}
+
+	*/
+	bool devices_available = ping_checker::check_ping_devices();
+
+	(void)devices_available;
 
 	standard_logger()->info("Creating Landscape...");
 
@@ -803,11 +990,32 @@ int main(int argc, char** argv) {
 
 	constexpr bool global_watering_enable{ true };
 
-	if (MANUAL_TEST || (global_watering_enable && is_time_for_watering)) {
+	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
+
+	if (START_WATERING) {
+		try {
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now\\!");
+		}
+		catch (...)
+		{
+		}
 		watering(start_time, garden);
 	}
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
+
+	if (tel
+		&& START_WATERING
+		) {
+		try {
+			std::string message{ "Finished watering now\\!\n\n```\n" };
+			message += garden.get_duration_table();
+			message += "```";
+			tel.value().sendMessage(tel_config.value().main_chat_id, message);
+		}
+		catch (...) {
+		}
+	}
 
 	return 0;
 }
