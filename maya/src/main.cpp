@@ -618,6 +618,39 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	landscape.Lucas().turn_off();
 }
 
+
+void watering2(const time_helper& start_time, k1::landscape& landscape) {
+	(void)start_time;
+	(void)landscape;
+
+
+	//pumpe an
+	send_mayson(0, 0, 0);
+
+	landscape.Lucas().BohnenFlieder().turn_on();
+
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+
+	send_mayson(1, 1);
+
+	std::this_thread::sleep_for(std::chrono::seconds(60));
+
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
+
+	wait_for(30 * 60);
+
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+
+	//pumpe aus
+	send_mayson(0);
+}
+
+
 #if false
 class valve {
 	std::string ip_address;
@@ -988,7 +1021,7 @@ int main(int argc, char** argv) {
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
 
-	constexpr bool global_watering_enable{ true };
+	constexpr bool global_watering_enable{ false };
 
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
@@ -1002,9 +1035,12 @@ int main(int argc, char** argv) {
 		watering(start_time, garden);
 	}
 
+	watering2(start_time, garden);
+
+
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
 
-	if (tel
+	if (true || tel
 		&& START_WATERING
 		) {
 		try {
