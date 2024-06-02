@@ -1040,9 +1040,10 @@ int main(int argc, char** argv) {
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
 
-	if (true || tel
-		&& START_WATERING
-		) {
+	//if (tel
+	//	&& START_WATERING
+	//	)
+	{
 		try {
 			std::string message{ "Finished watering now\\!\n\n```\n" };
 			message += garden.get_duration_table();
