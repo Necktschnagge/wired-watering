@@ -837,9 +837,9 @@ int64_t load_timestamp_file() {
 bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp) {
 	bool result{ false };
 	if (
-		(start_time.get_minute_intra_day() > (10 - 2) * 60 + 30) // 10:30 // -2 == UTC 
-		&& (start_time.get_minute_intra_day() < (14 - 2) * 60 + 30) // 14:30
-		&& (previous_timestamp +8 * 60 + 1 < start_time.get_minutes_since_epoch()) // 8 hours gone since last watering
+		(start_time.get_minute_intra_day() > (5 - 2) * 60 + 30) // 5:30 // -2 == UTC 
+		&& (start_time.get_minute_intra_day() < (12 - 2) * 60 + 30) // 12:30
+		&& (previous_timestamp +10 * 60 + 1 < start_time.get_minutes_since_epoch()) // 10 hours gone since last watering
 		)
 	{
 		// save last timestamp:
