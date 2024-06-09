@@ -517,8 +517,18 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
 
-	landscape.James().Gurken().turn_on();
 	landscape.Lucas().Heidelbeeren().turn_on();
+
+	if (start_time.get_days_since_epoch() % 2) {
+		landscape.James().Gurken().turn_on();
+		landscape.Felix().Eiben2024().turn_on();
+		landscape.James().Tomate2024().turn_on();
+	}
+	else {
+		landscape.Felix().MaraAlt2024().turn_on();
+		landscape.Lucas().Baer_BohnenFlieder().turn_on();
+		landscape.James().Kartoffel2024().turn_on();
+	}
 
 	wait_for(30 * 60);
 
