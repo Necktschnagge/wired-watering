@@ -1,0 +1,93 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2024-06-10 07:30:25.546] [main] [info] Pinging Pump Server Mayson...
+[2024-06-10 07:30:25.672] [main] [info] Pump Server ping OK!
+[2024-06-10 07:30:25.672] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-06-10 07:30:25.672] [main] [info] Pinging all valve stations...
+[2024-06-10 07:30:28.950] [main] [info] James ping OK!
+[2024-06-10 07:30:28.950] [main] [info] Lucas ping OK!
+[2024-06-10 07:30:28.950] [main] [error] Fatal: Felix not available!
+[2024-06-10 07:30:28.950] [main] [info] Pinging all valve stations   ...DONE!
+[2024-06-10 07:30:28.950] [main] [info] Pinging Non-Existing Test Server...
+[2024-06-10 07:30:32.022] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-06-10 07:30:32.022] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-06-10 07:30:32.022] [main] [info] Pinging Pump Server Mayson...
+[2024-06-10 07:30:32.155] [main] [info] Pump Server ping OK!
+[2024-06-10 07:30:32.155] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-06-10 07:30:32.155] [main] [info] Pinging all valve stations...
+[2024-06-10 07:30:35.414] [main] [info] James ping OK!
+[2024-06-10 07:30:35.414] [main] [info] Lucas ping OK!
+[2024-06-10 07:30:35.414] [main] [error] Fatal: Felix not available!
+[2024-06-10 07:30:35.414] [main] [info] Pinging all valve stations   ...DONE!
+[2024-06-10 07:30:35.414] [main] [info] Pinging Non-Existing Test Server...
+[2024-06-10 07:30:38.486] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-06-10 07:30:38.486] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-06-10 07:30:38.486] [main] [info] Pinging Pump Server Mayson...
+[2024-06-10 07:30:38.599] [main] [info] Pump Server ping OK!
+[2024-06-10 07:30:38.599] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-06-10 07:30:38.599] [main] [info] Pinging all valve stations...
+[2024-06-10 07:30:41.974] [main] [info] James ping OK!
+[2024-06-10 07:30:41.974] [main] [info] Lucas ping OK!
+[2024-06-10 07:30:41.974] [main] [error] Fatal: Felix not available!
+[2024-06-10 07:30:41.974] [main] [info] Pinging all valve stations   ...DONE!
+[2024-06-10 07:30:41.974] [main] [info] Pinging Non-Existing Test Server...
+[2024-06-10 07:30:45.046] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-06-10 07:30:45.046] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-06-10 07:30:45.046] [main] [info] Pinging Pump Server Mayson...
+[2024-06-10 07:30:45.159] [main] [info] Pump Server ping OK!
+[2024-06-10 07:30:45.159] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-06-10 07:30:45.159] [main] [info] Pinging all valve stations...
+[2024-06-10 07:30:48.438] [main] [info] James ping OK!
+[2024-06-10 07:30:48.438] [main] [info] Lucas ping OK!
+[2024-06-10 07:30:48.438] [main] [error] Fatal: Felix not available!
+[2024-06-10 07:30:48.438] [main] [info] Pinging all valve stations   ...DONE!
+[2024-06-10 07:30:48.438] [main] [info] Pinging Non-Existing Test Server...
+[2024-06-10 07:30:51.510] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-06-10 07:30:51.510] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-06-10 07:30:51.510] [main] [info] Pinging Pump Server Mayson...
+[2024-06-10 07:30:51.611] [main] [info] Pump Server ping OK!
+[2024-06-10 07:30:51.611] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-06-10 07:30:51.611] [main] [info] Pinging all valve stations...
+[2024-06-10 07:30:53.982] [main] [info] James ping OK!
+[2024-06-10 07:30:53.982] [main] [info] Lucas ping OK!
+[2024-06-10 07:30:53.982] [main] [info] Felix ping OK!
+[2024-06-10 07:30:53.982] [main] [info] Pinging all valve stations   ...DONE!
+[2024-06-10 07:30:53.982] [main] [info] Pinging Non-Existing Test Server...
+[2024-06-10 07:30:57.046] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-06-10 07:30:57.046] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-06-10 07:30:57.046] [main] [info] Creating Landscape...
+[2024-06-10 07:30:57.046] [main] [info] Creating Landscape...
+[2024-06-10 07:30:57.046] [main] [info] Creating Felix...
+[2024-06-10 07:30:57.046] [main] [info] Creating James...
+[2024-06-10 07:30:57.046] [main] [info] Creating Lucas...
+[2024-06-10 07:30:57.046] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1717997457046367586
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1717997457
+minutes since epoch   :   28633290
+minute of day   :   330
+minute of hour   :   30
+hour of day   :   5
+[2024-06-10 07:30:57.046] [main] [info] Checking timestamp.txt...
+[2024-06-10 07:30:57.046] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28633175
+[2024-06-10 07:30:57.046] [main] [info] Checking timestamp.txt   ...DONE!
+[2024-06-10 07:30:57.046] [main] [info] It's not time for watering now!
+[2024-06-10 07:30:57.046] [main] [info] Minute Intraday:   330
+[2024-06-10 07:30:57.046] [main] [info] Days since Epoch:   19884
+[2024-06-10 07:30:57.046] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben-Klee  :      0.00 min
+Felix   :            Mara-alt  :      0.00 min
+James   : JAMES_VALVE_1_LABEL  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+James   : JAMES_VALVE_3_LABEL  :      0.00 min
+James   :             Tomaten  :      0.00 min
+Lucas   :               LUC-1  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   : Baer-Bohnen-Flieder  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   32s
+=====================================================================================================
