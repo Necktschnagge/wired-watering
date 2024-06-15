@@ -939,13 +939,6 @@ int main(int argc, char** argv) {
 
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
-	garden.James().turn_off();
-	garden.Felix().turn_off();
-	garden.Lucas().turn_off();
-
-	send_mayson(0);
-
-
 	if (START_WATERING) {
 		try {
 			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now\\!");
