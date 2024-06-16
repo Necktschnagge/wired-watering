@@ -43,6 +43,7 @@ previous_run_counter=$run_counter
 let run_counter++
 log_timestamp=$(date +%Y-%m-%d--%Hh%M)
 log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
+log_file_name_without_path="${run_counter}--${log_timestamp}--"
 
 ############################################### run steps  ############################################################
 
@@ -281,19 +282,24 @@ delete_branches=false
 		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
-	
-	echo "> sudo -u mayadm rm ../artifacts/*.log"
-			sudo -u mayadm rm ../artifacts/*.log
 
-	echo "> sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive"
-			sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive
-			# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
-	
-	echo "> sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive" # -n do not copy if file already present
-			sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive
+	(
+		echo "> sudo -u mayadm git checkout artifacts"
+				sudo -u mayadm git checkout artifacts
 
-	echo "> sudo -u mayadm rm ${logs_path}/*.log"
-			sudo -u mayadm rm ${logs_path}/*.log
+		echo "> sudo -u mayadm rm ../artifacts/*.log"
+				sudo -u mayadm rm ../artifacts/*.log
+
+		echo "> sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive"
+				sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive
+				# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
+
+		echo "> sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive" # -n do not copy if file already present
+				sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive
+
+		echo "> sudo -u mayadm rm ${logs_path}/*.log"
+				sudo -u mayadm rm ${logs_path}/*.log
+	) 2>&1 | sudo -u mayadm tee  ../artifacts/${log_file_name_without_path}-6.log
 
 	(
 		echo "====================================================================================================="
@@ -350,6 +356,6 @@ delete_branches=false
 		end_time=$(date +%s)
 		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
-	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-6.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-7.log
 
 
