@@ -301,6 +301,8 @@ delete_branches=false
 				sudo -u mayadm rm ${logs_path}/*.log
 	) 2>&1 | sudo -u mayadm tee  ../artifacts/${log_file_name_without_path}-6.log
 
+	sudo -u mayadm mv ../artifacts/${log_file_name_without_path}-6.log ../artifacts/logs/${log_file_name_without_path}-6.log
+
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
