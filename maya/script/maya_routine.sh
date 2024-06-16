@@ -288,7 +288,7 @@ delete_branches=false
 				sudo -u mayadm git checkout artifacts
 
 		echo "> sudo -u mayadm rm ../artifacts/*.log"
-				sudo -u mayadm rm ../artifacts/*.log
+				sudo -u mayadm rm ../artifacts/logs/*.log
 
 		echo "> sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive"
 				sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive
