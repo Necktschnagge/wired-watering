@@ -1,0 +1,60 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-06-27 17:56:29.316] [main] [info] Pinging Pump Server Mayson...
+[2023-06-27 17:56:39.319] [main] [error] Fatal: Pump Server not available!
+[2023-06-27 17:56:39.319] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-27 17:56:39.319] [main] [info] Pinging all valve stations...
+[2023-06-27 17:56:39.565] [main] [info] James ping OK!
+[2023-06-27 17:56:39.565] [main] [info] Lucas ping OK!
+[2023-06-27 17:56:39.565] [main] [info] Felix ping OK!
+[2023-06-27 17:56:39.565] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-27 17:56:39.565] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-27 17:56:42.644] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-27 17:56:42.644] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-27 17:56:42.644] [main] [info] Pinging Pump Server Mayson...
+[2023-06-27 17:56:42.741] [main] [info] Pump Server ping OK!
+[2023-06-27 17:56:42.741] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-27 17:56:42.741] [main] [info] Pinging all valve stations...
+[2023-06-27 17:56:43.037] [main] [info] James ping OK!
+[2023-06-27 17:56:43.037] [main] [info] Lucas ping OK!
+[2023-06-27 17:56:43.037] [main] [info] Felix ping OK!
+[2023-06-27 17:56:43.037] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-27 17:56:43.037] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-27 17:56:46.100] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-27 17:56:46.100] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-27 17:56:46.100] [main] [info] Creating Landscape...
+[2023-06-27 17:56:46.100] [main] [info] Creating Landscape...
+[2023-06-27 17:56:46.100] [main] [info] Creating Felix...
+[2023-06-27 17:56:46.100] [main] [info] Creating James...
+[2023-06-27 17:56:46.100] [main] [info] Creating Lucas...
+[2023-06-27 17:56:46.100] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1687881406100869579
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1687881406
+minutes since epoch   :   28131356
+minute of day   :   956
+minute of hour   :   56
+hour of day   :   15
+[2023-06-27 17:56:46.100] [main] [info] Checking timestamp.txt...
+[2023-06-27 17:56:46.100] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28130497
+[2023-06-27 17:56:46.101] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-06-27 17:56:46.101] [main] [info] It's not time for watering now!
+[2023-06-27 17:56:46.101] [main] [info] Minute Intraday:   956
+[2023-06-27 17:56:46.101] [main] [info] Days since Epoch:   19535
+[2023-06-27 17:56:46.101] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben-Klee  :      0.00 min
+Felix   :            Mara-alt  :      0.00 min
+James   :            Karotten  :      0.00 min
+James   :             Tomaten  :      0.00 min
+James   :              Gurken  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+Lucas   :              Erbsen  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :      Bohnen-Flieder  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   17s
+=====================================================================================================

@@ -1,0 +1,117 @@
+=====================================================================================================
+%%%%%%%%%%     [3] Switching to new branch and building sources...
+
+
+%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
+Determining working branch name...
+branch name:   routine-eef4f11f-1663973602
+Switching to working branch...
+> sudo -u mayadm git switch -c routine-eef4f11f-1663973602
+Zu neuem Branch 'routine-eef4f11f-1663973602' gewechselt
+Updating git submodules...
+> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
+successfully updated git submodules
+%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)...
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+-- C++ Requests CMake Options
+-- =======================================================
+--   CPR_GENERATE_COVERAGE: OFF
+--   CPR_CURL_NOSIGNAL: OFF
+--   CPR_USE_SYSTEM_GTEST: OFF
+--   CPR_FORCE_USE_SYSTEM_CURL: OFF
+--   CPR_ENABLE_SSL: ON
+--   CPR_FORCE_OPENSSL_BACKEND: OFF
+--   CPR_FORCE_WINSSL_BACKEND: OFF
+--   CPR_FORCE_DARWINSSL_BACKEND: OFF
+--   CPR_FORCE_MBEDTLS_BACKEND: OFF
+--   CPR_ENABLE_LINTING: OFF
+--   CPR_ENABLE_CPPCHECK: OFF
+--   CPR_BUILD_TESTS: OFF
+--   CPR_BUILD_TESTS_SSL: OFF
+-- =======================================================
+-- Automatically detecting SSL backend.
+-- Detecting SSL backend...
+-- SSL auto detect: Using OpenSSL.
+-- Configuring build in curl...
+-- Using CMake version 3.16.3
+-- ZLIB_HEADER_VERSION: 1.2.11
+-- ZLIBNG_HEADER_VERSION: 2.0.5
+-- Arch detected: 'x86_64'
+-- Basearch of 'x86_64' has been detected as: 'x86'
+-- Architecture supports unaligned reads
+-- Architecture supports unaligned reads of > 4 bytes
+-- Architecture-specific source files: arch/x86/x86.c;arch/x86/slide_avx.c;arch/x86/chunkset_avx.c;arch/x86/compare258_avx.c;arch/x86/adler32_avx.c;arch/x86/insert_string_sse.c;arch/x86/compare258_sse.c;arch/x86/chunkset_sse.c;arch/x86/slide_sse.c;arch/x86/adler32_ssse3.c;arch/x86/crc_folding.c
+-- The following features have been enabled:
+
+ * CMAKE_BUILD_TYPE, Build type: Debug (selected)
+ * WITH_GZFILEOP, Compile with support for gzFile related functions
+ * ZLIB_COMPAT, Compile with zlib compatible API
+ * WITH_OPTIM, Build with optimisation
+ * WITH_NEW_STRATEGIES, Use new strategies
+ * WITH_UNALIGNED, Support unaligned reads on platforms that support it
+ * WITH_AVX2, Build with AVX2
+ * WITH_SSE2, Build with SSE2
+ * WITH_SSSE3, Build with SSSE3
+ * WITH_SSE4, Build with SSE4
+ * WITH_PCLMULQDQ, Build with PCLMULQDQ
+ * AVX2_SLIDEHASH, Support AVX2 optimized slide_hash, using "-mavx2"
+ * AVX_CHUNKSET, Support AVX optimized chunkset, using "-mavx2"
+ * AVX2_COMPARE258, Support AVX2 optimized compare258, using "-mavx2"
+ * AVX2_ADLER32, Support AVX2-accelerated adler32, using "-mavx2"
+ * SSE42_CRC, Support SSE4.2 optimized CRC hash generation, using "-msse4"
+ * SSE42_COMPARE258, Support SSE4.2 optimized compare258, using "-msse4"
+ * SSSE3_ADLER32, Support SSSE3-accelerated adler32, using "-mssse3"
+ * PCLMUL_CRC, Support CRC hash generation using PCLMULQDQ, using "-mssse3 -msse4 -mpclmul"
+
+-- The following OPTIONAL packages have been found:
+
+ * OpenSSL
+
+-- The following features have been disabled:
+
+ * ZLIB_ENABLE_TESTS, Build test binaries
+ * ZLIB_DUAL_LINK, Dual link tests against system zlib
+ * WITH_FUZZERS, Build test/fuzz
+ * WITH_NATIVE_INSTRUCTIONS, Instruct the compiler to use the full instruction set on this host (gcc/clang -march=native)
+ * WITH_MAINTAINER_WARNINGS, Build with project maintainer warnings
+ * WITH_CODE_COVERAGE, Enable code coverage reporting
+ * WITH_INFLATE_STRICT, Build with strict inflate distance checking
+ * WITH_INFLATE_ALLOW_INVALID_DIST, Build with zero fill for inflate invalid distances
+ * INSTALL_UTILS, Copy minigzip and minideflate during install
+
+-- The following OPTIONAL packages have not been found:
+
+ * PkgConfig
+
+-- Enabled curl SSL
+-- curl version=[7.80.0]
+-- Could NOT find ZLIB (missing: ZLIB_LIBRARY ZLIB_INCLUDE_DIR) 
+-- Could NOT find LibSSH2 (missing: LIBSSH2_LIBRARY LIBSSH2_INCLUDE_DIR) 
+-- Enabled features: SSL IPv6 unixsockets AsynchDNS Largefile alt-svc HSTS NTLM HTTPS-proxy
+-- Enabled protocols: HTTP HTTPS
+-- Enabled SSL backends: OpenSSL
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mayadm/repos/wired-watering/maya/build
+> timeout 60m sudo -u mayadm ./ub-unix-build.sh
+[  1%] Built target gtest
+[ 17%] Built target zlib
+[ 18%] Built target gmock
+[ 18%] Built target gtest_main
+[ 19%] Built target gmock_main
+[ 88%] Built target libcurl
+[ 97%] Built target cpr
+[ 99%] Built target Maya-Commander_lib
+[ 99%] Built target Maya-Commander
+[100%] Built target TEST-Maya-Commander
+Build successfully finished! (incremental build)
+%%%%%%%%%%     [3.3] Skipped (clean build)
+%%%%%%%%%%     [3.4] Skipped (fallback clean build)
+%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
+elapsed time:   2s
+=====================================================================================================

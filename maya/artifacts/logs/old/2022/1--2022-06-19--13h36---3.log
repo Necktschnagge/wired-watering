@@ -1,0 +1,54 @@
+=====================================================================================================
+%%%%%%%%%%     [3] Switching to new branch and building sources...
+
+
+%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
+Determining working branch name...
+branch name:   routine-0614e009-1655638631
+Switching to working branch...
+> sudo -u mayadm git switch -c routine-0614e009-1655638631
+Zu neuem Branch 'routine-0614e009-1655638631' gewechselt
+Updating git submodules...
+> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
+Submodul 'maya/extern/cpr' (https://github.com/libcpr/cpr) für Pfad '../extern/cpr' in die Konfiguration eingetragen.
+Submodul 'maya/extern/googletest' (https://github.com/google/googletest) für Pfad '../extern/googletest' in die Konfiguration eingetragen.
+Submodul 'maya/extern/spdlog' (https://github.com/gabime/spdlog) für Pfad '../extern/spdlog' in die Konfiguration eingetragen.
+Submodul 'maya/extern/td' (https://github.com/tdlib/td.git) für Pfad '../extern/td' in die Konfiguration eingetragen.
+Klone nach '/home/mayadm/repos/double/maya/extern/cpr' …
+Klone nach '/home/mayadm/repos/double/maya/extern/googletest' …
+Klone nach '/home/mayadm/repos/double/maya/extern/spdlog' …
+Klone nach '/home/mayadm/repos/double/maya/extern/td' …
+Von https://github.com/libcpr/cpr
+ * branch            db351ffbbadc6c4e9239daaa26e9aefa9f0ec82d -> FETCH_HEAD
+Submodul-Pfad: '../extern/cpr': 'db351ffbbadc6c4e9239daaa26e9aefa9f0ec82d' ausgecheckt
+Von https://github.com/google/googletest
+ * branch            e2239ee6043f73722e7aa812a459f54a28552929 -> FETCH_HEAD
+Submodul-Pfad: '../extern/googletest': 'e2239ee6043f73722e7aa812a459f54a28552929' ausgecheckt
+Von https://github.com/gabime/spdlog
+ * branch            76fb40d95455f249bd70824ecfcae7a8f0930fa3 -> FETCH_HEAD
+Submodul-Pfad: '../extern/spdlog': '76fb40d95455f249bd70824ecfcae7a8f0930fa3' ausgecheckt
+Von https://github.com/tdlib/td
+ * branch            c5dfa597828e9250ac29b6e37320220411bce870 -> FETCH_HEAD
+Submodul-Pfad: '../extern/td': 'c5dfa597828e9250ac29b6e37320220411bce870' ausgecheckt
+successfully updated git submodules
+%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)...
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+sudo: ./ucp-unix-create-project.sh: Befehl nicht gefunden
+%%%%%%%%%%     [3.3] Creating project and building sources (clean build)...
+> timeout 60m sudo -u mayadm ./uc-unix-clean.sh
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+sudo: ./ucp-unix-create-project.sh: Befehl nicht gefunden
+%%%%%%%%%%     [3.4] Creating project and building sources (fallback clean build)...
+> sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/maya-fallback
+warning: unable to rmdir 'maya/extern/spdlog': Das Verzeichnis ist nicht leer
+HEAD ist jetzt bei 93efe33 adjust sleep time to 1200s
+> timeout 60m sudo -u mayadm ./uc-unix-clean.sh
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+sudo: ./ucp-unix-create-project.sh: Befehl nicht gefunden
+**********************************************************
+************                                  ************
+************   FATAL! ALL BUILDS FAILED !!!   ************
+************                                  ************
+**********************************************************
+%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
+=====================================================================================================

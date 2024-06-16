@@ -1,0 +1,65 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   0a678eb..14a5c95  maya-productive -> origin/maya-productive
+Aktualisiere 0a678eb..14a5c95
+Fast-forward
+ .gitmodules                                        |  3 +
+ azure-pipelines.yml                                | 77 ++++++++++++++++++++++
+ maya/CMakeLists.txt                                |  9 +--
+ maya/extern/spdlog                                 |  1 +
+ maya/script/{win-build.bat => cb-cmd-build.bat}    |  0
+ maya/script/{win-clean.bat => cc-cmd-clean.bat}    |  0
+ .../cccpb-cmd-clean-create-project-build.bat       |  3 +
+ ...eate-project.bat => ccp-cmd-create-project.bat} |  0
+ maya/script/open-sln.ps1                           |  1 -
+ maya/script/uci-unix-clean_init.sh                 |  8 +++
+ ...reate-project.sh => ucp-unix-create-project.sh} |  0
+ maya/script/{win-build.ps1 => wb-win-build.ps1}    |  0
+ maya/script/{win-clean.ps1 => wc-win-clean.ps1}    |  0
+ .../wccpb-win-clean-create-project-build.ps1       |  3 +
+ maya/script/wci-win-clean_init.ps1                 |  7 ++
+ ...eate-project.ps1 => wcp-win-create-project.ps1} |  0
+ maya/script/win-clean-create-project-build.bat     |  3 -
+ maya/script/win-clean-create-project-build.ps1     |  3 -
+ maya/script/wos-win-open-sln.ps1                   |  1 +
+ maya/script/wt-win-test.ps1                        |  1 +
+ maya/src/CMakeLists.txt                            |  6 +-
+ maya/src/internal_error.h                          | 31 +++++++++
+ maya/src/logger.cpp                                | 35 ++++++++++
+ maya/src/logger.h                                  | 16 +++++
+ maya/src/main.cpp                                  |  6 ++
+ maya/test/CMakeLists.txt                           |  8 +++
+ maya/test/example_test.cpp                         |  5 ++
+ 27 files changed, 212 insertions(+), 15 deletions(-)
+ create mode 100644 azure-pipelines.yml
+ create mode 160000 maya/extern/spdlog
+ rename maya/script/{win-build.bat => cb-cmd-build.bat} (100%)
+ rename maya/script/{win-clean.bat => cc-cmd-clean.bat} (100%)
+ create mode 100644 maya/script/cccpb-cmd-clean-create-project-build.bat
+ rename maya/script/{win-create-project.bat => ccp-cmd-create-project.bat} (100%)
+ delete mode 100644 maya/script/open-sln.ps1
+ create mode 100644 maya/script/uci-unix-clean_init.sh
+ rename maya/script/{up-unix-create-project.sh => ucp-unix-create-project.sh} (100%)
+ mode change 100755 => 100644
+ rename maya/script/{win-build.ps1 => wb-win-build.ps1} (100%)
+ rename maya/script/{win-clean.ps1 => wc-win-clean.ps1} (100%)
+ create mode 100644 maya/script/wccpb-win-clean-create-project-build.ps1
+ create mode 100644 maya/script/wci-win-clean_init.ps1
+ rename maya/script/{win-create-project.ps1 => wcp-win-create-project.ps1} (100%)
+ delete mode 100644 maya/script/win-clean-create-project-build.bat
+ delete mode 100644 maya/script/win-clean-create-project-build.ps1
+ create mode 100644 maya/script/wos-win-open-sln.ps1
+ create mode 100644 maya/script/wt-win-test.ps1
+ create mode 100644 maya/src/internal_error.h
+ create mode 100644 maya/src/logger.cpp
+ create mode 100644 maya/src/logger.h
+ create mode 100644 maya/test/example_test.cpp
+Pulling maya-productive successfully!
+Last commit is:   14a5c95d2911d37449cc05d67b7bc32fd27c3fbb
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+=====================================================================================================

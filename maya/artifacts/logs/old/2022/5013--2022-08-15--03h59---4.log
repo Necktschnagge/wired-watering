@@ -1,0 +1,271 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2022-08-15 04:02:30.257] [main] [info] Pinging Pump Server Mayson...
+[2022-08-15 04:02:30.320] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2022-08-15 04:02:30.320] [main] [info] Pinging all valve stations...
+[2022-08-15 04:02:31.034] [main] [info] Pinging all valve stations   ...DONE!
+[2022-08-15 04:02:31.034] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1660528951034388846
+get_seconds_since_epoch(bool verbose /* true */)   :   1660528951
+minutes since epoch   :   27675482
+minute of day   :   122
+minute of hour   :   2
+hour of day   :   2
+[2022-08-15 04:02:31.034] [main] [info] Checking timestamp.txt...
+[2022-08-15 04:02:31.034] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   27674043
+[2022-08-15 04:02:31.034] [main] [info] Checking timestamp.txt   ...DONE!
+Wrote to timestamp.txt
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off&system=off&manual=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on&system=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send valves at 1660528960
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660528960
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660528961
+http://192.168.1.20:80/status?valves=11
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660529261
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660529261
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660529261
+http://192.168.1.20:80/status?valves=9
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660530161
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660530161
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660530161
+http://192.168.1.20:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660530462
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660530462
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660530462
+http://192.168.1.20:80/status?valves=3
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send valves at 1660530563
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660530563
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660530563
+http://192.168.1.20:80/status?valves=9
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660531163
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660531163
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660531163
+http://192.168.1.20:80/status?valves=3
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660531463
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660531463
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660531463
+http://192.168.1.20:80/status?valves=8
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660532363
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660532363
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660532363
+http://192.168.1.20:80/status?valves=3
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660532663
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+Send valves at 1660532663
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+Send valves at 1660532665
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+Send valves at 1660532696
+http://192.168.1.20:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+Send valves at 1660532876
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   3926s
+=====================================================================================================

@@ -1,0 +1,16 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   f0c7b84d..28bc3750  feature-add-read-pressure-sensor -> origin/feature-add-read-pressure-sensor
+   6a1ce13b..89afa0d8  fix-atmega-remove-unused-code -> origin/fix-atmega-remove-unused-code
+   6681cd8b..89f5f213  slave-for-wlan-chip -> origin/slave-for-wlan-chip
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   bd5cd98825b955d0f4cb935d5b9430f1714edcd9
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   4s
+=====================================================================================================

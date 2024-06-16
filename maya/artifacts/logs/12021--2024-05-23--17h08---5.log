@@ -1,0 +1,20 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+> sudo -u mayadm git add -u
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+> sudo -u mayadm git add *
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+> sudo -u mayadm git status
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+> sudo -u mayadm git reset --hard
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+Deleting local working branch...
+> sudo -u mayadm git checkout maya-productive
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+> sudo -u mayadm git branch -D routine--1716476926
+fatal: Konnte aktuelles Arbeitsverzeichnis nicht lesen.: Datei oder Verzeichnis nicht gefunden
+Finished run 12021!
+Do 23. Mai 17:08:46 CEST 2024
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+elapsed time:   0s
+=====================================================================================================

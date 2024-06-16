@@ -1,0 +1,20 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+> sudo -u mayadm git add -u
+> sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch routine-5c31904d-1686560640
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git reset --hard
+HEAD ist jetzt bei 5c31904d4 fix miss-matching valve labels
+Deleting local working branch...
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git branch -D routine-5c31904d-1686560640
+Branch routine-5c31904d-1686560640 entfernt (war 5c31904d4).
+Finished run 7588!
+Mo 12. Jun 11:04:26 CEST 2023
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+elapsed time:   0s
+=====================================================================================================

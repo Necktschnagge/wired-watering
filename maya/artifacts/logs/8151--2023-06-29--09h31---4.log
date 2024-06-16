@@ -1,0 +1,71 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-06-29 09:31:34.630] [main] [info] Pinging Pump Server Mayson...
+[2023-06-29 09:31:36.700] [main] [info] Pump Server ping OK!
+[2023-06-29 09:31:36.700] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-29 09:31:36.700] [main] [info] Pinging all valve stations...
+[2023-06-29 09:31:39.956] [main] [error] Fatal: James not available!
+[2023-06-29 09:31:39.956] [main] [info] Lucas ping OK!
+[2023-06-29 09:31:39.956] [main] [info] Felix ping OK!
+[2023-06-29 09:31:39.956] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-29 09:31:39.956] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-29 09:31:43.029] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-29 09:31:43.029] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-29 09:31:43.029] [main] [info] Pinging Pump Server Mayson...
+[2023-06-29 09:31:43.161] [main] [info] Pump Server ping OK!
+[2023-06-29 09:31:43.161] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-29 09:31:43.161] [main] [info] Pinging all valve stations...
+[2023-06-29 09:31:46.383] [main] [error] Fatal: James not available!
+[2023-06-29 09:31:46.383] [main] [info] Lucas ping OK!
+[2023-06-29 09:31:46.383] [main] [info] Felix ping OK!
+[2023-06-29 09:31:46.383] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-29 09:31:46.383] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-29 09:31:49.460] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-29 09:31:49.460] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-29 09:31:49.460] [main] [info] Pinging Pump Server Mayson...
+[2023-06-29 09:31:49.533] [main] [info] Pump Server ping OK!
+[2023-06-29 09:31:49.534] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-29 09:31:49.534] [main] [info] Pinging all valve stations...
+[2023-06-29 09:31:49.838] [main] [info] James ping OK!
+[2023-06-29 09:31:49.838] [main] [info] Lucas ping OK!
+[2023-06-29 09:31:49.838] [main] [info] Felix ping OK!
+[2023-06-29 09:31:49.838] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-29 09:31:49.838] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-29 09:31:52.916] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-29 09:31:52.917] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-29 09:31:52.917] [main] [info] Creating Landscape...
+[2023-06-29 09:31:52.917] [main] [info] Creating Landscape...
+[2023-06-29 09:31:52.917] [main] [info] Creating Felix...
+[2023-06-29 09:31:52.917] [main] [info] Creating James...
+[2023-06-29 09:31:52.917] [main] [info] Creating Lucas...
+[2023-06-29 09:31:52.917] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1688023912917088986
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1688023912
+minutes since epoch   :   28133731
+minute of day   :   451
+minute of hour   :   31
+hour of day   :   7
+[2023-06-29 09:31:52.917] [main] [info] Checking timestamp.txt...
+[2023-06-29 09:31:52.917] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28133408
+[2023-06-29 09:31:52.917] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-06-29 09:31:52.917] [main] [info] It's not time for watering now!
+[2023-06-29 09:31:52.917] [main] [info] Minute Intraday:   451
+[2023-06-29 09:31:52.917] [main] [info] Days since Epoch:   19537
+[2023-06-29 09:31:52.917] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben-Klee  :      0.00 min
+Felix   :            Mara-alt  :      0.00 min
+James   :            Karotten  :      0.00 min
+James   :             Tomaten  :      0.00 min
+James   :              Gurken  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+Lucas   :              Erbsen  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :      Bohnen-Flieder  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   18s
+=====================================================================================================

@@ -1,0 +1,19 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+> sudo -u mayadm git add -u
+> sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch routine-ad0c9717-1655484934
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git reset --hard
+HEAD ist jetzt bei ad0c971 logs at 2022-06-17--18h50
+Deleting local working branch...
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git branch -D routine-ad0c9717-1655484934
+Branch routine-ad0c9717-1655484934 entfernt (war ad0c971).
+Finished run 1252!
+Fr 17. Jun 18:55:38 CEST 2022
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+=====================================================================================================

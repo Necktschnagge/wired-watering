@@ -1,0 +1,436 @@
+=====================================================================================================
+%%%%%%%%%%     [3] Switching to new branch and building sources...
+
+
+%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
+Determining working branch name...
+branch name:   routine-92148296-1684078539
+Switching to working branch...
+> sudo -u mayadm git switch -c routine-92148296-1684078539
+Zu neuem Branch 'routine-92148296-1684078539' gewechselt
+Updating git submodules...
+> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
+successfully updated git submodules
+%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)...
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+-- C++ Requests CMake Options
+-- =======================================================
+--   CPR_GENERATE_COVERAGE: OFF
+--   CPR_CURL_NOSIGNAL: OFF
+--   CPR_USE_SYSTEM_GTEST: OFF
+--   CPR_FORCE_USE_SYSTEM_CURL: OFF
+--   CPR_ENABLE_SSL: ON
+--   CPR_FORCE_OPENSSL_BACKEND: OFF
+--   CPR_FORCE_WINSSL_BACKEND: OFF
+--   CPR_FORCE_DARWINSSL_BACKEND: OFF
+--   CPR_FORCE_MBEDTLS_BACKEND: OFF
+--   CPR_ENABLE_LINTING: OFF
+--   CPR_ENABLE_CPPCHECK: OFF
+--   CPR_BUILD_TESTS: OFF
+--   CPR_BUILD_TESTS_SSL: OFF
+-- =======================================================
+-- Automatically detecting SSL backend.
+-- Detecting SSL backend...
+-- SSL auto detect: Using OpenSSL.
+-- Configuring build in curl...
+-- Using CMake version 3.16.3
+-- ZLIB_HEADER_VERSION: 1.2.11
+-- ZLIBNG_HEADER_VERSION: 2.0.5
+-- Arch detected: 'x86_64'
+-- Basearch of 'x86_64' has been detected as: 'x86'
+-- Architecture supports unaligned reads
+-- Architecture supports unaligned reads of > 4 bytes
+-- Architecture-specific source files: arch/x86/x86.c;arch/x86/slide_avx.c;arch/x86/chunkset_avx.c;arch/x86/compare258_avx.c;arch/x86/adler32_avx.c;arch/x86/insert_string_sse.c;arch/x86/compare258_sse.c;arch/x86/chunkset_sse.c;arch/x86/slide_sse.c;arch/x86/adler32_ssse3.c;arch/x86/crc_folding.c
+-- The following features have been enabled:
+
+ * CMAKE_BUILD_TYPE, Build type: Debug (selected)
+ * WITH_GZFILEOP, Compile with support for gzFile related functions
+ * ZLIB_COMPAT, Compile with zlib compatible API
+ * WITH_OPTIM, Build with optimisation
+ * WITH_NEW_STRATEGIES, Use new strategies
+ * WITH_UNALIGNED, Support unaligned reads on platforms that support it
+ * WITH_AVX2, Build with AVX2
+ * WITH_SSE2, Build with SSE2
+ * WITH_SSSE3, Build with SSSE3
+ * WITH_SSE4, Build with SSE4
+ * WITH_PCLMULQDQ, Build with PCLMULQDQ
+ * AVX2_SLIDEHASH, Support AVX2 optimized slide_hash, using "-mavx2"
+ * AVX_CHUNKSET, Support AVX optimized chunkset, using "-mavx2"
+ * AVX2_COMPARE258, Support AVX2 optimized compare258, using "-mavx2"
+ * AVX2_ADLER32, Support AVX2-accelerated adler32, using "-mavx2"
+ * SSE42_CRC, Support SSE4.2 optimized CRC hash generation, using "-msse4"
+ * SSE42_COMPARE258, Support SSE4.2 optimized compare258, using "-msse4"
+ * SSSE3_ADLER32, Support SSSE3-accelerated adler32, using "-mssse3"
+ * PCLMUL_CRC, Support CRC hash generation using PCLMULQDQ, using "-mssse3 -msse4 -mpclmul"
+
+-- The following OPTIONAL packages have been found:
+
+ * OpenSSL
+
+-- The following features have been disabled:
+
+ * ZLIB_ENABLE_TESTS, Build test binaries
+ * ZLIB_DUAL_LINK, Dual link tests against system zlib
+ * WITH_FUZZERS, Build test/fuzz
+ * WITH_NATIVE_INSTRUCTIONS, Instruct the compiler to use the full instruction set on this host (gcc/clang -march=native)
+ * WITH_MAINTAINER_WARNINGS, Build with project maintainer warnings
+ * WITH_CODE_COVERAGE, Enable code coverage reporting
+ * WITH_INFLATE_STRICT, Build with strict inflate distance checking
+ * WITH_INFLATE_ALLOW_INVALID_DIST, Build with zero fill for inflate invalid distances
+ * INSTALL_UTILS, Copy minigzip and minideflate during install
+
+-- The following OPTIONAL packages have not been found:
+
+ * PkgConfig
+
+-- Enabled curl SSL
+-- curl version=[7.80.0]
+-- Could NOT find ZLIB (missing: ZLIB_LIBRARY ZLIB_INCLUDE_DIR) 
+-- Could NOT find LibSSH2 (missing: LIBSSH2_LIBRARY LIBSSH2_INCLUDE_DIR) 
+-- Enabled features: SSL IPv6 unixsockets AsynchDNS Largefile alt-svc HSTS NTLM HTTPS-proxy
+-- Enabled protocols: HTTP HTTPS
+-- Enabled SSL backends: OpenSSL
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mayadm/repos/wired-watering/maya/build
+> timeout 60m sudo -u mayadm ./ub-unix-build.sh
+[ 16%] Built target zlib
+[ 17%] Built target gtest
+[ 17%] Built target gtest_main
+[ 18%] Built target gmock
+[ 87%] Built target libcurl
+[ 88%] Built target gmock_main
+[ 97%] Built target cpr
+Scanning dependencies of target Maya-Commander
+Scanning dependencies of target Maya-Commander_lib
+[ 98%] Building CXX object src/CMakeFiles/Maya-Commander.dir/main.cpp.o
+[ 98%] Building CXX object src/CMakeFiles/Maya-Commander_lib.dir/main.cpp.o
+/home/mayadm/repos/wired-watering/maya/src/main.cpp: In function ‘void watering(const int64_t&)’:
+/home/mayadm/repos/wired-watering/maya/src/main.cpp:168:16: error: unused variable ‘days_since_epoch’ [-Werror=unused-variable]
+  168 |  const int64_t days_since_epoch{ hours_since_epoch / 24 };
+      |                ^~~~~~~~~~~~~~~~
+cc1plus: all warnings being treated as errors
+make[2]: *** [src/CMakeFiles/Maya-Commander.dir/build.make:76: src/CMakeFiles/Maya-Commander.dir/main.cpp.o] Fehler 1
+make[1]: *** [CMakeFiles/Makefile2:547: src/CMakeFiles/Maya-Commander.dir/all] Fehler 2
+make[1]: *** Auf noch nicht beendete Prozesse wird gewartet …
+[ 98%] Linking CXX static library libMaya-Commander_lib.a
+[ 98%] Built target Maya-Commander_lib
+make: *** [Makefile:141: all] Fehler 2
+%%%%%%%%%%     [3.3] Creating project and building sources (clean build)...
+> timeout 60m sudo -u mayadm ./uc-unix-clean.sh
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+-- C++ Requests CMake Options
+-- =======================================================
+--   CPR_GENERATE_COVERAGE: OFF
+--   CPR_CURL_NOSIGNAL: OFF
+--   CPR_USE_SYSTEM_GTEST: OFF
+--   CPR_FORCE_USE_SYSTEM_CURL: OFF
+--   CPR_ENABLE_SSL: ON
+--   CPR_FORCE_OPENSSL_BACKEND: OFF
+--   CPR_FORCE_WINSSL_BACKEND: OFF
+--   CPR_FORCE_DARWINSSL_BACKEND: OFF
+--   CPR_FORCE_MBEDTLS_BACKEND: OFF
+--   CPR_ENABLE_LINTING: OFF
+--   CPR_ENABLE_CPPCHECK: OFF
+--   CPR_BUILD_TESTS: OFF
+--   CPR_BUILD_TESTS_SSL: OFF
+-- =======================================================
+-- Performing Test THREAD_SANITIZER_AVAILABLE
+-- Performing Test THREAD_SANITIZER_AVAILABLE - Success
+-- Performing Test ADDRESS_SANITIZER_AVAILABLE
+-- Performing Test ADDRESS_SANITIZER_AVAILABLE - Success
+-- Performing Test LEAK_SANITIZER_AVAILABLE
+-- Performing Test LEAK_SANITIZER_AVAILABLE - Success
+-- Performing Test UNDEFINED_BEHAVIOUR_SANITIZER_AVAILABLE
+-- Performing Test UNDEFINED_BEHAVIOUR_SANITIZER_AVAILABLE - Success
+-- Performing Test ALL_SANITIZERS_AVAILABLE
+-- Performing Test ALL_SANITIZERS_AVAILABLE - Success
+-- Automatically detecting SSL backend.
+-- Detecting SSL backend...
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+-- SSL auto detect: Using OpenSSL.
+-- Configuring build in curl...
+-- Using CMake version 3.16.3
+-- ZLIB_HEADER_VERSION: 1.2.11
+-- ZLIBNG_HEADER_VERSION: 2.0.5
+-- Arch detected: 'x86_64'
+-- Basearch of 'x86_64' has been detected as: 'x86'
+-- Performing Test FNO_LTO_AVAILABLE
+-- Performing Test FNO_LTO_AVAILABLE - Success
+-- Architecture supports unaligned reads
+-- Architecture supports unaligned reads of > 4 bytes
+-- Looking for sys/sdt.h
+-- Looking for sys/sdt.h - not found
+-- Looking for unistd.h
+-- Looking for unistd.h - found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Check size of off64_t
+-- Check size of off64_t - done
+-- Looking for fseeko
+-- Looking for fseeko - found
+-- Looking for strerror
+-- Looking for strerror - found
+-- Performing Test HAVE_NO_INTERPOSITION
+-- Performing Test HAVE_NO_INTERPOSITION - Success
+-- Performing Test HAVE_ATTRIBUTE_VISIBILITY_HIDDEN
+-- Performing Test HAVE_ATTRIBUTE_VISIBILITY_HIDDEN - Success
+-- Performing Test HAVE_ATTRIBUTE_VISIBILITY_INTERNAL
+-- Performing Test HAVE_ATTRIBUTE_VISIBILITY_INTERNAL - Success
+-- Performing Test HAVE_BUILTIN_CTZ
+-- Performing Test HAVE_BUILTIN_CTZ - Success
+-- Performing Test HAVE_BUILTIN_CTZLL
+-- Performing Test HAVE_BUILTIN_CTZLL - Success
+-- Performing Test HAVE_PTRDIFF_T
+-- Performing Test HAVE_PTRDIFF_T - Success
+-- Performing Test HAVE_SSE2_INTRIN
+-- Performing Test HAVE_SSE2_INTRIN - Success
+-- Performing Test HAVE_SSSE3_INTRIN
+-- Performing Test HAVE_SSSE3_INTRIN - Success
+-- Performing Test HAVE_SSE42CRC_INLINE_ASM
+-- Performing Test HAVE_SSE42CRC_INLINE_ASM - Success
+-- Performing Test HAVE_SSE42CRC_INTRIN
+-- Performing Test HAVE_SSE42CRC_INTRIN - Success
+-- Performing Test HAVE_SSE42CMPSTR_INTRIN
+-- Performing Test HAVE_SSE42CMPSTR_INTRIN - Success
+-- Performing Test HAVE_PCLMULQDQ_INTRIN
+-- Performing Test HAVE_PCLMULQDQ_INTRIN - Success
+-- Performing Test HAVE_AVX2_INTRIN
+-- Performing Test HAVE_AVX2_INTRIN - Success
+-- Architecture-specific source files: arch/x86/x86.c;arch/x86/slide_avx.c;arch/x86/chunkset_avx.c;arch/x86/compare258_avx.c;arch/x86/adler32_avx.c;arch/x86/insert_string_sse.c;arch/x86/compare258_sse.c;arch/x86/chunkset_sse.c;arch/x86/slide_sse.c;arch/x86/adler32_ssse3.c;arch/x86/crc_folding.c
+-- The following features have been enabled:
+
+ * CMAKE_BUILD_TYPE, Build type: Debug (selected)
+ * WITH_GZFILEOP, Compile with support for gzFile related functions
+ * ZLIB_COMPAT, Compile with zlib compatible API
+ * WITH_OPTIM, Build with optimisation
+ * WITH_NEW_STRATEGIES, Use new strategies
+ * WITH_UNALIGNED, Support unaligned reads on platforms that support it
+ * WITH_AVX2, Build with AVX2
+ * WITH_SSE2, Build with SSE2
+ * WITH_SSSE3, Build with SSSE3
+ * WITH_SSE4, Build with SSE4
+ * WITH_PCLMULQDQ, Build with PCLMULQDQ
+ * AVX2_SLIDEHASH, Support AVX2 optimized slide_hash, using "-mavx2"
+ * AVX_CHUNKSET, Support AVX optimized chunkset, using "-mavx2"
+ * AVX2_COMPARE258, Support AVX2 optimized compare258, using "-mavx2"
+ * AVX2_ADLER32, Support AVX2-accelerated adler32, using "-mavx2"
+ * SSE42_CRC, Support SSE4.2 optimized CRC hash generation, using "-msse4"
+ * SSE42_COMPARE258, Support SSE4.2 optimized compare258, using "-msse4"
+ * SSSE3_ADLER32, Support SSSE3-accelerated adler32, using "-mssse3"
+ * PCLMUL_CRC, Support CRC hash generation using PCLMULQDQ, using "-mssse3 -msse4 -mpclmul"
+
+-- The following OPTIONAL packages have been found:
+
+ * OpenSSL
+
+-- The following features have been disabled:
+
+ * ZLIB_ENABLE_TESTS, Build test binaries
+ * ZLIB_DUAL_LINK, Dual link tests against system zlib
+ * WITH_FUZZERS, Build test/fuzz
+ * WITH_NATIVE_INSTRUCTIONS, Instruct the compiler to use the full instruction set on this host (gcc/clang -march=native)
+ * WITH_MAINTAINER_WARNINGS, Build with project maintainer warnings
+ * WITH_CODE_COVERAGE, Enable code coverage reporting
+ * WITH_INFLATE_STRICT, Build with strict inflate distance checking
+ * WITH_INFLATE_ALLOW_INVALID_DIST, Build with zero fill for inflate invalid distances
+ * INSTALL_UTILS, Copy minigzip and minideflate during install
+
+-- The following OPTIONAL packages have not been found:
+
+ * PkgConfig
+
+-- Enabled curl SSL
+-- curl version=[7.80.0]
+-- Performing Test OPT_pedantic
+-- Performing Test OPT_pedantic - Success
+-- Performing Test OPT_Wall
+-- Performing Test OPT_Wall - Success
+-- Performing Test OPT_W
+-- Performing Test OPT_W - Success
+-- Performing Test OPT_Wpointer_arith
+-- Performing Test OPT_Wpointer_arith - Success
+-- Performing Test OPT_Wwrite_strings
+-- Performing Test OPT_Wwrite_strings - Success
+-- Performing Test OPT_Wunused
+-- Performing Test OPT_Wunused - Success
+-- Performing Test OPT_Wshadow
+-- Performing Test OPT_Wshadow - Success
+-- Performing Test OPT_Winline
+-- Performing Test OPT_Winline - Success
+-- Performing Test OPT_Wnested_externs
+-- Performing Test OPT_Wnested_externs - Success
+-- Performing Test OPT_Wmissing_declarations
+-- Performing Test OPT_Wmissing_declarations - Success
+-- Performing Test OPT_Wmissing_prototypes
+-- Performing Test OPT_Wmissing_prototypes - Success
+-- Performing Test OPT_Wfloat_equal
+-- Performing Test OPT_Wfloat_equal - Success
+-- Performing Test OPT_Wsign_compare
+-- Performing Test OPT_Wsign_compare - Success
+-- Performing Test OPT_Wundef
+-- Performing Test OPT_Wundef - Success
+-- Performing Test OPT_Wendif_labels
+-- Performing Test OPT_Wendif_labels - Success
+-- Performing Test OPT_Wstrict_prototypes
+-- Performing Test OPT_Wstrict_prototypes - Success
+-- Performing Test OPT_Wdeclaration_after_statement
+-- Performing Test OPT_Wdeclaration_after_statement - Success
+-- Performing Test OPT_Wstrict_aliasing_3
+-- Performing Test OPT_Wstrict_aliasing_3 - Success
+-- Performing Test OPT_Wcast_align
+-- Performing Test OPT_Wcast_align - Success
+-- Performing Test OPT_Wtype_limits
+-- Performing Test OPT_Wtype_limits - Success
+-- Performing Test OPT_Wold_style_declaration
+-- Performing Test OPT_Wold_style_declaration - Success
+-- Performing Test OPT_Wmissing_parameter_type
+-- Performing Test OPT_Wmissing_parameter_type - Success
+-- Performing Test OPT_Wempty_body
+-- Performing Test OPT_Wempty_body - Success
+-- Performing Test OPT_Wclobbered
+-- Performing Test OPT_Wclobbered - Success
+-- Performing Test OPT_Wignored_qualifiers
+-- Performing Test OPT_Wignored_qualifiers - Success
+-- Performing Test OPT_Wconversion
+-- Performing Test OPT_Wconversion - Success
+-- Performing Test OPT_Wvla
+-- Performing Test OPT_Wvla - Success
+-- Performing Test OPT_Wdouble_promotion
+-- Performing Test OPT_Wdouble_promotion - Success
+-- Performing Test OPTlong_long
+-- Performing Test OPTlong_long - Success
+-- Performing Test OPTmultichar
+-- Performing Test OPTmultichar - Success
+-- Performing Test OPTformat_nonliteral
+-- Performing Test OPTformat_nonliteral - Success
+-- Performing Test OPTsign_conversion
+-- Performing Test OPTsign_conversion - Success
+-- Performing Test OPTsystem_headers
+-- Performing Test OPTsystem_headers - Success
+-- Performing Test OPTpedantic_ms_format
+-- Performing Test OPTpedantic_ms_format - Failed
+-- Performing Test HAVE_SOCKADDR_IN6_SIN6_ADDR
+-- Performing Test HAVE_SOCKADDR_IN6_SIN6_ADDR - Success
+-- Performing Test HAVE_SOCKADDR_IN6_SIN6_SCOPE_ID
+-- Performing Test HAVE_SOCKADDR_IN6_SIN6_SCOPE_ID - Success
+-- Found Perl: /usr/bin/perl (found version "5.30.0") 
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Looking for dlopen in dl;-lpthread
+-- Looking for dlopen in dl;-lpthread - found
+-- Looking for connect in socket;dl;-lpthread
+-- Looking for connect in socket;dl;-lpthread - not found
+-- Looking for gethostbyname in c
+-- Looking for gethostbyname in c - found
+-- Looking for gethostname
+-- Looking for gethostname - found
+-- Looking for openssl/crypto.h
+-- Looking for openssl/crypto.h - found
+-- Looking for openssl/err.h
+-- Looking for openssl/err.h - found
+-- Looking for openssl/pem.h
+-- Looking for openssl/pem.h - found
+-- Looking for openssl/rsa.h
+-- Looking for openssl/rsa.h - found
+-- Looking for openssl/ssl.h
+-- Looking for openssl/ssl.h - found
+-- Looking for openssl/x509.h
+-- Looking for openssl/x509.h - found
+-- Looking for openssl/rand.h
+-- Looking for openssl/rand.h - found
+-- Looking for RAND_status
+-- Looking for RAND_status - not found
+-- Looking for RAND_screen
+-- Looking for RAND_screen - not found
+-- Looking for RAND_egd
+-- Looking for RAND_egd - not found
+-- Looking for dlopen in dl;-lpthread;OpenSSL::SSL;OpenSSL::Crypto
+-- Looking for dlopen in dl;-lpthread;OpenSSL::SSL;OpenSSL::Crypto - found
+-- Could NOT find ZLIB (missing: ZLIB_LIBRARY ZLIB_INCLUDE_DIR) 
+-- Could NOT find LibSSH2 (missing: LIBSSH2_LIBRARY LIBSSH2_INCLUDE_DIR) 
+-- Performing Test USE_UNIX_SOCKETS
+-- Performing Test USE_UNIX_SOCKETS - Success
+-- Found CA bundle: /etc/ssl/certs/ca-certificates.crt
+-- Looking for include file stdio.h
+-- Looking for include file stdio.h - found
+-- Looking for include files stdio.h, inttypes.h
+-- Looking for include files stdio.h, inttypes.h - found
+-- Looking for 3 include files stdio.h, ..., sys/filio.h
+-- Looking for 3 include files stdio.h, ..., sys/filio.h - not found
+-- Looking for 3 include files stdio.h, ..., sys/ioctl.h
+-- Looking for 3 include files stdio.h, ..., sys/ioctl.h - found
+-- Looking for 4 include files stdio.h, ..., sys/param.h
+-- Looking for 4 include files stdio.h, ..., sys/param.h - found
+-- Looking for 5 include files stdio.h, ..., sys/poll.h
+-- Looking for 5 include files stdio.h, ..., sys/poll.h - found
+-- Looking for 6 include files stdio.h, ..., sys/resource.h
+-- Looking for 6 include files stdio.h, ..., sys/resource.h - found
+-- Looking for 7 include files stdio.h, ..., sys/select.h
+-- Looking for 7 include files stdio.h, ..., sys/select.h - found
+-- Looking for 8 include files stdio.h, ..., sys/socket.h
+-- Looking for 8 include files stdio.h, ..., sys/socket.h - found
+-- Looking for 9 include files stdio.h, ..., sys/sockio.h
+-- Looking for 9 include files stdio.h, ..., sys/sockio.h - not found
+-- Looking for 9 include files stdio.h, ..., sys/stat.h
+-- Looking for 9 include files stdio.h, ..., sys/stat.h - found
+-- Looking for 10 include files stdio.h, ..., sys/time.h
+-- Looking for 10 include files stdio.h, ..., sys/time.h - found
+-- Looking for 12 include files stdio.h, ..., sys/uio.h
+-- Looking for 12 include files stdio.h, ..., sys/uio.h - found
+-- Looking for 13 include files stdio.h, ..., sys/un.h
+-- Looking for 13 include files stdio.h, ..., sys/un.h - found
+-- Looking for 14 include files stdio.h, ..., sys/utime.h
+-- Looking for 14 include files stdio.h, ..., sys/utime.h - not found
+-- Looking for 14 include files stdio.h, ..., sys/xattr.h
+-- Looking for 14 include files stdio.h, ..., sys/xattr.h - found
+-- Looking for 15 include files stdio.h, ..., alloca.h
+-- Looking for 15 include files stdio.h, ..., alloca.h - found
+-- Looking for 16 include files stdio.h, ..., arpa/inet.h
+-- Looking for 16 include files stdio.h, ..., arpa/inet.h - found
+-- Looking for 17 include files stdio.h, ..., arpa/tftp.h
+-- Looking for 17 include files stdio.h, ..., arpa/tftp.h - found
+-- Looking for 18 include files stdio.h, ..., assert.h
+-- Looking for 18 include files stdio.h, ..., assert.h - found
+-- Looking for 19 include files stdio.h, ..., errno.h
+-- Looking for 19 include files stdio.h, ..., errno.h - found
+-- Looking for 20 include files stdio.h, ..., fcntl.h
+-- Looking for 20 include files stdio.h, ..., fcntl.h - found
+-- Looking for 21 include files stdio.h, ..., idn2.h
+-- Looking for 21 include files stdio.h, ..., idn2.h - not found
+-- Looking for 21 include files stdio.h, ..., ifaddrs.h

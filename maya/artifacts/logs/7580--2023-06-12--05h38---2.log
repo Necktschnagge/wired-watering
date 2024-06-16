@@ -1,0 +1,15 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+Pulling maya-productive failed!
+Will build last commit on local branch maya-productive
+> sudo -u mayadm git reset --hard
+HEAD ist jetzt bei a3d3b1064 Merge pull request #103 from Necktschnagge/update-watering-plan
+Last commit is:   a3d3b106481574cd2c3262663208244b91341ab4
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   6s
+=====================================================================================================

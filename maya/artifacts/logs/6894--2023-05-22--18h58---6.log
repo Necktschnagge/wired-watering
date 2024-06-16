@@ -1,0 +1,55 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist 23 Commits vor 'origin/artifacts'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/6894-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/6893-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-05-22--18h58"
+[artifacts 39450648e] logs at 2023-05-22--18h58
+ 6 files changed, 257 insertions(+)
+ create mode 100644 maya/artifacts/logs/6893--2023-05-22--18h36---6.log
+ create mode 100644 maya/artifacts/logs/6894--2023-05-22--18h58---1.log
+ create mode 100644 maya/artifacts/logs/6894--2023-05-22--18h58---2.log
+ create mode 100644 maya/artifacts/logs/6894--2023-05-22--18h58---3.log
+ create mode 100644 maya/artifacts/logs/6894--2023-05-22--18h58---4.log
+ create mode 100644 maya/artifacts/logs/6894--2023-05-22--18h58---5.log
+> sudo -u mayadm git push
+remote: Resolving deltas:   0% (0/184)        remote: Resolving deltas:   1% (2/184)        remote: Resolving deltas:   2% (4/184)        remote: Resolving deltas:   3% (6/184)        remote: Resolving deltas:   4% (8/184)        remote: Resolving deltas:   5% (10/184)        remote: Resolving deltas:   6% (12/184)        remote: Resolving deltas:   7% (13/184)        remote: Resolving deltas:   8% (15/184)        remote: Resolving deltas:   9% (17/184)        remote: Resolving deltas:  10% (19/184)        remote: Resolving deltas:  11% (21/184)        remote: Resolving deltas:  12% (23/184)        remote: Resolving deltas:  13% (24/184)        remote: Resolving deltas:  14% (26/184)        remote: Resolving deltas:  15% (28/184)        remote: Resolving deltas:  16% (30/184)        remote: Resolving deltas:  17% (32/184)        remote: Resolving deltas:  18% (34/184)        remote: Resolving deltas:  19% (35/184)        remote: Resolving deltas:  20% (37/184)        remote: Resolving deltas:  21% (39/184)        remote: Resolving deltas:  22% (41/184)        remote: Resolving deltas:  23% (43/184)        remote: Resolving deltas:  24% (45/184)        remote: Resolving deltas:  25% (46/184)        remote: Resolving deltas:  26% (48/184)        remote: Resolving deltas:  27% (50/184)        remote: Resolving deltas:  28% (52/184)        remote: Resolving deltas:  29% (54/184)        remote: Resolving deltas:  30% (56/184)        remote: Resolving deltas:  31% (58/184)        remote: Resolving deltas:  32% (59/184)        remote: Resolving deltas:  33% (61/184)        remote: Resolving deltas:  34% (63/184)        remote: Resolving deltas:  35% (65/184)        remote: Resolving deltas:  36% (67/184)        remote: Resolving deltas:  37% (69/184)        remote: Resolving deltas:  38% (70/184)        remote: Resolving deltas:  39% (72/184)        remote: Resolving deltas:  40% (74/184)        remote: Resolving deltas:  41% (76/184)        remote: Resolving deltas:  42% (78/184)        remote: Resolving deltas:  43% (80/184)        remote: Resolving deltas:  44% (81/184)        remote: Resolving deltas:  45% (83/184)        remote: Resolving deltas:  46% (85/184)        remote: Resolving deltas:  47% (87/184)        remote: Resolving deltas:  48% (89/184)        remote: Resolving deltas:  49% (91/184)        remote: Resolving deltas:  50% (92/184)        remote: Resolving deltas:  51% (94/184)        remote: Resolving deltas:  52% (96/184)        remote: Resolving deltas:  53% (98/184)        remote: Resolving deltas:  54% (100/184)        remote: Resolving deltas:  55% (102/184)        remote: Resolving deltas:  56% (104/184)        remote: Resolving deltas:  57% (105/184)        remote: Resolving deltas:  58% (107/184)        remote: Resolving deltas:  59% (109/184)        remote: Resolving deltas:  60% (111/184)        remote: Resolving deltas:  61% (113/184)        remote: Resolving deltas:  62% (115/184)        remote: Resolving deltas:  63% (116/184)        remote: Resolving deltas:  64% (118/184)        remote: Resolving deltas:  65% (120/184)        remote: Resolving deltas:  66% (122/184)        remote: Resolving deltas:  67% (124/184)        remote: Resolving deltas:  68% (126/184)        remote: Resolving deltas:  69% (127/184)        remote: Resolving deltas:  70% (129/184)        remote: Resolving deltas:  71% (131/184)        remote: Resolving deltas:  72% (133/184)        remote: Resolving deltas:  73% (135/184)        remote: Resolving deltas:  74% (137/184)        remote: Resolving deltas:  75% (138/184)        remote: Resolving deltas:  76% (140/184)        remote: Resolving deltas:  77% (142/184)        remote: Resolving deltas:  78% (144/184)        remote: Resolving deltas:  79% (146/184)        remote: Resolving deltas:  80% (148/184)        remote: Resolving deltas:  81% (150/184)        remote: Resolving deltas:  82% (151/184)        remote: Resolving deltas:  83% (153/184)        remote: Resolving deltas:  84% (155/184)        remote: Resolving deltas:  85% (157/184)        remote: Resolving deltas:  86% (159/184)        remote: Resolving deltas:  87% (161/184)        remote: Resolving deltas:  88% (162/184)        remote: Resolving deltas:  89% (164/184)        remote: Resolving deltas:  90% (166/184)        remote: Resolving deltas:  91% (168/184)        remote: Resolving deltas:  92% (170/184)        remote: Resolving deltas:  93% (172/184)        remote: Resolving deltas:  94% (173/184)        remote: Resolving deltas:  95% (175/184)        remote: Resolving deltas:  96% (177/184)        remote: Resolving deltas:  97% (179/184)        remote: Resolving deltas:  98% (181/184)        remote: Resolving deltas:  99% (183/184)        remote: Resolving deltas: 100% (184/184)        remote: Resolving deltas: 100% (184/184), completed with 1 local object.        
+To https://github.com/Necktschnagge/wired-watering
+   c896558ee..39450648e  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon May 22 17:43:55 2023
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   1361s
+=====================================================================================================

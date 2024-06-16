@@ -1,0 +1,37 @@
+[maya-productive 376db25] upload logs
+ 7 files changed, 223 insertions(+)
+ create mode 100644 maya/artifacts/logs/1062--2022-06-16--20h59---6.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---1.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---2.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---3.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---4.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---5.log
+ create mode 100644 maya/artifacts/logs/1063--2022-06-16--21h05---6.log
+Bereits aktuell.
+To https://github.com/Necktschnagge/wired-watering
+   2353ceb..376db25  maya-productive -> maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 300
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Thu Jun 16 19:10:32 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################

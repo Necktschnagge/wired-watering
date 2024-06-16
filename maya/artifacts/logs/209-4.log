@@ -1,0 +1,6 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+> sudo -u mayadm ./ur-unix-run.sh
+./ur-unix-run.sh: Zeile 2: ../build/src/Maya-Commander: Datei oder Verzeichnis nicht gefunden
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+=====================================================================================================

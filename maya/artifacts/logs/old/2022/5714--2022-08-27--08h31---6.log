@@ -1,0 +1,65 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   78cd9008..bd5cd988  maya-productive -> origin/maya-productive
+ * [neues Tag]         dev-cmake-atmega-cpp-example-working -> dev-cmake-atmega-cpp-example-working
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/5714-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/5713-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2022-08-27--08h31"
+[artifacts b42fc9c3] logs at 2022-08-27--08h31
+ 6 files changed, 265 insertions(+)
+ create mode 100644 maya/artifacts/logs/5713--2022-08-27--08h06---6.log
+ create mode 100644 maya/artifacts/logs/5714--2022-08-27--08h31---1.log
+ create mode 100644 maya/artifacts/logs/5714--2022-08-27--08h31---2.log
+ create mode 100644 maya/artifacts/logs/5714--2022-08-27--08h31---3.log
+ create mode 100644 maya/artifacts/logs/5714--2022-08-27--08h31---4.log
+ create mode 100644 maya/artifacts/logs/5714--2022-08-27--08h31---5.log
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   d509aab5..b42fc9c3  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+ ! [rejected]          maya-productive -> maya-productive (non-fast-forward)
+error: Fehler beim Versenden einiger Referenzen nach 'https://github.com/Necktschnagge/wired-watering'
+Hinweis: Aktualisierungen wurden zurückgewiesen, weil die Spitze Ihres aktuellen
+Hinweis: Branches hinter seinem externen Gegenstück zurückgefallen ist. Führen Sie
+Hinweis: die externen Änderungen zusammen (z. B. 'git pull ...') bevor Sie "push"
+Hinweis: erneut ausführen.
+Hinweis: Siehe auch die Sektion 'Note about fast-forwards' in 'git push --help'
+Hinweis: für weitere Details.
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 1200
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sat Aug 27 06:55:02 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   1235s
+=====================================================================================================

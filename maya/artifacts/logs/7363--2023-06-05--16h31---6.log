@@ -1,0 +1,55 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist 9 Commits vor 'origin/artifacts'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/7363-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/7362-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-06-05--16h31"
+[artifacts 09ad5bdae] logs at 2023-06-05--16h31
+ 6 files changed, 286 insertions(+)
+ create mode 100644 maya/artifacts/logs/7362--2023-06-05--15h49---6.log
+ create mode 100644 maya/artifacts/logs/7363--2023-06-05--16h31---1.log
+ create mode 100644 maya/artifacts/logs/7363--2023-06-05--16h31---2.log
+ create mode 100644 maya/artifacts/logs/7363--2023-06-05--16h31---3.log
+ create mode 100644 maya/artifacts/logs/7363--2023-06-05--16h31---4.log
+ create mode 100644 maya/artifacts/logs/7363--2023-06-05--16h31---5.log
+> sudo -u mayadm git push
+remote: Resolving deltas:   0% (0/75)        remote: Resolving deltas:   1% (1/75)        remote: Resolving deltas:   2% (2/75)        remote: Resolving deltas:   4% (3/75)        remote: Resolving deltas:   5% (4/75)        remote: Resolving deltas:   6% (5/75)        remote: Resolving deltas:   8% (6/75)        remote: Resolving deltas:   9% (7/75)        remote: Resolving deltas:  10% (8/75)        remote: Resolving deltas:  12% (9/75)        remote: Resolving deltas:  13% (10/75)        remote: Resolving deltas:  14% (11/75)        remote: Resolving deltas:  16% (12/75)        remote: Resolving deltas:  17% (13/75)        remote: Resolving deltas:  18% (14/75)        remote: Resolving deltas:  20% (15/75)        remote: Resolving deltas:  21% (16/75)        remote: Resolving deltas:  22% (17/75)        remote: Resolving deltas:  24% (18/75)        remote: Resolving deltas:  25% (19/75)        remote: Resolving deltas:  26% (20/75)        remote: Resolving deltas:  28% (21/75)        remote: Resolving deltas:  29% (22/75)        remote: Resolving deltas:  30% (23/75)        remote: Resolving deltas:  32% (24/75)        remote: Resolving deltas:  33% (25/75)        remote: Resolving deltas:  34% (26/75)        remote: Resolving deltas:  36% (27/75)        remote: Resolving deltas:  37% (28/75)        remote: Resolving deltas:  38% (29/75)        remote: Resolving deltas:  40% (30/75)        remote: Resolving deltas:  41% (31/75)        remote: Resolving deltas:  42% (32/75)        remote: Resolving deltas:  44% (33/75)        remote: Resolving deltas:  45% (34/75)        remote: Resolving deltas:  46% (35/75)        remote: Resolving deltas:  48% (36/75)        remote: Resolving deltas:  49% (37/75)        remote: Resolving deltas:  50% (38/75)        remote: Resolving deltas:  52% (39/75)        remote: Resolving deltas:  53% (40/75)        remote: Resolving deltas:  54% (41/75)        remote: Resolving deltas:  56% (42/75)        remote: Resolving deltas:  57% (43/75)        remote: Resolving deltas:  58% (44/75)        remote: Resolving deltas:  60% (45/75)        remote: Resolving deltas:  61% (46/75)        remote: Resolving deltas:  62% (47/75)        remote: Resolving deltas:  64% (48/75)        remote: Resolving deltas:  65% (49/75)        remote: Resolving deltas:  66% (50/75)        remote: Resolving deltas:  68% (51/75)        remote: Resolving deltas:  69% (52/75)        remote: Resolving deltas:  70% (53/75)        remote: Resolving deltas:  72% (54/75)        remote: Resolving deltas:  73% (55/75)        remote: Resolving deltas:  74% (56/75)        remote: Resolving deltas:  76% (57/75)        remote: Resolving deltas:  77% (58/75)        remote: Resolving deltas:  78% (59/75)        remote: Resolving deltas:  80% (60/75)        remote: Resolving deltas:  81% (61/75)        remote: Resolving deltas:  82% (62/75)        remote: Resolving deltas:  84% (63/75)        remote: Resolving deltas:  85% (64/75)        remote: Resolving deltas:  86% (65/75)        remote: Resolving deltas:  88% (66/75)        remote: Resolving deltas:  89% (67/75)        remote: Resolving deltas:  90% (68/75)        remote: Resolving deltas:  92% (69/75)        remote: Resolving deltas:  93% (70/75)        remote: Resolving deltas:  94% (71/75)        remote: Resolving deltas:  96% (72/75)        remote: Resolving deltas:  97% (73/75)        remote: Resolving deltas:  98% (74/75)        remote: Resolving deltas: 100% (75/75)        remote: Resolving deltas: 100% (75/75), completed with 2 local objects.        
+To https://github.com/Necktschnagge/wired-watering
+   be3f942c8..09ad5bdae  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon Jun  5 15:11:44 2023
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   2425s
+=====================================================================================================

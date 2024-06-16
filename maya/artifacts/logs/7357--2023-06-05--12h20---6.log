@@ -1,0 +1,53 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist 3 Commits vor 'origin/artifacts'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+> sudo -u mayadm git pull
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Failed to connect to github.com port 443: Die Wartezeit für die Verbindung ist abgelaufen
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/7357-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/7356-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-06-05--12h20"
+[artifacts a1d11c79d] logs at 2023-06-05--12h20
+ 6 files changed, 286 insertions(+)
+ create mode 100644 maya/artifacts/logs/7356--2023-06-05--11h38---6.log
+ create mode 100644 maya/artifacts/logs/7357--2023-06-05--12h20---1.log
+ create mode 100644 maya/artifacts/logs/7357--2023-06-05--12h20---2.log
+ create mode 100644 maya/artifacts/logs/7357--2023-06-05--12h20---3.log
+ create mode 100644 maya/artifacts/logs/7357--2023-06-05--12h20---4.log
+ create mode 100644 maya/artifacts/logs/7357--2023-06-05--12h20---5.log
+> sudo -u mayadm git push
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon Jun  5 11:03:38 2023
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   2580s
+=====================================================================================================

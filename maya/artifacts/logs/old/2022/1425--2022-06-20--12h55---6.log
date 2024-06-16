@@ -1,0 +1,117 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+warning: unable to rmdir 'maya/extern/spdlog': Das Verzeichnis ist nicht leer
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Entferne maya/script/win-clean-create-project-build.ps1
+Entferne maya/script/win-clean-create-project-build.bat
+Entferne maya/script/win-build.ps1
+Entferne maya/script/win-build.bat
+Entferne maya/script/open-sln.ps1
+Merge made by the 'recursive' strategy.
+ .gitmodules                                        |   3 +
+ azure-pipelines.yml                                |  80 +++++
+ maya/CMakeLists.txt                                |   9 +-
+ maya/extern/spdlog                                 |   1 +
+ maya/script/cb-cmd-build.bat                       |   1 +
+ maya/script/{win-clean.bat => cc-cmd-clean.bat}    |   0
+ .../cccpb-cmd-clean-create-project-build.bat       |   3 +
+ ...eate-project.bat => ccp-cmd-create-project.bat} |   0
+ maya/script/maya_go.sh                             |  16 +
+ maya/script/maya_routine.sh                        | 349 +++++++++++++--------
+ maya/script/open-sln.ps1                           |   1 -
+ maya/script/ub-unix-build.sh                       |   2 +-
+ maya/script/uci-unix-clean_init.sh                 |   8 +
+ ...reate-project.sh => ucp-unix-create-project.sh} |   0
+ maya/script/wb-win-build.ps1                       |   1 +
+ maya/script/{win-clean.ps1 => wc-win-clean.ps1}    |   0
+ .../wccpb-win-clean-create-project-build.ps1       |   3 +
+ maya/script/wci-win-clean_init.ps1                 |   7 +
+ ...eate-project.ps1 => wcp-win-create-project.ps1} |   0
+ maya/script/win-build.bat                          |   1 -
+ maya/script/win-build.ps1                          |   1 -
+ maya/script/win-clean-create-project-build.bat     |   3 -
+ maya/script/win-clean-create-project-build.ps1     |   3 -
+ maya/script/wos-win-open-sln.ps1                   |   1 +
+ maya/script/wt-win-test.ps1                        |   1 +
+ maya/src/CMakeLists.txt                            |   6 +-
+ maya/src/internal_error.h                          |  31 ++
+ maya/src/logger.cpp                                |  35 +++
+ maya/src/logger.h                                  |  16 +
+ maya/src/main.cpp                                  | 320 ++++++++++++++-----
+ maya/test/CMakeLists.txt                           |   8 +
+ maya/test/example_test.cpp                         |   5 +
+ 32 files changed, 680 insertions(+), 235 deletions(-)
+ create mode 100644 azure-pipelines.yml
+ create mode 160000 maya/extern/spdlog
+ create mode 100644 maya/script/cb-cmd-build.bat
+ rename maya/script/{win-clean.bat => cc-cmd-clean.bat} (100%)
+ create mode 100644 maya/script/cccpb-cmd-clean-create-project-build.bat
+ rename maya/script/{win-create-project.bat => ccp-cmd-create-project.bat} (100%)
+ create mode 100755 maya/script/maya_go.sh
+ delete mode 100644 maya/script/open-sln.ps1
+ create mode 100755 maya/script/uci-unix-clean_init.sh
+ rename maya/script/{up-unix-create-project.sh => ucp-unix-create-project.sh} (100%)
+ create mode 100644 maya/script/wb-win-build.ps1
+ rename maya/script/{win-clean.ps1 => wc-win-clean.ps1} (100%)
+ create mode 100644 maya/script/wccpb-win-clean-create-project-build.ps1
+ create mode 100644 maya/script/wci-win-clean_init.ps1
+ rename maya/script/{win-create-project.ps1 => wcp-win-create-project.ps1} (100%)
+ delete mode 100644 maya/script/win-build.bat
+ delete mode 100644 maya/script/win-build.ps1
+ delete mode 100644 maya/script/win-clean-create-project-build.bat
+ delete mode 100644 maya/script/win-clean-create-project-build.ps1
+ create mode 100644 maya/script/wos-win-open-sln.ps1
+ create mode 100644 maya/script/wt-win-test.ps1
+ create mode 100644 maya/src/internal_error.h
+ create mode 100644 maya/src/logger.cpp
+ create mode 100644 maya/src/logger.h
+ create mode 100644 maya/test/example_test.cpp
+> sudo -u mayadm git add "../artifacts/logs/1425-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/1424-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2022-06-20--12h55"
+[artifacts dca5f3d] logs at 2022-06-20--12h55
+ 6 files changed, 262 insertions(+)
+ create mode 100644 maya/artifacts/logs/1424--2022-06-20--12h33---6.log
+ create mode 100644 maya/artifacts/logs/1425--2022-06-20--12h55---1.log
+ create mode 100644 maya/artifacts/logs/1425--2022-06-20--12h55---2.log
+ create mode 100644 maya/artifacts/logs/1425--2022-06-20--12h55---3.log
+ create mode 100644 maya/artifacts/logs/1425--2022-06-20--12h55---4.log
+ create mode 100644 maya/artifacts/logs/1425--2022-06-20--12h55---5.log
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   7576b35..dca5f3d  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 1200
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon Jun 20 11:16:02 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   1217s
+=====================================================================================================

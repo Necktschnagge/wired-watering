@@ -1,0 +1,8 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+./ur-unix-run.sh: Zeile 2: ../build/src/Maya-Commander: Datei oder Verzeichnis nicht gefunden
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   0s
+=====================================================================================================

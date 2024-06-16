@@ -1,0 +1,38 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/6672-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/6671-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-05-14--08h55"
+[artifacts b9e033ecd] logs at 2023-05-14--08h55
+ 6 files changed, 264 insertions(+)
+ create mode 100644 maya/artifacts/logs/6671--2023-05-14--08h51---6.log
+ create mode 100644 maya/artifacts/logs/6672--2023-05-14--08h55---1.log
+ create mode 100644 maya/artifacts/logs/6672--2023-05-14--08h55---2.log
+ create mode 100644 maya/artifacts/logs/6672--2023-05-14--08h55---3.log
+ create mode 100644 maya/artifacts/logs/6672--2023-05-14--08h55---4.log
+ create mode 100644 maya/artifacts/logs/6672--2023-05-14--08h55---5.log
+> sudo -u mayadm git push
+remote: Resolving deltas:   0% (0/4)        remote: Resolving deltas:  25% (1/4)        remote: Resolving deltas:  50% (2/4)        remote: Resolving deltas:  75% (3/4)        remote: Resolving deltas: 100% (4/4)        remote: Resolving deltas: 100% (4/4), completed with 3 local objects.        
+To https://github.com/Necktschnagge/wired-watering
+   7e9d41507..b9e033ecd  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################

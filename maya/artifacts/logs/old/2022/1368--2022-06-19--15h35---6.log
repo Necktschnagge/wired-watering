@@ -1,0 +1,92 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+warning: unable to rmdir 'maya/extern/spdlog': Das Verzeichnis ist nicht leer
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist 2 Commits hinter 'origin/artifacts', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+> sudo -u mayadm git add "../artifacts/logs/1368-*.log" -f
+fatal: Pfadspezifikation '../artifacts/logs/1368-*.log' stimmt mit keinen Dateien überein
+> sudo -u mayadm git add "../artifacts/logs/1367-*.log" -f
+fatal: Pfadspezifikation '../artifacts/logs/1367-*.log' stimmt mit keinen Dateien überein
+> sudo -u mayadm git commit -m "logs at 2022-06-19--15h35"
+Auf Branch artifacts
+Ihr Branch ist 2 Commits hinter 'origin/artifacts', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+Unversionierte Dateien:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+	../extern/spdlog/
+
+nichts zum Commit vorgemerkt, aber es gibt unversionierte Dateien
+(benutzen Sie "git add" zum Versionieren)
+> sudo -u mayadm git pull
+Aktualisiere 4d8e151..eab47fd
+Fast-forward
+ maya/artifacts/logs/1--2022-06-19--13h36---1.log |   35 +
+ maya/artifacts/logs/1--2022-06-19--13h36---2.log |   11 +
+ maya/artifacts/logs/1--2022-06-19--13h36---3.log |   54 +
+ maya/artifacts/logs/1--2022-06-19--13h36---4.log |    7 +
+ maya/artifacts/logs/1--2022-06-19--13h36---5.log |   24 +
+ maya/artifacts/logs/1--2022-06-19--13h36---6.log |   36 +
+ maya/artifacts/logs/1--2022-06-19--14h03---1.log |   35 +
+ maya/artifacts/logs/1--2022-06-19--14h03---2.log |   11 +
+ maya/artifacts/logs/1--2022-06-19--14h03---3.log | 1447 ++++++++++++++++++++++
+ maya/artifacts/logs/1--2022-06-19--14h03---4.log |   13 +
+ maya/artifacts/logs/1--2022-06-19--14h03---5.log |   19 +
+ maya/artifacts/logs/1--2022-06-19--14h03---6.log |   56 +
+ maya/artifacts/logs/1--2022-06-19--14h58---1.log |   14 +
+ maya/artifacts/logs/1--2022-06-19--15h15---1.log |   36 +
+ maya/artifacts/logs/1--2022-06-19--15h15---2.log |   11 +
+ maya/artifacts/logs/1--2022-06-19--15h15---3.log |  116 ++
+ maya/artifacts/logs/1--2022-06-19--15h15---4.log |   13 +
+ maya/artifacts/logs/1--2022-06-19--15h15---5.log |   19 +
+ 18 files changed, 1957 insertions(+)
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---1.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---2.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---3.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---4.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---5.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--13h36---6.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---1.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---2.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---3.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---4.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---5.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h03---6.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--14h58---1.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--15h15---1.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--15h15---2.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--15h15---3.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--15h15---4.log
+ create mode 100644 maya/artifacts/logs/1--2022-06-19--15h15---5.log
+> sudo -u mayadm git push
+Everything up-to-date
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 1200
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sun Jun 19 14:27:13 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+=====================================================================================================

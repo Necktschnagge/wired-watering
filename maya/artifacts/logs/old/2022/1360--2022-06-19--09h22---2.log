@@ -1,0 +1,17 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist 2 Commits hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+ * [neuer Branch]    update-spdlog -> origin/update-spdlog
+Aktualisiere 14a5c95..8bb129c
+Fast-forward
+ maya/script/maya_routine.sh | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+Pulling maya-productive successfully!
+Last commit is:   8bb129ceb1f4d02fd8f453d3031b7a622ddc8c66
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+=====================================================================================================

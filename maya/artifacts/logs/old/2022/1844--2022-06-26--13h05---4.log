@@ -1,0 +1,24 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+std::chrono::system_clock::now().time_since_epoch()   :   1656241563283332151
+get_seconds_since_epoch(bool verbose /* true */)   :   1656241563
+minutes since epoch   :   27604026
+minute of day   :   666
+minute of hour   :   6
+hour of day   :   11
+[2022-06-26 13:06:03.283] [main] [warning] hack watering off
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+previous time_stamp:   27603493
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   0s
+=====================================================================================================

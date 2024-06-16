@@ -1,0 +1,15 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   731b9cbd..37f3d24b  feature-update-in-maya-go -> origin/feature-update-in-maya-go
+   e212126b..dd34c083  fix-enhance-esp8266-wifi-handlers -> origin/fix-enhance-esp8266-wifi-handlers
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   eef4f11f15d70044665e6d16d55e198ef108cc6f
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   7s
+=====================================================================================================

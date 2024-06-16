@@ -1,0 +1,53 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/7650-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/7649-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-06-14--08h14"
+[artifacts ce1b9d9d7] logs at 2023-06-14--08h14
+ 6 files changed, 303 insertions(+)
+ create mode 100644 maya/artifacts/logs/7649--2023-06-14--07h33---6.log
+ create mode 100644 maya/artifacts/logs/7650--2023-06-14--08h14---1.log
+ create mode 100644 maya/artifacts/logs/7650--2023-06-14--08h14---2.log
+ create mode 100644 maya/artifacts/logs/7650--2023-06-14--08h14---3.log
+ create mode 100644 maya/artifacts/logs/7650--2023-06-14--08h14---4.log
+ create mode 100644 maya/artifacts/logs/7650--2023-06-14--08h14---5.log
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   7e476d2e5..ce1b9d9d7  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Wed Jun 14 06:55:06 2023
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   2424s
+=====================================================================================================

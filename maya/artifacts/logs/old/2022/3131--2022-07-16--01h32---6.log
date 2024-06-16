@@ -1,0 +1,110 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Merge made by the 'recursive' strategy.
+ .gitignore                                        |   8 +
+ README.md                                         |  54 +++
+ azure-pipelines.yml                               | 336 +++++++++++---
+ esp-device/CMakeLists.txt                         |  10 +
+ esp-device/Makefile                               |  11 +
+ esp-device/main/.gitignore                        |   7 +
+ esp-device/main/CMakeLists.txt                    |   4 +
+ esp-device/main/component.mk                      |   5 +
+ esp-device/main/config.h                          |  56 +++
+ esp-device/main/gpio_definitions_felix.h          |  25 +
+ esp-device/main/gpio_definitions_james.h          |  37 ++
+ esp-device/main/gpio_definitions_lucas.h          |  29 ++
+ esp-device/main/gpio_definitions_mayson.h         |  36 ++
+ esp-device/main/gpio_wrapper.c                    |  52 +++
+ esp-device/main/gpio_wrapper.h                    |   8 +
+ esp-device/main/main.c                            | 541 ++++++++++++++++++++++
+ esp-device/main/secret_config.h                   |   5 +
+ esp-device/main/select_device.h                   |   9 +
+ esp-device/main/select_device_felix.h             |  14 +
+ esp-device/main/select_device_james.h             |  14 +
+ esp-device/main/select_device_lucas.h             |  14 +
+ esp-device/main/select_device_mayson.h            |  14 +
+ esp-device/main/server.cpp                        |   3 +
+ esp-device/main/server.h                          |  40 ++
+ esp-device/main/server_c_connector.cpp            |  26 ++
+ esp-device/main/server_c_connector.h              |  13 +
+ esp-device/script/ignore_secret_config_changes.sh |   2 +
+ esp-device/sdkconfig.ci                           | 529 +++++++++++++++++++++
+ esp-device/sdkconfig.defaults                     |   2 +
+ 29 files changed, 1844 insertions(+), 60 deletions(-)
+ create mode 100644 README.md
+ create mode 100644 esp-device/CMakeLists.txt
+ create mode 100644 esp-device/Makefile
+ create mode 100644 esp-device/main/.gitignore
+ create mode 100644 esp-device/main/CMakeLists.txt
+ create mode 100644 esp-device/main/component.mk
+ create mode 100644 esp-device/main/config.h
+ create mode 100644 esp-device/main/gpio_definitions_felix.h
+ create mode 100644 esp-device/main/gpio_definitions_james.h
+ create mode 100644 esp-device/main/gpio_definitions_lucas.h
+ create mode 100644 esp-device/main/gpio_definitions_mayson.h
+ create mode 100644 esp-device/main/gpio_wrapper.c
+ create mode 100644 esp-device/main/gpio_wrapper.h
+ create mode 100644 esp-device/main/main.c
+ create mode 100644 esp-device/main/secret_config.h
+ create mode 100644 esp-device/main/select_device.h
+ create mode 100644 esp-device/main/select_device_felix.h
+ create mode 100644 esp-device/main/select_device_james.h
+ create mode 100644 esp-device/main/select_device_lucas.h
+ create mode 100644 esp-device/main/select_device_mayson.h
+ create mode 100644 esp-device/main/server.cpp
+ create mode 100644 esp-device/main/server.h
+ create mode 100644 esp-device/main/server_c_connector.cpp
+ create mode 100644 esp-device/main/server_c_connector.h
+ create mode 100644 esp-device/script/ignore_secret_config_changes.sh
+ create mode 100644 esp-device/sdkconfig.ci
+ create mode 100644 esp-device/sdkconfig.defaults
+> sudo -u mayadm git add "../artifacts/logs/3131-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/3130-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2022-07-16--01h32"
+[artifacts b4217f19] logs at 2022-07-16--01h32
+ 6 files changed, 325 insertions(+)
+ create mode 100644 maya/artifacts/logs/3130--2022-07-16--01h11---6.log
+ create mode 100644 maya/artifacts/logs/3131--2022-07-16--01h32---1.log
+ create mode 100644 maya/artifacts/logs/3131--2022-07-16--01h32---2.log
+ create mode 100644 maya/artifacts/logs/3131--2022-07-16--01h32---3.log
+ create mode 100644 maya/artifacts/logs/3131--2022-07-16--01h32---4.log
+ create mode 100644 maya/artifacts/logs/3131--2022-07-16--01h32---5.log
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   abb6b502..b4217f19  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 1200
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Fri Jul 15 23:52:40 2022
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   1224s
+=====================================================================================================

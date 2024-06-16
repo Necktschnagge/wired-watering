@@ -1,0 +1,49 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-06-12 02:33:13.723] [main] [info] Pinging Pump Server Mayson...
+[2023-06-12 02:33:13.790] [main] [info] Pump Server ping OK!
+[2023-06-12 02:33:13.790] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-06-12 02:33:13.790] [main] [info] Pinging all valve stations...
+[2023-06-12 02:33:14.097] [main] [info] James ping OK!
+[2023-06-12 02:33:14.097] [main] [info] Lucas ping OK!
+[2023-06-12 02:33:14.097] [main] [info] Felix ping OK!
+[2023-06-12 02:33:14.097] [main] [info] Pinging all valve stations   ...DONE!
+[2023-06-12 02:33:14.097] [main] [info] Pinging Non-Existing Test Server...
+[2023-06-12 02:33:17.155] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-06-12 02:33:17.155] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-06-12 02:33:17.155] [main] [info] Creating Landscape...
+[2023-06-12 02:33:17.155] [main] [info] Creating Landscape...
+[2023-06-12 02:33:17.155] [main] [info] Creating Felix...
+[2023-06-12 02:33:17.155] [main] [info] Creating James...
+[2023-06-12 02:33:17.155] [main] [info] Creating Lucas...
+[2023-06-12 02:33:17.155] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1686529997155898928
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1686529997
+minutes since epoch   :   28108833
+minute of day   :   33
+minute of hour   :   33
+hour of day   :   0
+[2023-06-12 02:33:17.155] [main] [info] Checking timestamp.txt...
+[2023-06-12 02:33:17.155] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28107458
+[2023-06-12 02:33:17.156] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-06-12 02:33:17.156] [main] [info] It's not time for watering now!
+[2023-06-12 02:33:17.156] [main] [info] Minute Intraday:   33
+[2023-06-12 02:33:17.156] [main] [info] Days since Epoch:   19520
+[2023-06-12 02:33:17.156] [main] [info] Accumulated watering times:
+
+Felix   :          Eiben Klee  :      0.00 min
+Felix   :         Mara Sabine  :      0.00 min
+James   :            Karotten  :      0.00 min
+James   :              Gurken  :      0.00 min
+James   :             Tomaten  :      0.00 min
+James   :              -frei-  :      0.00 min
+Lucas   :  Erdbeerren Flieder  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :         Kartofffeln  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   4s
+=====================================================================================================

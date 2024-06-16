@@ -1,0 +1,39 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist 1 Commit vor 'origin/artifacts'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/7093-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/7092-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2023-05-28--14h04"
+[artifacts 2a87daea0] logs at 2023-05-28--14h04
+ 6 files changed, 269 insertions(+)
+ create mode 100644 maya/artifacts/logs/7092--2023-05-28--13h54---6.log
+ create mode 100644 maya/artifacts/logs/7093--2023-05-28--14h04---1.log
+ create mode 100644 maya/artifacts/logs/7093--2023-05-28--14h04---2.log
+ create mode 100644 maya/artifacts/logs/7093--2023-05-28--14h04---3.log
+ create mode 100644 maya/artifacts/logs/7093--2023-05-28--14h04---4.log
+ create mode 100644 maya/artifacts/logs/7093--2023-05-28--14h04---5.log
+> sudo -u mayadm git push
+remote: Resolving deltas:   0% (0/11)        remote: Resolving deltas:   9% (1/11)        remote: Resolving deltas:  18% (2/11)        remote: Resolving deltas:  27% (3/11)        remote: Resolving deltas:  36% (4/11)        remote: Resolving deltas:  45% (5/11)        remote: Resolving deltas:  54% (6/11)        remote: Resolving deltas:  63% (7/11)        remote: Resolving deltas:  72% (8/11)        remote: Resolving deltas:  81% (9/11)        remote: Resolving deltas:  90% (10/11)        remote: Resolving deltas: 100% (11/11)        remote: Resolving deltas: 100% (11/11), completed with 3 local objects.        
+To https://github.com/Necktschnagge/wired-watering
+   ba324a3a2..2a87daea0  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################

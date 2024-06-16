@@ -1,0 +1,20 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   d5babd450..8b522f7f6  maya-productive     -> origin/maya-productive
+   6d7871564..d5babd450  feature-telegram-with-api-directly -> origin/feature-telegram-with-api-directly
+   6797a6fa2..8af5cdbe4  fix-enhance-esp8266-wifi-handlers -> origin/fix-enhance-esp8266-wifi-handlers
+ * [neuer Branch]        new-maya-productive -> origin/new-maya-productive
+Aktualisiere d5babd450..8b522f7f6
+Fast-forward
+ maya/script/maya_routine.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+Pulling maya-productive successfully!
+Last commit is:   8b522f7f60791cd61b5a6a119a0d8bcccc4741a2
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   2s
+=====================================================================================================

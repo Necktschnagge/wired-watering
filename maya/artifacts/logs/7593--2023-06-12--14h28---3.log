@@ -1,0 +1,358 @@
+=====================================================================================================
+%%%%%%%%%%     [3] Switching to new branch and building sources...
+
+
+%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
+Determining working branch name...
+branch name:   routine-2e36a633-1686572930
+Switching to working branch...
+> sudo -u mayadm git switch -c routine-2e36a633-1686572930
+Zu neuem Branch 'routine-2e36a633-1686572930' gewechselt
+Updating git submodules...
+> timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
+Submodul 'maya/extern/json' (https://github.com/nlohmann/json) für Pfad '../extern/json' in die Konfiguration eingetragen.
+Klone nach '/home/mayadm/repos/wired-watering/maya/extern/json' …
+Von https://github.com/nlohmann/json
+ * branch            bc889afb4c5bf1c0d8ee29ef35eaaf4c8bef8a5d -> FETCH_HEAD
+Submodul-Pfad: '../extern/json': 'bc889afb4c5bf1c0d8ee29ef35eaaf4c8bef8a5d' ausgecheckt
+successfully updated git submodules
+%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)...
+> timeout 60m sudo -u mayadm ./ucp-unix-create-project.sh
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+-- C++ Requests CMake Options
+-- =======================================================
+--   CPR_GENERATE_COVERAGE: OFF
+--   CPR_CURL_NOSIGNAL: OFF
+--   CPR_USE_SYSTEM_GTEST: OFF
+--   CPR_FORCE_USE_SYSTEM_CURL: OFF
+--   CPR_ENABLE_SSL: ON
+--   CPR_FORCE_OPENSSL_BACKEND: OFF
+--   CPR_FORCE_WINSSL_BACKEND: OFF
+--   CPR_FORCE_DARWINSSL_BACKEND: OFF
+--   CPR_FORCE_MBEDTLS_BACKEND: OFF
+--   CPR_ENABLE_LINTING: OFF
+--   CPR_ENABLE_CPPCHECK: OFF
+--   CPR_BUILD_TESTS: OFF
+--   CPR_BUILD_TESTS_SSL: OFF
+-- =======================================================
+-- Automatically detecting SSL backend.
+-- Detecting SSL backend...
+-- SSL auto detect: Using OpenSSL.
+-- Configuring build in curl...
+-- Using CMake version 3.16.3
+-- ZLIB_HEADER_VERSION: 1.2.11
+-- ZLIBNG_HEADER_VERSION: 2.0.5
+-- Arch detected: 'x86_64'
+-- Basearch of 'x86_64' has been detected as: 'x86'
+-- Architecture supports unaligned reads
+-- Architecture supports unaligned reads of > 4 bytes
+-- Architecture-specific source files: arch/x86/x86.c;arch/x86/slide_avx.c;arch/x86/chunkset_avx.c;arch/x86/compare258_avx.c;arch/x86/adler32_avx.c;arch/x86/insert_string_sse.c;arch/x86/compare258_sse.c;arch/x86/chunkset_sse.c;arch/x86/slide_sse.c;arch/x86/adler32_ssse3.c;arch/x86/crc_folding.c
+-- The following features have been enabled:
+
+ * CMAKE_BUILD_TYPE, Build type: Debug (selected)
+ * WITH_GZFILEOP, Compile with support for gzFile related functions
+ * ZLIB_COMPAT, Compile with zlib compatible API
+ * WITH_OPTIM, Build with optimisation
+ * WITH_NEW_STRATEGIES, Use new strategies
+ * WITH_UNALIGNED, Support unaligned reads on platforms that support it
+ * WITH_AVX2, Build with AVX2
+ * WITH_SSE2, Build with SSE2
+ * WITH_SSSE3, Build with SSSE3
+ * WITH_SSE4, Build with SSE4
+ * WITH_PCLMULQDQ, Build with PCLMULQDQ
+ * AVX2_SLIDEHASH, Support AVX2 optimized slide_hash, using "-mavx2"
+ * AVX_CHUNKSET, Support AVX optimized chunkset, using "-mavx2"
+ * AVX2_COMPARE258, Support AVX2 optimized compare258, using "-mavx2"
+ * AVX2_ADLER32, Support AVX2-accelerated adler32, using "-mavx2"
+ * SSE42_CRC, Support SSE4.2 optimized CRC hash generation, using "-msse4"
+ * SSE42_COMPARE258, Support SSE4.2 optimized compare258, using "-msse4"
+ * SSSE3_ADLER32, Support SSSE3-accelerated adler32, using "-mssse3"
+ * PCLMUL_CRC, Support CRC hash generation using PCLMULQDQ, using "-mssse3 -msse4 -mpclmul"
+
+-- The following OPTIONAL packages have been found:
+
+ * OpenSSL
+
+-- The following features have been disabled:
+
+ * ZLIB_ENABLE_TESTS, Build test binaries
+ * ZLIB_DUAL_LINK, Dual link tests against system zlib
+ * WITH_FUZZERS, Build test/fuzz
+ * WITH_NATIVE_INSTRUCTIONS, Instruct the compiler to use the full instruction set on this host (gcc/clang -march=native)
+ * WITH_MAINTAINER_WARNINGS, Build with project maintainer warnings
+ * WITH_CODE_COVERAGE, Enable code coverage reporting
+ * WITH_INFLATE_STRICT, Build with strict inflate distance checking
+ * WITH_INFLATE_ALLOW_INVALID_DIST, Build with zero fill for inflate invalid distances
+ * INSTALL_UTILS, Copy minigzip and minideflate during install
+
+-- The following OPTIONAL packages have not been found:
+
+ * PkgConfig
+
+-- Enabled curl SSL
+-- curl version=[7.80.0]
+-- Could NOT find ZLIB (missing: ZLIB_LIBRARY ZLIB_INCLUDE_DIR) 
+-- Could NOT find LibSSH2 (missing: LIBSSH2_LIBRARY LIBSSH2_INCLUDE_DIR) 
+-- Enabled features: SSL IPv6 unixsockets AsynchDNS Largefile alt-svc HSTS NTLM HTTPS-proxy
+-- Enabled protocols: HTTP HTTPS
+-- Enabled SSL backends: OpenSSL
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mayadm/repos/wired-watering/maya/build
+> timeout 60m sudo -u mayadm ./ub-unix-build.sh
+Scanning dependencies of target gtest
+[  0%] Building CXX object extern/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+Scanning dependencies of target zlib
+[  0%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/adler32.c.o
+[  1%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/chunkset.c.o
+Scanning dependencies of target libcurl
+[  2%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/altsvc.c.o
+[  2%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/amigaos.c.o
+[  2%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/compare258.c.o
+[  3%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/compress.c.o
+[  3%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/crc32.c.o
+[  4%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/crc32_comb.c.o
+[  5%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/asyn-ares.c.o
+[  5%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/deflate.c.o
+[  5%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/asyn-thread.c.o
+[  6%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/deflate_fast.c.o
+[  6%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/deflate_medium.c.o
+[  6%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/deflate_quick.c.o
+[  7%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/base64.c.o
+[  7%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/bufref.c.o
+[  8%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/deflate_slow.c.o
+[  9%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/c-hyper.c.o
+[  9%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/conncache.c.o
+[  9%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/functable.c.o
+[  9%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/connect.c.o
+[ 10%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/infback.c.o
+[ 10%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/inffast.c.o
+[ 11%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/content_encoding.c.o
+[ 12%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/inflate.c.o
+[ 12%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/cookie.c.o
+[ 13%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_addrinfo.c.o
+[ 13%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/inftrees.c.o
+[ 14%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/insert_string.c.o
+[ 14%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_ctype.c.o
+[ 14%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/trees.c.o
+[ 15%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_des.c.o
+[ 15%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/uncompr.c.o
+[ 16%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/zutil.c.o
+[ 16%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_endian.c.o
+[ 17%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_fnmatch.c.o
+[ 17%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/x86.c.o
+[ 18%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/slide_avx.c.o
+[ 18%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_get_line.c.o
+[ 18%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/chunkset_avx.c.o
+[ 18%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_gethostname.c.o
+[ 19%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_gssapi.c.o
+[ 19%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_memrchr.c.o
+[ 20%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_multibyte.c.o
+[ 21%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/compare258_avx.c.o
+[ 21%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/adler32_avx.c.o
+[ 21%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_ntlm_core.c.o
+[ 22%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/insert_string_sse.c.o
+[ 22%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/compare258_sse.c.o
+[ 23%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_ntlm_wb.c.o
+[ 23%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_path.c.o
+[ 23%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_range.c.o
+[ 23%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/chunkset_sse.c.o
+[ 24%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_rtmp.c.o
+[ 25%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/slide_sse.c.o
+[ 25%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_sasl.c.o
+[ 26%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_sspi.c.o
+[ 26%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/curl_threads.c.o
+[ 26%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/adler32_ssse3.c.o
+[ 27%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/arch/x86/crc_folding.c.o
+[ 28%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/dict.c.o
+[ 28%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/doh.c.o
+[ 28%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/gzlib.c.o
+[ 29%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/dotdot.c.o
+[ 30%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/gzread.c.o
+[ 30%] Building C object _deps/zlib-build/CMakeFiles/zlib.dir/gzwrite.c.o
+[ 30%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/dynbuf.c.o
+[ 30%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/easy.c.o
+[ 31%] Linking C shared library libz.so
+[ 31%] Built target zlib
+[ 31%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/easyoptions.c.o
+[ 32%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/easygetopt.c.o
+[ 33%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/escape.c.o
+[ 33%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/file.c.o
+[ 34%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/fileinfo.c.o
+[ 34%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/formdata.c.o
+[ 35%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/ftp.c.o
+[ 35%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/ftplistparser.c.o
+[ 35%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/getenv.c.o
+[ 36%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/getinfo.c.o
+[ 36%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/gopher.c.o
+[ 37%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hash.c.o
+[ 37%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hmac.c.o
+[ 38%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostasyn.c.o
+[ 38%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostcheck.c.o
+[ 39%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostip.c.o
+[ 39%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostip4.c.o
+[ 39%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostip6.c.o
+[ 40%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hostsyn.c.o
+[ 40%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/hsts.c.o
+[ 41%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http.c.o
+[ 41%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http2.c.o
+[ 42%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_chunks.c.o
+[ 42%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_digest.c.o
+[ 43%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_negotiate.c.o
+[ 43%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_ntlm.c.o
+[ 43%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_proxy.c.o
+[ 44%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/http_aws_sigv4.c.o
+[ 45%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/if2ip.c.o
+[ 45%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/idn_win32.c.o
+[ 45%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/imap.c.o
+[ 46%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/inet_ntop.c.o
+[ 46%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/inet_pton.c.o
+[ 47%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/krb5.c.o
+[ 47%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/ldap.c.o
+[ 47%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/llist.c.o
+[ 48%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/md4.c.o
+[ 48%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/md5.c.o
+[ 49%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/memdebug.c.o
+[ 49%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/mime.c.o
+[ 50%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/mprintf.c.o
+[ 50%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/mqtt.c.o
+[ 51%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/multi.c.o
+[ 51%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/netrc.c.o
+[ 51%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/non-ascii.c.o
+[ 52%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/nonblock.c.o
+[ 52%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/openldap.c.o
+[ 53%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/parsedate.c.o
+[ 53%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/pingpong.c.o
+[ 54%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/pop3.c.o
+[ 54%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/progress.c.o
+[ 54%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/psl.c.o
+[ 55%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/rand.c.o
+[ 55%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/rename.c.o
+[ 56%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/rtsp.c.o
+[ 56%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/select.c.o
+[ 57%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/sendf.c.o
+[ 57%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/setopt.c.o
+[ 58%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/sha256.c.o
+[ 58%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/share.c.o
+[ 58%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/slist.c.o
+[ 59%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/smb.c.o
+[ 59%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/smtp.c.o
+[ 60%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/socketpair.c.o
+[ 61%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/socks_gssapi.c.o
+[ 61%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/socks.c.o
+[ 61%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/socks_sspi.c.o
+[ 62%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/speedcheck.c.o
+[ 62%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/splay.c.o
+[ 62%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/strcase.c.o
+[ 63%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/strdup.c.o
+[ 63%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/strerror.c.o
+[ 64%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/strtok.c.o
+[ 64%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/strtoofft.c.o
+[ 65%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/system_win32.c.o
+[ 65%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/telnet.c.o
+[ 66%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/tftp.c.o
+[ 66%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/transfer.c.o
+[ 66%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/timeval.c.o
+[ 67%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/url.c.o
+[ 67%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/urlapi.c.o
+[ 68%] Linking CXX shared library ../../../lib/libgtestd.so
+[ 69%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/version.c.o
+[ 69%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/version_win32.c.o
+[ 70%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/warnless.c.o
+[ 70%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/wildcard.c.o
+[ 71%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/x509asn1.c.o
+[ 71%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/cleartext.c.o
+[ 71%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/cram.c.o
+[ 71%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/digest_sspi.c.o
+[ 72%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/digest.c.o
+[ 73%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/gsasl.c.o
+[ 73%] Built target gtest
+[ 73%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/krb5_gssapi.c.o
+[ 74%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/krb5_sspi.c.o
+Scanning dependencies of target gmock
+[ 74%] Building CXX object extern/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
+[ 74%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/ntlm.c.o
+[ 75%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/ntlm_sspi.c.o
+[ 75%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/oauth2.c.o
+[ 76%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/spnego_sspi.c.o
+[ 76%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/spnego_gssapi.c.o
+[ 76%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vauth/vauth.c.o
+[ 77%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/bearssl.c.o
+Scanning dependencies of target gtest_main
+[ 77%] Building CXX object extern/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 77%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/gskit.c.o
+[ 78%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/gtls.c.o
+[ 78%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/keylog.c.o
+[ 78%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/mbedtls.c.o
+[ 79%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/mbedtls_threadlock.c.o
+[ 79%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/mesalink.c.o
+[ 79%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/openssl.c.o
+[ 80%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/nss.c.o
+[ 81%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/rustls.c.o
+[ 81%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/schannel.c.o
+[ 82%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/schannel_verify.c.o
+[ 82%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/sectransp.c.o
+[ 82%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/vtls.c.o
+[ 83%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vtls/wolfssl.c.o
+[ 83%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vquic/ngtcp2.c.o
+[ 84%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vquic/quiche.c.o
+[ 84%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vquic/vquic.c.o
+[ 85%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vssh/libssh.c.o
+[ 85%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vssh/libssh2.c.o
+[ 86%] Building C object _deps/curl-build/lib/CMakeFiles/libcurl.dir/vssh/wolfssh.c.o
+[ 86%] Linking C shared library libcurl-d.so
+[ 86%] Built target libcurl
+Scanning dependencies of target cpr
+[ 87%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/auth.cpp.o
+[ 87%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/bearer.cpp.o
+[ 87%] Linking CXX shared library ../../../lib/libgtest_maind.so
+[ 88%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/cookies.cpp.o
+[ 88%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/cprtypes.cpp.o
+[ 88%] Built target gtest_main
+[ 89%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/curl_container.cpp.o
+[ 89%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/curlholder.cpp.o
+[ 90%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/error.cpp.o
+[ 90%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/multipart.cpp.o
+[ 90%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/parameters.cpp.o
+[ 91%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/payload.cpp.o
+[ 91%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/proxies.cpp.o
+[ 92%] Linking CXX shared library ../../../lib/libgmockd.so
+[ 93%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/proxyauth.cpp.o
+[ 93%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/session.cpp.o
+[ 94%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/timeout.cpp.o
+[ 94%] Built target gmock
+[ 94%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/unix_socket.cpp.o
+[ 95%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/util.cpp.o
+Scanning dependencies of target gmock_main
+[ 95%] Building CXX object extern/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
+[ 95%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/response.cpp.o
+[ 95%] Building CXX object _deps/cpr-build/cpr/CMakeFiles/cpr.dir/redirect.cpp.o
+[ 96%] Linking CXX shared library libcpr.so
+[ 96%] Built target cpr
+Scanning dependencies of target Maya-Commander_lib
+Scanning dependencies of target Maya-Commander
+[ 96%] Building CXX object src/CMakeFiles/Maya-Commander_lib.dir/logger.cpp.o
+[ 97%] Building CXX object src/CMakeFiles/Maya-Commander_lib.dir/main.cpp.o
+[ 97%] Building CXX object src/CMakeFiles/Maya-Commander.dir/logger.cpp.o
+[ 98%] Linking CXX shared library ../../../lib/libgmock_maind.so
+[ 98%] Built target gmock_main
+[ 98%] Building CXX object src/CMakeFiles/Maya-Commander.dir/main.cpp.o
+[ 98%] Linking CXX static library libMaya-Commander_lib.a
+[ 98%] Built target Maya-Commander_lib
+Scanning dependencies of target TEST-Maya-Commander
+[ 99%] Building CXX object test/CMakeFiles/TEST-Maya-Commander.dir/example_test.cpp.o
+[ 99%] Building CXX object test/CMakeFiles/TEST-Maya-Commander.dir/test_main.cpp.o
+[100%] Linking CXX executable Maya-Commander
+[100%] Built target Maya-Commander
+[100%] Linking CXX executable TEST-Maya-Commander
+[100%] Built target TEST-Maya-Commander
+Build successfully finished! (incremental build)
+%%%%%%%%%%     [3.3] Skipped (clean build)
+%%%%%%%%%%     [3.4] Skipped (fallback clean build)
+%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
+elapsed time:   114s
+=====================================================================================================

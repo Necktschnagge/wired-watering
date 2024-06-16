@@ -1,0 +1,13 @@
+=====================================================================================================
+%%%%%%%%%%     [5] Cleaning git working directory...
+Auf Branch routine-4806724c-1655206166
+nichts zu committen, Arbeitsverzeichnis unverändert
+HEAD ist jetzt bei 4806724 Merge pull request #9 from Necktschnagge/fix-maya-routine
+Deleting local working branch...
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+error: Branch 'routine-standard-branch-739' nicht gefunden.
+Finished run 835!
+Di 14. Jun 13:29:47 CEST 2022
+%%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
+=====================================================================================================

@@ -1,0 +1,52 @@
+=====================================================================================================
+=====================================================================================================
+===     Starting with run #8332...
+=====================================================================================================
+=====================================================================================================
+> ls -la ../../..
+insgesamt 2216
+drwxrwxr-x 6 mayadm mayadm    4096 Mai 21 14:07 .
+drwxr-xr-x 6 mayadm mayadm    4096 Jul  4 19:42 ..
+drwxrwxr-x 4 mayadm mayadm    4096 Jun 19  2022 double
+drwxrwxr-x 3 mayadm mayadm 2244608 Jul  4 19:42 logs
+drwxrwxr-x 2 mayadm mayadm    4096 Mai 21 14:15 secrets
+drwxrwxr-x 6 mayadm mayadm    4096 Jun 12 14:30 wired-watering
+> ls -la ../../../secrets
+insgesamt 12
+drwxrwxr-x 2 mayadm mayadm 4096 Mai 21 14:15 .
+drwxrwxr-x 6 mayadm mayadm 4096 Mai 21 14:07 ..
+-rw-rw-r-- 1 mayadm mayadm  103 Mai 21 14:15 telegram_secrets.json
+> echo "8332" | sudo -u mayadm tee /home/mayadm/repos/logs/counter.info
+8332
+> date
+Di 4. Jul 20:23:17 CEST 2023
+> dig +short txt ch whoami.cloudflare @1.0.0.1
+"46.114.206.252"
+> ./maya_connect_internet_usb0.sh
+RTNETLINK answers: File exists
+Connecting to internet via usb0 tethering successful.
+=====================================================================================================
+%%%%%%%%%%     [1] Cleaning working directory...
+> sudo -u mayadm git branch
+  artifacts
+  main
+  maya-fallback
+* maya-productive
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git add -u; sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+Checking if there are uncommitted changes...
+> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --
+> sudo -u mayadm git reset --hard;
+HEAD ist jetzt bei 6e82c10b0 global_watering_enable = true (#109)
+%%%%%%%%%%     [1] Cleaning working directory   ...DONE!
+elapsed time:   1s
+=====================================================================================================

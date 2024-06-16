@@ -1,0 +1,108 @@
+=====================================================================================================
+%%%%%%%%%%     [3] Switching to new branch and building sources...
+
+
+%%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
+Determining working branch name...
+branch name:   routine-344cae8c-1654529496
+Switching to working branch...
+> sudo -u mayadm git switch -c routine-344cae8c-1654529496
+Zu neuem Branch 'routine-344cae8c-1654529496' gewechselt
+Updating git submodules...
+> timeout 240m sudo -u mayadm git submodule update --init --recursive
+successfully updated git submodules
+%%%%%%%%%%     [3.2] Creating project and building sources (incremental build)...
+> timeout 60m sudo -u mayadm ./up-unix-create-project.sh
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+[ 11%] Performing download step (git clone) for 'cpr-populate'
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+-- Had to git clone more than once:
+          3 times.
+CMake Error at cpr-subbuild/cpr-populate-prefix/tmp/cpr-populate-gitclone.cmake:31 (message):
+  Failed to clone repository: 'https://github.com/libcpr/cpr.git'
+
+
+make[2]: *** [CMakeFiles/cpr-populate.dir/build.make:92: cpr-populate-prefix/src/cpr-populate-stamp/cpr-populate-download] Fehler 1
+make[1]: *** [CMakeFiles/Makefile2:76: CMakeFiles/cpr-populate.dir/all] Fehler 2
+make: *** [Makefile:84: all] Fehler 2
+
+CMake Error at /usr/share/cmake-3.16/Modules/FetchContent.cmake:915 (message):
+  Build step for cpr failed: 2
+Call Stack (most recent call first):
+  /usr/share/cmake-3.16/Modules/FetchContent.cmake:1006 (__FetchContent_directPopulate)
+  /usr/share/cmake-3.16/Modules/FetchContent.cmake:1047 (FetchContent_Populate)
+  CMakeLists.txt:61 (FetchContent_MakeAvailable)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/mayadm/repos/wired-watering/maya/build/CMakeFiles/CMakeOutput.log".
+%%%%%%%%%%     [3.3] Creating project and building sources (clean build)...
+> timeout 60m sudo -u mayadm ./uc-unix-clean.sh
+> timeout 60m sudo -u mayadm ./up-unix-create-project.sh
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake is checking for CMAKE_SYSTEM_PROCESSOR containing arm to detect if running on Raspberry Pi:
+CMAKE_SYSTEM_PROCESSOR is: x86_64
+Running on Development or Test Platform.
+Running on LINUX.
+Running on UNIX.
+Scanning dependencies of target cpr-populate
+[ 11%] Creating directories for 'cpr-populate'
+[ 22%] Performing download step (git clone) for 'cpr-populate'
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+Klone nach 'cpr-src' …
+fatal: konnte nicht auf 'https://github.com/libcpr/cpr.git/' zugreifen: Could not resolve host: github.com
+-- Had to git clone more than once:
+          3 times.
+CMake Error at cpr-subbuild/cpr-populate-prefix/tmp/cpr-populate-gitclone.cmake:31 (message):
+  Failed to clone repository: 'https://github.com/libcpr/cpr.git'
+
+
+make[2]: *** [CMakeFiles/cpr-populate.dir/build.make:92: cpr-populate-prefix/src/cpr-populate-stamp/cpr-populate-download] Fehler 1
+make[1]: *** [CMakeFiles/Makefile2:76: CMakeFiles/cpr-populate.dir/all] Fehler 2
+make: *** [Makefile:84: all] Fehler 2
+
+CMake Error at /usr/share/cmake-3.16/Modules/FetchContent.cmake:915 (message):
+  Build step for cpr failed: 2
+Call Stack (most recent call first):
+  /usr/share/cmake-3.16/Modules/FetchContent.cmake:1006 (__FetchContent_directPopulate)
+  /usr/share/cmake-3.16/Modules/FetchContent.cmake:1047 (FetchContent_Populate)
+  CMakeLists.txt:61 (FetchContent_MakeAvailable)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/mayadm/repos/wired-watering/maya/build/CMakeFiles/CMakeOutput.log".
+%%%%%%%%%%     [3.4] Creating project and building sources (fallback clean build)...
+> sudo -u mayadm git add * && sudo -u mayadm git add -u && sudo -u mayadm git fetch origin && sudo -u mayadm git reset --hard origin/maya-fallback
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+**********************************************************
+************                                  ************
+************   FATAL! ALL BUILDS FAILED !!!   ************
+************                                  ************
+**********************************************************
+%%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
+=====================================================================================================

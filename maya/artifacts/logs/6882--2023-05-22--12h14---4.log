@@ -1,0 +1,43 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2023-05-22 12:14:51.227] [main] [info] Pinging Pump Server Mayson...
+[2023-05-22 12:14:51.301] [main] [info] Pump Server ping OK!
+[2023-05-22 12:14:51.301] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-05-22 12:14:51.301] [main] [info] Pinging all valve stations...
+[2023-05-22 12:14:54.582] [main] [info] James ping OK!
+[2023-05-22 12:14:54.582] [main] [error] Fatal: Lucas not available!
+[2023-05-22 12:14:54.582] [main] [info] Felix ping OK!
+[2023-05-22 12:14:54.582] [main] [info] Pinging all valve stations   ...DONE!
+[2023-05-22 12:14:54.582] [main] [info] Pinging Non-Existing Test Server...
+[2023-05-22 12:14:57.660] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-05-22 12:14:57.660] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-05-22 12:14:57.660] [main] [info] Pinging Pump Server Mayson...
+[2023-05-22 12:14:57.750] [main] [info] Pump Server ping OK!
+[2023-05-22 12:14:57.750] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2023-05-22 12:14:57.750] [main] [info] Pinging all valve stations...
+[2023-05-22 12:14:58.057] [main] [info] James ping OK!
+[2023-05-22 12:14:58.057] [main] [info] Lucas ping OK!
+[2023-05-22 12:14:58.057] [main] [info] Felix ping OK!
+[2023-05-22 12:14:58.057] [main] [info] Pinging all valve stations   ...DONE!
+[2023-05-22 12:14:58.057] [main] [info] Pinging Non-Existing Test Server...
+[2023-05-22 12:15:01.116] [main] [info] Pinging Non-Existing Test Server OK!
+[2023-05-22 12:15:01.116] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2023-05-22 12:15:01.116] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1684750501116065045
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1684750501
+minutes since epoch   :   28079175
+minute of day   :   615
+minute of hour   :   15
+hour of day   :   10
+[2023-05-22 12:15:01.116] [main] [info] Checking timestamp.txt...
+[2023-05-22 12:15:01.116] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28078670
+[2023-05-22 12:15:01.116] [main] [info] Checking timestamp.txt   ...DONE!
+[2023-05-22 12:15:01.116] [main] [info] It's not time for watering now!
+[2023-05-22 12:15:01.116] [main] [info] Minute Intraday:   615
+[2023-05-22 12:15:01.116] [main] [info] Days since Epoch:   19499
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   10s
+=====================================================================================================

@@ -1,0 +1,34 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git add "../artifacts/logs/1278-*.log" -f
+> sudo -u mayadm git add "../artifacts/logs/1277-*.log" -f
+> sudo -u mayadm git commit -m "logs at 2022-06-17--21h00"
+[artifacts 6655874] logs at 2022-06-17--21h00
+ 6 files changed, 253 insertions(+)
+ create mode 100644 maya/artifacts/logs/1277--2022-06-17--21h00---6.log
+ create mode 100644 maya/artifacts/logs/1278--2022-06-17--21h00---1.log
+ create mode 100644 maya/artifacts/logs/1278--2022-06-17--21h00---2.log
+ create mode 100644 maya/artifacts/logs/1278--2022-06-17--21h00---3.log
+ create mode 100644 maya/artifacts/logs/1278--2022-06-17--21h00---4.log
+ create mode 100644 maya/artifacts/logs/1278--2022-06-17--21h00---5.log
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   f3f2dc6..6655874  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################

@@ -1,0 +1,39 @@
+=====================================================================================================
+=====================================================================================================
+===     Starting with run #6763...
+=====================================================================================================
+=====================================================================================================
+> echo "6763" | sudo -u mayadm tee /home/mayadm/repos/logs/counter.info
+6763
+> date
+Mi 17. Mai 01:28:08 CEST 2023
+> dig +short txt ch whoami.cloudflare @1.0.0.1
+"46.114.207.74"
+> ./maya_connect_internet_usb0.sh
+RTNETLINK answers: File exists
+Connecting to internet via usb0 tethering successful.
+=====================================================================================================
+%%%%%%%%%%     [1] Cleaning working directory...
+> sudo -u mayadm git branch
+  artifacts
+  main
+  maya-fallback
+* maya-productive
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git add -u; sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+Checking if there are uncommitted changes...
+> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --
+> sudo -u mayadm git reset --hard;
+HEAD ist jetzt bei 6d9a42027 fix
+%%%%%%%%%%     [1] Cleaning working directory   ...DONE!
+elapsed time:   0s
+=====================================================================================================

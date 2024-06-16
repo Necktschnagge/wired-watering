@@ -1,0 +1,14 @@
+=====================================================================================================
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
+> sudo -u mayadm git checkout maya-productive
+Bereits auf 'maya-productive'
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   b6ffa22..86e02b7  universal-ESP8266-device -> origin/universal-ESP8266-device
+Bereits aktuell.
+Pulling maya-productive successfully!
+Last commit is:   7df90bc2a77cb08f8f3ca6351084ac1135af42e5
+%%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
+elapsed time:   1s
+=====================================================================================================

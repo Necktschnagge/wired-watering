@@ -1,0 +1,36 @@
+=====================================================================================================
+=====================================================================================================
+===     Starting with run #1379...
+=====================================================================================================
+=====================================================================================================
+> echo "1379" | sudo -u mayadm tee /home/mayadm/repos/logs/counter.info
+1379
+> date
+So 19. Jun 19:39:46 CEST 2022
+> ./maya_connect_internet_usb0.sh
+RTNETLINK answers: File exists
+Connecting to internet via usb0 tethering successful.
+=====================================================================================================
+%%%%%%%%%%     [1] Cleaning working directory...
+> sudo -u mayadm git branch
+  artifacts
+  main
+  maya-fallback
+* maya-productive
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+> sudo -u mayadm git add -u; sudo -u mayadm git add *
+> sudo -u mayadm git status
+Auf Branch maya-productive
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+Checking if there are uncommitted changes...
+> sudo -u mayadm git update-index --refresh && sudo -u mayadm git diff-index --quiet HEAD --
+> sudo -u mayadm git reset --hard;
+HEAD ist jetzt bei e1ada9e change counter.info path -- fix
+%%%%%%%%%%     [1] Cleaning working directory   ...DONE!
+=====================================================================================================
