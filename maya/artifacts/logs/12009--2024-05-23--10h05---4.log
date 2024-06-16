@@ -1,8 +1,0 @@
-=====================================================================================================
-%%%%%%%%%%     [4] Run the executable...
->Please note:  Even if all builds failed, the last built executable is still there and will be started!
-> sudo -u mayadm ./ur-unix-run.sh
-sudo: ./ur-unix-run.sh: Befehl nicht gefunden
-%%%%%%%%%%     [4] Run the executable   ...DONE!
-elapsed time:   0s
-=====================================================================================================
