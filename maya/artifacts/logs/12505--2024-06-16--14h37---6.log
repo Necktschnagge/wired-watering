@@ -1,0 +1,8 @@
+> sudo -u mayadm git checkout artifacts
+Zu Zweig »artifacts« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm rm ../artifacts/*.log
+rm: das Entfernen von '../artifacts/logs/*.log' ist nicht möglich: Datei oder Verzeichnis nicht gefunden
+> sudo -u mayadm cp ../../../logs ../artifacts/ --recursive
+> sudo -u mayadm cp -n ../../../logs ../../../entire_logs --recursive
+> sudo -u mayadm rm ../../../logs/*.log
