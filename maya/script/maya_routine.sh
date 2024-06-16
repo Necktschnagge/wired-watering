@@ -307,10 +307,10 @@ delete_branches=false
 		echo "> sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
 				sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		#sudo -u mayadm git add -u
-		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
-				sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
-		echo "> sudo -u mayadm git add \"../artifacts/logs/${previous_run_counter}-*.log\" -f"
-				sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
+		echo "> sudo -u mayadm git add \"../artifacts/logs/*.log\" -f"
+				sudo -u mayadm git add "../artifacts/logs/*.log" -f
+		#echo "> sudo -u mayadm git add \"../artifacts/logs/${previous_run_counter}-*.log\" -f"
+		#		sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
 		echo "> sudo -u mayadm git commit -m \"logs at ${log_timestamp}\""
 				sudo -u mayadm git commit -m "logs at ${log_timestamp}"
 		echo "> sudo -u mayadm git push"
