@@ -67,9 +67,9 @@ namespace CONF {
 		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "JAMES_VALVE_3_LABEL" };
 		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Tomaten" };
 
-		[[maybe_unused]] static constexpr uint8_t JAMES_1___{ RAW_VALVES::JAMES_VALVE_1 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_ERBSEN{ RAW_VALVES::JAMES_VALVE_1 };
 		[[maybe_unused]] static constexpr uint8_t JAMES_KARTOFFEL{ RAW_VALVES::JAMES_VALVE_2 };
-		[[maybe_unused]] static constexpr uint8_t JAMES_3___{ RAW_VALVES::JAMES_VALVE_3 };
+		[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ RAW_VALVES::JAMES_VALVE_3 };
 		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ RAW_VALVES::JAMES_VALVE_4 };
 
 		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "LUC-1" };
@@ -412,8 +412,8 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view Karotten() { return station.get_view(CONF::VALVE_MAP::JAMES_1___); }
-			valve_station::valve_view Gurken() { return station.get_view(CONF::VALVE_MAP::JAMES_3___); }
+			valve_station::valve_view Erbsen2024() { return station.get_view(CONF::VALVE_MAP::JAMES_ERBSEN); }
+			valve_station::valve_view Gurken2024() { return station.get_view(CONF::VALVE_MAP::JAMES_GURKEN); }
 			valve_station::valve_view Kartoffel2024() { return station.get_view(CONF::VALVE_MAP::JAMES_KARTOFFEL); }
 			valve_station::valve_view Tomate2024() { return station.get_view(CONF::VALVE_MAP::JAMES_TOMATE); }
 
@@ -440,9 +440,9 @@ namespace k1 {
 
 		public:
 
-			valve_station::valve_view leer_1() { return station.get_view(CONF::VALVE_MAP::LUCAS_1____); }
-			valve_station::valve_view Heidelbeeren() { return station.get_view(CONF::VALVE_MAP::LUCAS_HEIDELBEEREN); }
-			valve_station::valve_view Baer_BohnenFlieder() { return station.get_view(CONF::VALVE_MAP::LUCAS_BAER_BOHNEN_UND_FLIEDER); }
+			valve_station::valve_view Karotten2024() { return station.get_view(CONF::VALVE_MAP::LUCAS_1____); }
+			valve_station::valve_view Heidelbeeren2024() { return station.get_view(CONF::VALVE_MAP::LUCAS_HEIDELBEEREN); }
+			valve_station::valve_view BohnenFlieder2024() { return station.get_view(CONF::VALVE_MAP::LUCAS_BAER_BOHNEN_UND_FLIEDER); }
 
 
 			inline void turn(bool on) const {
@@ -508,7 +508,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	//pumpe an
 	send_mayson(0, 0, 0);
 
-	landscape.Lucas().Baer_BohnenFlieder().turn_on();
+	landscape.Felix().Eiben2024().turn_on();
 	std::this_thread::sleep_for(std::chrono::seconds(30));
 	send_mayson(1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(60));
@@ -517,29 +517,37 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
 
-	landscape.Lucas().Heidelbeeren().turn_on();
+	landscape.Lucas().Heidelbeeren2024().turn_on();
+	landscape.James().Erbsen2024().turn_on();
 
 	if (start_time.get_days_since_epoch() % 2) {
-		landscape.James().Gurken().turn_on();
+
+		landscape.James().Gurken2024().turn_on();
 		landscape.Felix().Eiben2024().turn_on();
 		landscape.James().Tomate2024().turn_on();
+		landscape.Lucas().Karotten2024().turn_on();
+
 	}
 	else {
+
 		landscape.Felix().MaraAlt2024().turn_on();
-		landscape.Lucas().Baer_BohnenFlieder().turn_on();
+		landscape.Lucas().BohnenFlieder2024().turn_on();
 		landscape.James().Kartoffel2024().turn_on();
+		
 	}
 
 	wait_for(30 * 60);
 
-	//landscape.Felix().Eiben2024().turn_on();
-	//landscape.Felix().MaraAlt2024().turn_on();
-	//landscape.James().Kartoffel2024().turn_on();
-	//landscape.James().Tomate2024().turn_on();
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
 
-	
-	//landscape.James().Kartoffel2024().turn_off();
-	//wait_for(15 * 60);
+
+	landscape.Felix().Eiben2024().turn_on();
+	landscape.James().Erbsen2024().turn_on();
+
+	wait_for(15 * 60);
+
 
 
 
@@ -557,7 +565,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 
 	// let capacitor run dry:
-	landscape.Lucas().Baer_BohnenFlieder().turn_on();
+	landscape.Felix().Eiben2024().turn_on();
 	wait_for(60 * 2);
 
 	landscape.Felix().turn_off();
