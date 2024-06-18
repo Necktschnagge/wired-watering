@@ -62,9 +62,9 @@ namespace CONF {
 		[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ RAW_VALVES::FELIX_VALVE_1 };
 		[[maybe_unused]] static constexpr uint8_t FELIX_MARA{ RAW_VALVES::FELIX_VALVE_2 };
 
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "JAMES_VALVE_1_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_1_LABEL{ "Erbsen" };
 		[[maybe_unused]] inline static const std::string JAMES_VALVE_2_LABEL{ "Kartoffeln" };
-		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "JAMES_VALVE_3_LABEL" };
+		[[maybe_unused]] inline static const std::string JAMES_VALVE_3_LABEL{ "Gurken" };
 		[[maybe_unused]] inline static const std::string JAMES_VALVE_4_LABEL{ "Tomaten" };
 
 		[[maybe_unused]] static constexpr uint8_t JAMES_ERBSEN{ RAW_VALVES::JAMES_VALVE_1 };
@@ -72,9 +72,9 @@ namespace CONF {
 		[[maybe_unused]] static constexpr uint8_t JAMES_GURKEN{ RAW_VALVES::JAMES_VALVE_3 };
 		[[maybe_unused]] static constexpr uint8_t JAMES_TOMATE{ RAW_VALVES::JAMES_VALVE_4 };
 
-		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "LUC-1" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_1_LABEL{ "Karotten" };
 		[[maybe_unused]] inline static const std::string LUCAS_VALVE_2_LABEL{ "Heidelbeeren" };
-		[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Baer-Bohnen-Flieder" };
+		[[maybe_unused]] inline static const std::string LUCAS_VALVE_3_LABEL{ "Bohnen-Flieder" };
 
 		[[maybe_unused]] static constexpr uint8_t LUCAS_1____{ RAW_VALVES::LUCAS_VALVE_1 };
 		[[maybe_unused]] static constexpr uint8_t LUCAS_HEIDELBEEREN{ RAW_VALVES::LUCAS_VALVE_2 };
