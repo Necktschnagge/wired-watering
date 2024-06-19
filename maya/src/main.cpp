@@ -928,10 +928,12 @@ int main(int argc, char** argv) {
 	}
 
 	*/
-	bool devices_available = ping_checker::check_ping_devices();
+	const bool devices_available = ping_checker::check_ping_devices();
 
-	(void)devices_available;
-
+	if (!devices_available) {
+		tel.value().sendMessage(tel_config.value().main_chat_id, "Devices ping error!");
+	}
+	
 	standard_logger()->info("Creating Landscape...");
 
 	k1::landscape& garden = k1::landscape::instance();
