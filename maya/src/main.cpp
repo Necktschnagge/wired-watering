@@ -533,7 +533,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		landscape.Felix().MaraAlt2024().turn_on();
 		landscape.Lucas().BohnenFlieder2024().turn_on();
 		landscape.James().Kartoffel2024().turn_on();
-		
+
 	}
 
 	wait_for(30 * 60);
@@ -551,7 +551,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 
 
-	
+
 	// END OF WATERING
 
 	landscape.Felix().turn_off();
@@ -857,7 +857,7 @@ bool check_if_in_watering_time_window(const time_helper& start_time, int64_t pre
 	if (
 		(start_time.get_minute_intra_day() > (5 - 2) * 60 + 30) // 5:30 // -2 == UTC 
 		&& (start_time.get_minute_intra_day() < (12 - 2) * 60 + 30) // 12:30
-		&& (previous_timestamp +10 * 60 + 1 < start_time.get_minutes_since_epoch()) // 10 hours gone since last watering
+		&& (previous_timestamp + 10 * 60 + 1 < start_time.get_minutes_since_epoch()) // 10 hours gone since last watering
 		)
 	{
 		// save last timestamp:
@@ -914,26 +914,21 @@ int main(int argc, char** argv) {
 	std::optional<maya::telegram_config> tel_config = load_telegram_config();
 
 	std::optional<telegram_interface> tel;
+
 	if (tel_config) {
 		tel.emplace(tel_config.value().bot_secret);
 	}
 
-	/*
-	if (tel) {
+	const bool devices_available = ping_checker::check_ping_devices();
+
+	if (!devices_available) {
 		try {
-			tel.value().sendMessage(tel_config.value().main_chat_id, "Hello", true);
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Devices ping error!");
 		}
 		catch (...) {
 		}
 	}
 
-	*/
-	const bool devices_available = ping_checker::check_ping_devices();
-
-	if (!devices_available) {
-		tel.value().sendMessage(tel_config.value().main_chat_id, "Devices ping error!");
-	}
-	
 	standard_logger()->info("Creating Landscape...");
 
 	k1::landscape& garden = k1::landscape::instance();
@@ -951,7 +946,7 @@ int main(int argc, char** argv) {
 
 	if (START_WATERING) {
 		try {
-			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Starting watering now\\!");
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Start watering now\\!");
 		}
 		catch (...)
 		{
