@@ -4,8 +4,6 @@
 Bereits auf 'maya-productive'
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
 > sudo -u mayadm git pull
-Von https://github.com/Necktschnagge/wired-watering
- * [neuer Branch]        maya-enhance -> origin/maya-enhance
 Bereits aktuell.
 Pulling maya-productive successfully!
 Last commit is:   af87c1ba4599d409b83cf32aa55a0f47caa0c2cb
