@@ -2,13 +2,13 @@
 %%%%%%%%%%     [6] Uploading logs and go sleeping...
 > sudo -u mayadm git checkout artifacts
 Bereits auf 'artifacts'
-D	maya/artifacts/logs/12942--2024-06-29--07h48---7.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---1.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---2.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---3.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---4.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---5.log
-D	maya/artifacts/logs/12943--2024-06-29--08h29---6.log
+D	maya/artifacts/logs/12943--2024-06-29--08h29---7.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---1.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---2.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---3.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---4.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---5.log
+D	maya/artifacts/logs/12944--2024-06-29--09h10---6.log
 Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
 > sudo -u mayadm git pull
 Bereits aktuell.
@@ -16,20 +16,20 @@ Bereits aktuell.
 Bereits aktuell.
 > sudo -u mayadm git add "../artifacts/logs/*.log" -f
 > sudo -u mayadm git add -u
-> sudo -u mayadm git commit -m "logs at 2024-06-29--09h10"
-[artifacts 07e91c018] logs at 2024-06-29--09h10
- 8 files changed, 90 insertions(+), 89 deletions(-)
- delete mode 100644 maya/artifacts/logs/12943--2024-06-29--08h29---4.log
- rename maya/artifacts/logs/{12942--2024-06-29--07h48---7.log => 12943--2024-06-29--08h29---7.log} (62%)
- rename maya/artifacts/logs/{12943--2024-06-29--08h29---1.log => 12944--2024-06-29--09h10---1.log} (87%)
- rename maya/artifacts/logs/{12943--2024-06-29--08h29---2.log => 12944--2024-06-29--09h10---2.log} (97%)
- rename maya/artifacts/logs/{12943--2024-06-29--08h29---3.log => 12944--2024-06-29--09h10---3.log} (95%)
- create mode 100644 maya/artifacts/logs/12944--2024-06-29--09h10---4.log
- rename maya/artifacts/logs/{12943--2024-06-29--08h29---5.log => 12944--2024-06-29--09h10---5.log} (78%)
- rename maya/artifacts/logs/{12943--2024-06-29--08h29---6.log => 12944--2024-06-29--09h10---6.log} (100%)
+> sudo -u mayadm git commit -m "logs at 2024-06-29--09h50"
+[artifacts 9ccaca7df] logs at 2024-06-29--09h50
+ 8 files changed, 85 insertions(+), 85 deletions(-)
+ delete mode 100644 maya/artifacts/logs/12944--2024-06-29--09h10---4.log
+ rename maya/artifacts/logs/{12943--2024-06-29--08h29---7.log => 12944--2024-06-29--09h10---7.log} (62%)
+ rename maya/artifacts/logs/{12944--2024-06-29--09h10---1.log => 12945--2024-06-29--09h50---1.log} (90%)
+ rename maya/artifacts/logs/{12944--2024-06-29--09h10---2.log => 12945--2024-06-29--09h50---2.log} (100%)
+ rename maya/artifacts/logs/{12944--2024-06-29--09h10---3.log => 12945--2024-06-29--09h50---3.log} (96%)
+ create mode 100644 maya/artifacts/logs/12945--2024-06-29--09h50---4.log
+ rename maya/artifacts/logs/{12944--2024-06-29--09h10---5.log => 12945--2024-06-29--09h50---5.log} (78%)
+ rename maya/artifacts/logs/{12944--2024-06-29--09h10---6.log => 12945--2024-06-29--09h50---6.log} (100%)
 > sudo -u mayadm git push
 To https://github.com/Necktschnagge/wired-watering
-   8dc2104fc..07e91c018  artifacts -> artifacts
+   07e91c018..9ccaca7df  artifacts -> artifacts
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
@@ -51,7 +51,7 @@ Everything up-to-date
 ##############################################################
 > rtcwake -m mem -s 2400
 rtcwake: RTC wird als UTC interpretiert …
-rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sat Jun 29 07:50:39 2024
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sat Jun 29 08:31:22 2024
 ##############################################################
 #######                                                #######
 #######            just waked up from sleep            #######
