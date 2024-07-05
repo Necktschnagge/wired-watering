@@ -4,16 +4,16 @@ mkdir: das Verzeichnis »../../../entire_logs“ kann nicht angelegt werden: Die
 mkdir: das Verzeichnis »../../../logs“ kann nicht angelegt werden: Die Datei existiert bereits
 =====================================================================================================
 =====================================================================================================
-===     Starting with run #13032...
+===     Starting with run #13033...
 =====================================================================================================
 =====================================================================================================
 > ls -la ../../..
 insgesamt 2224
 drwxrwxr-x 7 mayadm mayadm    4096 Jun 16 10:30 .
-drwxr-xr-x 6 mayadm mayadm    4096 Jul  5 00:47 ..
+drwxr-xr-x 6 mayadm mayadm    4096 Jul  5 01:28 ..
 drwxrwxr-x 4 mayadm mayadm    4096 Jun 19  2022 double
 drwxrwxr-x 3 mayadm mayadm    4096 Jun 16 10:32 entire_logs
-drwxrwxr-x 3 mayadm mayadm 2248704 Jul  5 01:28 logs
+drwxrwxr-x 3 mayadm mayadm 2248704 Jul  5 02:08 logs
 drwxrwxr-x 2 mayadm mayadm    4096 Mai 21  2023 secrets
 drwxrwxr-x 6 mayadm mayadm    4096 Jun 16 14:02 wired-watering
 > ls -la ../../../secrets
@@ -21,15 +21,14 @@ insgesamt 12
 drwxrwxr-x 2 mayadm mayadm 4096 Mai 21  2023 .
 drwxrwxr-x 7 mayadm mayadm 4096 Jun 16 10:30 ..
 -rw-rw-r-- 1 mayadm mayadm  103 Mai 21  2023 telegram_secrets.json
-> echo "13032" | sudo -u mayadm tee ../../../logs/counter.info
-13032
+> echo "13033" | sudo -u mayadm tee ../../../logs/counter.info
+13033
 > date
-Fr 5. Jul 01:28:17 CEST 2024
+Fr 5. Jul 02:08:46 CEST 2024
 > dig +short txt ch whoami.cloudflare @1.0.0.1
 "176.1.130.150"
 > ./maya_connect_internet_usb0.sh
-RTNETLINK answers: File exists
-Connecting to internet via usb0 tethering successful.
+Connecting to internet via usb0 tethering FAILED
 =====================================================================================================
 %%%%%%%%%%     [1] Cleaning working directory...
 > sudo -u mayadm git branch
