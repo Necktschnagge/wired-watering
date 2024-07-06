@@ -4,10 +4,10 @@
 
 %%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
 Determining working branch name...
-branch name:   routine-a7b9ef7e-1720264643
+branch name:   routine-a7b9ef7e-1720267078
 Switching to working branch...
-> sudo -u mayadm git switch -c routine-a7b9ef7e-1720264643
-Zu neuem Branch 'routine-a7b9ef7e-1720264643' gewechselt
+> sudo -u mayadm git switch -c routine-a7b9ef7e-1720267078
+Zu neuem Branch 'routine-a7b9ef7e-1720267078' gewechselt
 Updating git submodules...
 > timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
 successfully updated git submodules
@@ -106,12 +106,12 @@ Running on UNIX.
 [ 87%] Built target gtest_main
 [ 88%] Built target gmock_main
 [ 97%] Built target cpr
-[ 98%] Built target Maya-Commander_lib
 [ 99%] Built target Maya-Commander
+[ 99%] Built target Maya-Commander_lib
 [100%] Built target TEST-Maya-Commander
 Build successfully finished! (incremental build)
 %%%%%%%%%%     [3.3] Skipped (clean build)
 %%%%%%%%%%     [3.4] Skipped (fallback clean build)
 %%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
-elapsed time:   2s
+elapsed time:   3s
 =====================================================================================================
