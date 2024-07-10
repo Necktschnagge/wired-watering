@@ -4,6 +4,9 @@
 Bereits auf 'maya-productive'
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
 > sudo -u mayadm git pull
+Die Datenbank des Repositories wird für eine optimale Performance im
+Hintergrund komprimiert.
+Siehe "git help gc" für manuelles Aufräumen.
 Bereits aktuell.
 Pulling maya-productive successfully!
 Last commit is:   5c909ddea839bb9c8da9d6532298eee36645bc8f
