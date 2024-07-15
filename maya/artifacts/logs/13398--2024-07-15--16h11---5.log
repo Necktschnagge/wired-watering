@@ -3,7 +3,7 @@
 > sudo -u mayadm git add -u
 > sudo -u mayadm git add *
 > sudo -u mayadm git status
-Auf Branch routine-5c909dde-1721050283
+Auf Branch routine-5c909dde-1721052720
 nichts zu committen, Arbeitsverzeichnis unverändert
 > sudo -u mayadm git reset --hard
 HEAD ist jetzt bei 5c909ddea Revert "disable watering"
@@ -11,10 +11,10 @@ Deleting local working branch...
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
-> sudo -u mayadm git branch -D routine-5c909dde-1721050283
-Branch routine-5c909dde-1721050283 entfernt (war 5c909ddea).
-Finished run 13397!
-Mo 15. Jul 15:31:38 CEST 2024
+> sudo -u mayadm git branch -D routine-5c909dde-1721052720
+Branch routine-5c909dde-1721052720 entfernt (war 5c909ddea).
+Finished run 13398!
+Mo 15. Jul 16:12:06 CEST 2024
 %%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
 elapsed time:   0s
 =====================================================================================================
