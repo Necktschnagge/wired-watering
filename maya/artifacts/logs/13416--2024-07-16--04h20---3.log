@@ -4,10 +4,10 @@
 
 %%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
 Determining working branch name...
-branch name:   routine-5c909dde-1721094030
+branch name:   routine-5c909dde-1721096459
 Switching to working branch...
-> sudo -u mayadm git switch -c routine-5c909dde-1721094030
-Zu neuem Branch 'routine-5c909dde-1721094030' gewechselt
+> sudo -u mayadm git switch -c routine-5c909dde-1721096459
+Zu neuem Branch 'routine-5c909dde-1721096459' gewechselt
 Updating git submodules...
 > timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
 successfully updated git submodules
@@ -101,8 +101,8 @@ Running on UNIX.
 > timeout 60m sudo -u mayadm ./ub-unix-build.sh
 [ 16%] Built target zlib
 [ 17%] Built target gtest
+[ 17%] Built target gtest_main
 [ 18%] Built target gmock
-[ 18%] Built target gtest_main
 [ 19%] Built target gmock_main
 [ 88%] Built target libcurl
 [ 97%] Built target cpr
