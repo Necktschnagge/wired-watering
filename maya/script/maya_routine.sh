@@ -1,18 +1,17 @@
 #!/bin/bash
-#
-#
+
+
+
 #  TODOS
 #  files for commit: shell script, run_counter file, 6 log of prev run and 1..5 of current run. (?)
 #			-->>  check why uploading to artifacts branch failed
 #
-#
-# try to remove ; \ where not needed
 
 
 ############################################### check root ############################################################
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo >&2 "Error: script not running as root or with sudo! Exiting..."
+  echo >&2 "Error: script not running as root! Try sudo! Exiting..."
   exit 1
 fi
 
@@ -26,9 +25,10 @@ current_sleep_time_s=2400		#standard: 900 (15min), 1200 (20min), 1800 (30min), 2
 debug_step_sleep_s=0			#productive: 0 (no sleeps), debug: 15 (make log readable while running)
 
 logs_path="../../../logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
+entire_logs_path="../../../entire_logs" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
 #logs_path="../../../logs/maya/artifacts/logs/" ##### take a dir outside the repository (second clone to update logs to artifacts branch....)
-user_home="/home/mayadm"
-run_counter_file_path="${user_home}/repos/logs/counter.info"
+repository_path="~/wired-watering"
+run_counter_file_path="${logs_path}/counter.info"
 
 run_counter=0
 
@@ -43,11 +43,17 @@ previous_run_counter=$run_counter
 let run_counter++
 log_timestamp=$(date +%Y-%m-%d--%Hh%M)
 log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
+log_file_name_without_path="${run_counter}--${log_timestamp}--"
 
 ############################################### run steps  ############################################################
 
 
 	(
+		echo "> sudo -u mayadm mkdir ${entire_logs_path}"
+				sudo -u mayadm mkdir ${entire_logs_path}
+		echo "> sudo -u mayadm mkdir ${logs_path}"
+				sudo -u mayadm mkdir ${logs_path}
+		
 		echo "====================================================================================================="
 		echo "====================================================================================================="
 		echo "===     Starting with run #${run_counter}..."
@@ -229,16 +235,6 @@ log_file_name_prefix="${logs_path}/${run_counter}--${log_timestamp}--"
 		start_time=$(date +%s)
 		sleep ${debug_step_sleep_s}s
 
-#this does not work due to locality of variables:
-
-###		if [ "$build_success" = true ] ; then
-###			#######add timeout here when sleep mode implies valve shutdown.
-###			echo "> sudo -u mayadm ./ur-unix-run.sh"; \
-###					sudo -u mayadm ./ur-unix-run.sh 
-###			########use timeout XXXs ./run # 4 hours or so...
-###		else
-###			echo "FATAL! BUILD FAILED IN PREVIOUS STEP. WILL NOT EXECUTE!"
-###		fi
 		echo ">Please note:  Even if all builds failed, the last built executable is still there and will be started!"
 		echo "> sudo -u mayadm ./ur-unix-run.sh"
 				sudo -u mayadm ./ur-unix-run.sh
@@ -286,10 +282,27 @@ delete_branches=false
 		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
 	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-5.log
-	
-	echo "> sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive"
-			sudo -u mayadm cp -n ${logs_path} ../artifacts/ --recursive # -n do not copy if file already present
-			# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
+
+	(
+		echo "> sudo -u mayadm git checkout artifacts"
+				sudo -u mayadm git checkout artifacts
+
+		echo "> sudo -u mayadm rm ../artifacts/*.log"
+				sudo -u mayadm rm ../artifacts/logs/*.log
+
+		echo "> sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive"
+				sudo -u mayadm cp ${logs_path} ../artifacts/ --recursive
+				# if you copy inside a tee-tracked block, in most cases an empty file wil be copied, commited and the changes will not be copied on the next run.
+
+		echo "> sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive" # -n do not copy if file already present
+				sudo -u mayadm cp -n ${logs_path} ${entire_logs_path} --recursive
+
+		echo "> sudo -u mayadm rm ${logs_path}/*.log"
+				sudo -u mayadm rm ${logs_path}/*.log
+	) 2>&1 | sudo -u mayadm tee  ../artifacts/${log_file_name_without_path}-6.log
+
+	sudo -u mayadm mv ../artifacts/${log_file_name_without_path}-6.log ../artifacts/logs/${log_file_name_without_path}-6.log
+
 	(
 		echo "====================================================================================================="
 		echo "%%%%%%%%%%     [6] Uploading logs and go sleeping..."
@@ -302,10 +315,12 @@ delete_branches=false
 		echo "> sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}"
 				sudo -u mayadm git merge ${BRANCH_TO_LOAD_AS_WORKING_BRANCH}
 		#sudo -u mayadm git add -u
-		echo "> sudo -u mayadm git add \"../artifacts/logs/${run_counter}-*.log\" -f"
-				sudo -u mayadm git add "../artifacts/logs/${run_counter}-*.log" -f
-		echo "> sudo -u mayadm git add \"../artifacts/logs/${previous_run_counter}-*.log\" -f"
-				sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
+		echo "> sudo -u mayadm git add \"../artifacts/logs/*.log\" -f"
+				sudo -u mayadm git add "../artifacts/logs/*.log" -f
+		echo "> sudo -u mayadm git add -u"
+				sudo -u mayadm git add -u
+		#echo "> sudo -u mayadm git add \"../artifacts/logs/${previous_run_counter}-*.log\" -f"
+		#		sudo -u mayadm git add "../artifacts/logs/${previous_run_counter}-*.log" -f
 		echo "> sudo -u mayadm git commit -m \"logs at ${log_timestamp}\""
 				sudo -u mayadm git commit -m "logs at ${log_timestamp}"
 		echo "> sudo -u mayadm git push"
@@ -343,6 +358,6 @@ delete_branches=false
 		end_time=$(date +%s)
 		echo "elapsed time:   $(( end_time - start_time ))s"
 		echo "====================================================================================================="
-	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-6.log
+	) 2>&1 | sudo -u mayadm tee ${log_file_name_prefix}-7.log
 
 
