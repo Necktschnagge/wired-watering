@@ -969,5 +969,13 @@ int main(int argc, char** argv) {
 		}
 	}
 
+	send_mayson(1, 1, 2);
+	garden.James().Gurken2024().turn_on();
+	std::this_thread::sleep_for(std::chrono::seconds(60*80));
+
+	garden.James().Gurken2024().turn_off();
+
+	send_mayson(0, 1, 2);
+
 	return 0;
 }
