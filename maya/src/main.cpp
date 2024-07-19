@@ -527,16 +527,38 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		landscape.James().Tomate2024().turn_on();
 		landscape.Lucas().Karotten2024().turn_on();
 
+		wait_for(30 * 60);
+
+		landscape.James().turn_off();
+		landscape.Lucas().turn_off();
+		landscape.Felix().turn_off();
+
+		landscape.James().Gurken2024().turn_on();
+		landscape.Lucas().Karotten2024().turn_on();
+		landscape.Lucas().Heidelbeeren2024().turn_on();
+
+		wait_for(20 * 60);
+
+		landscape.Lucas().Karotten2024().turn_off();
+
+		wait_for(40 * 60);
 	}
 	else {
 
 		landscape.Felix().MaraAlt2024().turn_on();
 		landscape.Lucas().BohnenFlieder2024().turn_on();
 		landscape.James().Kartoffel2024().turn_on();
+		wait_for(30 * 60);
+
+		landscape.Felix().turn_off();
+		landscape.James().turn_off();
+		landscape.Lucas().turn_off();
+
+		landscape.Lucas().BohnenFlieder2024().turn_on();
+
+		wait_for(15 * 60);
 
 	}
-
-	wait_for(30 * 60);
 
 	landscape.Felix().turn_off();
 	landscape.James().turn_off();
