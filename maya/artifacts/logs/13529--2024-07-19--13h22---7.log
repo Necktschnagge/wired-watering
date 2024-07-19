@@ -1,0 +1,65 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Bereits auf 'artifacts'
+D	maya/artifacts/logs/13527--2024-07-19--10h41---7.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---1.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---2.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---3.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---4.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---5.log
+D	maya/artifacts/logs/13528--2024-07-19--11h21---6.log
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Merge made by the 'recursive' strategy.
+ maya/src/main.cpp | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
+> sudo -u mayadm git add "../artifacts/logs/*.log" -f
+> sudo -u mayadm git add -u
+> sudo -u mayadm git commit -m "logs at 2024-07-19--13h22"
+[artifacts 563b8b520] logs at 2024-07-19--13h22
+ 9 files changed, 155 insertions(+), 182 deletions(-)
+ delete mode 100644 maya/artifacts/logs/13527--2024-07-19--10h41---7.log
+ delete mode 100644 maya/artifacts/logs/13528--2024-07-19--11h21---4.log
+ create mode 100644 maya/artifacts/logs/13528--2024-07-19--11h21---7.log
+ rename maya/artifacts/logs/{13528--2024-07-19--11h21---1.log => 13529--2024-07-19--13h22---1.log} (79%)
+ rename maya/artifacts/logs/{13528--2024-07-19--11h21---2.log => 13529--2024-07-19--13h22---2.log} (58%)
+ rename maya/artifacts/logs/{13528--2024-07-19--11h21---3.log => 13529--2024-07-19--13h22---3.log} (95%)
+ create mode 100644 maya/artifacts/logs/13529--2024-07-19--13h22---4.log
+ rename maya/artifacts/logs/{13528--2024-07-19--11h21---5.log => 13529--2024-07-19--13h22---5.log} (72%)
+ rename maya/artifacts/logs/{13528--2024-07-19--11h21---6.log => 13529--2024-07-19--13h22---6.log} (100%)
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   c70ff8fc5..563b8b520  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+> sudo -u mayadm git push
+Everything up-to-date
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Fri Jul 19 12:03:34 2024
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   2417s
+=====================================================================================================
