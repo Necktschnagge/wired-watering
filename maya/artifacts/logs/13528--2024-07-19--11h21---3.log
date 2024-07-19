@@ -4,10 +4,10 @@
 
 %%%%%%%%%%     [3.1] Switching to new branch and updating git submodules...
 Determining working branch name...
-branch name:   routine-5c909dde-1721378465
+branch name:   routine-594b8444-1721380896
 Switching to working branch...
-> sudo -u mayadm git switch -c routine-5c909dde-1721378465
-Zu neuem Branch 'routine-5c909dde-1721378465' gewechselt
+> sudo -u mayadm git switch -c routine-594b8444-1721380896
+Zu neuem Branch 'routine-594b8444-1721380896' gewechselt
 Updating git submodules...
 > timeout 240m sudo -u mayadm git submodule update --init --recursive --depth 1
 successfully updated git submodules
@@ -102,16 +102,23 @@ Running on UNIX.
 [ 16%] Built target zlib
 [ 17%] Built target gtest
 [ 18%] Built target gmock
-[ 18%] Built target gtest_main
 [ 87%] Built target libcurl
+[ 87%] Built target gtest_main
 [ 88%] Built target gmock_main
 [ 97%] Built target cpr
+Scanning dependencies of target Maya-Commander_lib
+Scanning dependencies of target Maya-Commander
+[ 98%] Building CXX object src/CMakeFiles/Maya-Commander.dir/main.cpp.o
+[ 98%] Building CXX object src/CMakeFiles/Maya-Commander_lib.dir/main.cpp.o
+[ 99%] Linking CXX static library libMaya-Commander_lib.a
+[ 99%] Linking CXX executable Maya-Commander
 [ 99%] Built target Maya-Commander_lib
-[ 99%] Built target Maya-Commander
+[ 99%] Linking CXX executable TEST-Maya-Commander
 [100%] Built target TEST-Maya-Commander
+[100%] Built target Maya-Commander
 Build successfully finished! (incremental build)
 %%%%%%%%%%     [3.3] Skipped (clean build)
 %%%%%%%%%%     [3.4] Skipped (fallback clean build)
 %%%%%%%%%%     [3] Switching to new branch and building sources   ...DONE!
-elapsed time:   2s
+elapsed time:   37s
 =====================================================================================================
