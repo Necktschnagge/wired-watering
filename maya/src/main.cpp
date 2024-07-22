@@ -56,8 +56,8 @@ namespace CONF {
 	namespace VALVE_MAP {
 
 		// valve patch infos:
-		[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Groﬂer Klee" };
-		[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Eiben  Klee" };
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_1_LABEL{ "Klee Feld" };
+		[[maybe_unused]] inline static const std::string FELIX_VALVE_2_LABEL{ "Eiben Klee" };
 
 		[[maybe_unused]] static constexpr uint8_t FELIX_KLEE{ RAW_VALVES::FELIX_VALVE_1 };
 		[[maybe_unused]] static constexpr uint8_t FELIX_EIBEN{ RAW_VALVES::FELIX_VALVE_2 };
