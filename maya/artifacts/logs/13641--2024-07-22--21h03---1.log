@@ -4,16 +4,16 @@ mkdir: das Verzeichnis »../../../entire_logs“ kann nicht angelegt werden: Die
 mkdir: das Verzeichnis »../../../logs“ kann nicht angelegt werden: Die Datei existiert bereits
 =====================================================================================================
 =====================================================================================================
-===     Starting with run #13640...
+===     Starting with run #13641...
 =====================================================================================================
 =====================================================================================================
 > ls -la ../../..
 insgesamt 2224
 drwxrwxr-x 7 mayadm mayadm    4096 Jun 16 10:30 .
-drwxr-xr-x 6 mayadm mayadm    4096 Jul 22 19:42 ..
+drwxr-xr-x 6 mayadm mayadm    4096 Jul 22 20:23 ..
 drwxrwxr-x 4 mayadm mayadm    4096 Jun 19  2022 double
 drwxrwxr-x 3 mayadm mayadm    4096 Jun 16 10:32 entire_logs
-drwxrwxr-x 3 mayadm mayadm 2248704 Jul 22 20:22 logs
+drwxrwxr-x 3 mayadm mayadm 2248704 Jul 22 21:03 logs
 drwxrwxr-x 2 mayadm mayadm    4096 Mai 21  2023 secrets
 drwxrwxr-x 6 mayadm mayadm    4096 Jun 16 14:02 wired-watering
 > ls -la ../../../secrets
@@ -21,10 +21,10 @@ insgesamt 12
 drwxrwxr-x 2 mayadm mayadm 4096 Mai 21  2023 .
 drwxrwxr-x 7 mayadm mayadm 4096 Jun 16 10:30 ..
 -rw-rw-r-- 1 mayadm mayadm  103 Mai 21  2023 telegram_secrets.json
-> echo "13640" | sudo -u mayadm tee ../../../logs/counter.info
-13640
+> echo "13641" | sudo -u mayadm tee ../../../logs/counter.info
+13641
 > date
-Mo 22. Jul 20:22:53 CEST 2024
+Mo 22. Jul 21:03:23 CEST 2024
 > dig +short txt ch whoami.cloudflare @1.0.0.1
 "176.6.136.85"
 > ./maya_connect_internet_usb0.sh
@@ -55,5 +55,5 @@ Checking if there are uncommitted changes...
 > sudo -u mayadm git reset --hard;
 HEAD ist jetzt bei 6bf08de7f extend watering times
 %%%%%%%%%%     [1] Cleaning working directory   ...DONE!
-elapsed time:   0s
+elapsed time:   1s
 =====================================================================================================
