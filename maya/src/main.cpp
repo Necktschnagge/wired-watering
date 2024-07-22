@@ -579,12 +579,14 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		wait_for(15 * 60);
 
 		landscape.James().Erbsen2024().turn_on(); // 45min
+		landscape.James().Gurken2024().turn_on(); // 15min
 
 		wait_for(15 * 60);
 
 		all_valves_off();
 
 		landscape.Felix().Eiben2024().turn_on(); // 30min
+		landscape.James().Gurken2024().turn_on(); // 45min
 
 		wait_for(30 * 60);
 	}
