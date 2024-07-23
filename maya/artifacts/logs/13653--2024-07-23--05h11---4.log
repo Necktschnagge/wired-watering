@@ -1,0 +1,486 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2024-07-23 05:11:17.910] [main] [info] Pinging Pump Server Mayson...
+[2024-07-23 05:11:19.001] [main] [info] Pump Server ping OK!
+[2024-07-23 05:11:19.001] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-07-23 05:11:19.001] [main] [info] Pinging all valve stations...
+[2024-07-23 05:11:20.299] [main] [info] James ping OK!
+[2024-07-23 05:11:20.299] [main] [info] Lucas ping OK!
+[2024-07-23 05:11:20.299] [main] [info] Felix ping OK!
+[2024-07-23 05:11:20.299] [main] [info] Pinging all valve stations   ...DONE!
+[2024-07-23 05:11:20.299] [main] [info] Pinging Non-Existing Test Server...
+[2024-07-23 05:11:23.363] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-07-23 05:11:23.363] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-07-23 05:11:23.363] [main] [info] Creating Landscape...
+[2024-07-23 05:11:23.363] [main] [info] Creating Landscape...
+[2024-07-23 05:11:23.363] [main] [info] Creating Felix...
+[2024-07-23 05:11:23.363] [main] [info] Creating James...
+[2024-07-23 05:11:23.363] [main] [info] Creating Lucas...
+[2024-07-23 05:11:23.363] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1721704283363914197
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1721704283
+minutes since epoch   :   28695071
+minute of day   :   191
+minute of hour   :   11
+hour of day   :   3
+[2024-07-23 05:11:23.363] [main] [info] Checking timestamp.txt...
+[2024-07-23 05:11:23.363] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28693667
+[2024-07-23 05:11:23.364] [main] [info] Checking timestamp.txt   ...DONE!
+Wrote to timestamp.txt
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off&system=off&manual=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2024-07-23 05:11:24.060] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704284
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:11:24.112] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren   OFF -> ON 
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=on&system=on
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2024-07-23 05:12:54.234] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704374
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:12:54.401] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 05:12:54.401] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704374
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:12:54.485] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren    ON -> OFF
+                                   <---
+[2024-07-23 05:12:54.485] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704374
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 05:12:54.625] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 05:12:55.625] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704375
+http://192.168.1.20:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:12:55.700] [main] [info] 
+Switched the following valves: --->
+          James:   Erbsen   OFF -> ON 
+                                   <---
+[2024-07-23 05:12:55.700] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704375
+http://192.168.1.20:80/status?valves=5
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:12:55.752] [main] [info] 
+Switched the following valves: --->
+          James:   Gurken   OFF -> ON 
+                                   <---
+[2024-07-23 05:12:55.752] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704375
+http://192.168.1.20:80/status?valves=13
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:12:55.803] [main] [info] 
+Switched the following valves: --->
+          James:   Tomaten+Mara   OFF -> ON 
+                                   <---
+[2024-07-23 05:12:55.803] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704375
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:12:55.940] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren   OFF -> ON 
+                                   <---
+[2024-07-23 05:12:55.940] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721704375
+http://192.168.1.21:80/status?valves=3
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:12:55.982] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Karotten   OFF -> ON 
+                                   <---
+[2024-07-23 05:42:55.024] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706175
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:42:55.196] [main] [info] 
+Switched the following valves: --->
+          James:   Erbsen    ON -> OFF
+          James:   Gurken    ON -> OFF
+          James:   Tomaten+Mara    ON -> OFF
+                                   <---
+[2024-07-23 05:42:55.196] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706175
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:42:55.379] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Karotten    ON -> OFF
+          Lucas:   Heidelbeeren    ON -> OFF
+                                   <---
+[2024-07-23 05:42:55.379] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706175
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 05:42:55.925] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 05:42:56.925] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706176
+http://192.168.1.20:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:42:57.077] [main] [info] 
+Switched the following valves: --->
+          James:   Erbsen   OFF -> ON 
+                                   <---
+[2024-07-23 05:42:57.077] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706177
+http://192.168.1.20:80/status?valves=5
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 05:42:57.152] [main] [info] 
+Switched the following valves: --->
+          James:   Gurken   OFF -> ON 
+                                   <---
+[2024-07-23 05:42:57.152] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721706177
+http://192.168.1.21:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 05:42:57.294] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Karotten   OFF -> ON 
+                                   <---
+[2024-07-23 06:02:57.018] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721707377
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 06:02:57.182] [main] [info] 
+Switched the following valves: --->
+          James:   Erbsen    ON -> OFF
+          James:   Gurken    ON -> OFF
+                                   <---
+[2024-07-23 06:02:57.182] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721707377
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 06:02:57.457] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Karotten    ON -> OFF
+                                   <---
+[2024-07-23 06:02:57.457] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721707377
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 06:02:58.498] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 06:02:59.498] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721707379
+http://192.168.1.20:80/status?valves=4
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 06:02:59.622] [main] [info] 
+Switched the following valves: --->
+          James:   Gurken   OFF -> ON 
+                                   <---
+[2024-07-23 06:02:59.622] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721707379
+http://192.168.1.22:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 06:03:00.455] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben Klee   OFF -> ON 
+                                   <---
+[2024-07-23 06:43:00.083] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721709780
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 06:43:00.521] [main] [info] 
+Switched the following valves: --->
+          James:   Gurken    ON -> OFF
+                                   <---
+[2024-07-23 06:43:00.521] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721709780
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 06:43:00.894] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 06:43:00.894] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721709780
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 06:43:02.087] [main] [info] 
+Switched the following valves: --->
+          Felix:   Eiben Klee    ON -> OFF
+                                   <---
+[2024-07-23 06:43:03.087] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721709783
+http://192.168.1.22:80/status?valves=1
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 06:43:03.258] [main] [info] 
+Switched the following valves: --->
+          Felix:   Klee Feld   OFF -> ON 
+                                   <---
+[2024-07-23 06:43:03.258] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721709783
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 06:43:03.974] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren   OFF -> ON 
+                                   <---
+[2024-07-23 07:03:03.005] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721710983
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 07:03:03.192] [main] [info] 
+Switched the following valves: --->
+          Felix:   Klee Feld    ON -> OFF
+                                   <---
+[2024-07-23 07:03:03.192] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721710983
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 07:03:03.346] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 07:03:03.346] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721710983
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 07:03:03.450] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren    ON -> OFF
+                                   <---
+Send request to pump relay:
+URL:   http://192.168.1.10:80/status?auto=off
+Response:
+status code:   200
+text:
+{
+ "server-name" : "pump-relay-mayson",
+ "action" : "okay"
+}
+[2024-07-23 07:03:33.180] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721711013
+http://192.168.1.21:80/status?valves=2
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 07:03:35.729] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren   OFF -> ON 
+                                   <---
+[2024-07-23 07:05:35.038] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721711135
+http://192.168.1.22:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-felix",
+ "action" : "okay"
+}
+[2024-07-23 07:05:37.603] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 07:05:37.603] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721711137
+http://192.168.1.20:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-james",
+ "action" : "okay"
+}
+[2024-07-23 07:05:37.789] [main] [info] 
+Switched the following valves: --->
+                                   <---
+[2024-07-23 07:05:37.789] [main] [info] 
+--------------------------------------------------------------
+Send valves at 1721711137
+http://192.168.1.21:80/status?valves=0
+200
+{
+ "server-name" : "valve-server-lucas",
+ "action" : "okay"
+}
+[2024-07-23 07:05:37.895] [main] [info] 
+Switched the following valves: --->
+          Lucas:   Heidelbeeren    ON -> OFF
+                                   <---
+[2024-07-23 07:05:37.895] [main] [info] Accumulated watering times:
+
+Felix   :           Klee Feld  :     20.00 min
+Felix   :          Eiben Klee  :     40.03 min
+James   :              Erbsen  :     49.99 min
+James   :          Kartoffeln  :      0.00 min
+James   :              Gurken  :     90.01 min
+James   :        Tomaten+Mara  :     29.99 min
+Lucas   :            Karotten  :     49.99 min
+Lucas   :        Heidelbeeren  :     53.52 min
+Lucas   :      Bohnen-Flieder  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   6861s
+=====================================================================================================
