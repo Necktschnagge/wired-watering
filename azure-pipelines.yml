@@ -247,11 +247,11 @@ stages:
             os_image: 'ubuntu-20.04'
             agent_pool: 'Azure Pipelines'
       
+          mac_13:
+            os_image: 'macos-13'
+            agent_pool: 'Azure Pipelines'
           mac_12:
             os_image: 'macos-12'
-            agent_pool: 'Azure Pipelines'
-          mac_11:
-            os_image: 'macos-11'
             agent_pool: 'Azure Pipelines'
       
           windows_2022:
