@@ -4,16 +4,16 @@ mkdir: das Verzeichnis »../../../entire_logs“ kann nicht angelegt werden: Die
 mkdir: das Verzeichnis »../../../logs“ kann nicht angelegt werden: Die Datei existiert bereits
 =====================================================================================================
 =====================================================================================================
-===     Starting with run #13691...
+===     Starting with run #13692...
 =====================================================================================================
 =====================================================================================================
 > ls -la ../../..
 insgesamt 2224
 drwxrwxr-x 7 mayadm mayadm    4096 Jun 16 10:30 .
-drwxr-xr-x 6 mayadm mayadm    4096 Jul 24 09:40 ..
+drwxr-xr-x 6 mayadm mayadm    4096 Jul 24 10:21 ..
 drwxrwxr-x 4 mayadm mayadm    4096 Jun 19  2022 double
 drwxrwxr-x 3 mayadm mayadm    4096 Jun 16 10:32 entire_logs
-drwxrwxr-x 3 mayadm mayadm 2248704 Jul 24 10:20 logs
+drwxrwxr-x 3 mayadm mayadm 2248704 Jul 24 11:01 logs
 drwxrwxr-x 2 mayadm mayadm    4096 Mai 21  2023 secrets
 drwxrwxr-x 6 mayadm mayadm    4096 Jul 23 10:28 wired-watering
 > ls -la ../../../secrets
@@ -21,10 +21,10 @@ insgesamt 12
 drwxrwxr-x 2 mayadm mayadm 4096 Mai 21  2023 .
 drwxrwxr-x 7 mayadm mayadm 4096 Jun 16 10:30 ..
 -rw-rw-r-- 1 mayadm mayadm  103 Mai 21  2023 telegram_secrets.json
-> echo "13691" | sudo -u mayadm tee ../../../logs/counter.info
-13691
+> echo "13692" | sudo -u mayadm tee ../../../logs/counter.info
+13692
 > date
-Mi 24. Jul 10:20:59 CEST 2024
+Mi 24. Jul 11:01:37 CEST 2024
 > dig +short txt ch whoami.cloudflare @1.0.0.1
 "176.6.144.233"
 > ./maya_connect_internet_usb0.sh
