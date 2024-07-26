@@ -11,5 +11,5 @@ Will build last commit on local branch maya-productive
 HEAD ist jetzt bei 2650c7864 update azure yml (#129) (#130)
 Last commit is:   2650c7864779813ef86f5fccce0fd486e92de374
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
-elapsed time:   6s
+elapsed time:   0s
 =====================================================================================================
