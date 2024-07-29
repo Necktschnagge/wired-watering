@@ -2,13 +2,13 @@
 %%%%%%%%%%     [6] Uploading logs and go sleeping...
 > sudo -u mayadm git checkout artifacts
 Bereits auf 'artifacts'
-D	maya/artifacts/logs/13869--2024-07-29--19h34---7.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---1.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---2.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---3.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---4.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---5.log
-D	maya/artifacts/logs/13870--2024-07-29--20h15---6.log
+D	maya/artifacts/logs/13870--2024-07-29--20h15---7.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---1.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---2.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---3.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---4.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---5.log
+D	maya/artifacts/logs/13871--2024-07-29--20h55---6.log
 Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
 > sudo -u mayadm git pull
 Bereits aktuell.
@@ -16,20 +16,20 @@ Bereits aktuell.
 Bereits aktuell.
 > sudo -u mayadm git add "../artifacts/logs/*.log" -f
 > sudo -u mayadm git add -u
-> sudo -u mayadm git commit -m "logs at 2024-07-29--20h55"
-[artifacts ae0f4f977] logs at 2024-07-29--20h55
- 8 files changed, 96 insertions(+), 85 deletions(-)
- delete mode 100644 maya/artifacts/logs/13870--2024-07-29--20h15---4.log
- rename maya/artifacts/logs/{13869--2024-07-29--19h34---7.log => 13870--2024-07-29--20h15---7.log} (62%)
- rename maya/artifacts/logs/{13870--2024-07-29--20h15---1.log => 13871--2024-07-29--20h55---1.log} (91%)
- rename maya/artifacts/logs/{13870--2024-07-29--20h15---2.log => 13871--2024-07-29--20h55---2.log} (100%)
- rename maya/artifacts/logs/{13870--2024-07-29--20h15---3.log => 13871--2024-07-29--20h55---3.log} (96%)
- create mode 100644 maya/artifacts/logs/13871--2024-07-29--20h55---4.log
- rename maya/artifacts/logs/{13870--2024-07-29--20h15---5.log => 13871--2024-07-29--20h55---5.log} (76%)
- rename maya/artifacts/logs/{13870--2024-07-29--20h15---6.log => 13871--2024-07-29--20h55---6.log} (100%)
+> sudo -u mayadm git commit -m "logs at 2024-07-29--21h36"
+[artifacts 7a8e6e7a2] logs at 2024-07-29--21h36
+ 8 files changed, 88 insertions(+), 99 deletions(-)
+ delete mode 100644 maya/artifacts/logs/13871--2024-07-29--20h55---4.log
+ rename maya/artifacts/logs/{13870--2024-07-29--20h15---7.log => 13871--2024-07-29--20h55---7.log} (61%)
+ rename maya/artifacts/logs/{13871--2024-07-29--20h55---1.log => 13872--2024-07-29--21h36---1.log} (90%)
+ rename maya/artifacts/logs/{13871--2024-07-29--20h55---2.log => 13872--2024-07-29--21h36---2.log} (100%)
+ rename maya/artifacts/logs/{13871--2024-07-29--20h55---3.log => 13872--2024-07-29--21h36---3.log} (96%)
+ create mode 100644 maya/artifacts/logs/13872--2024-07-29--21h36---4.log
+ rename maya/artifacts/logs/{13871--2024-07-29--20h55---5.log => 13872--2024-07-29--21h36---5.log} (78%)
+ rename maya/artifacts/logs/{13871--2024-07-29--20h55---6.log => 13872--2024-07-29--21h36---6.log} (100%)
 > sudo -u mayadm git push
 To https://github.com/Necktschnagge/wired-watering
-   3ade1ed9a..ae0f4f977  artifacts -> artifacts
+   ae0f4f977..7a8e6e7a2  artifacts -> artifacts
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
@@ -51,12 +51,12 @@ Everything up-to-date
 ##############################################################
 > rtcwake -m mem -s 2400
 rtcwake: RTC wird als UTC interpretiert …
-rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon Jul 29 19:36:34 2024
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Mon Jul 29 20:17:08 2024
 ##############################################################
 #######                                                #######
 #######            just waked up from sleep            #######
 #######                                                #######
 ##############################################################
 %%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
-elapsed time:   2418s
+elapsed time:   2417s
 =====================================================================================================
