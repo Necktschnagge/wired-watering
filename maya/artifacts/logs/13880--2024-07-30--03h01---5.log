@@ -3,7 +3,7 @@
 > sudo -u mayadm git add -u
 > sudo -u mayadm git add *
 > sudo -u mayadm git status
-Auf Branch routine-2650c786-1722298849
+Auf Branch routine-2650c786-1722301286
 nichts zu committen, Arbeitsverzeichnis unverändert
 > sudo -u mayadm git reset --hard
 HEAD ist jetzt bei 2650c7864 update azure yml (#129) (#130)
@@ -11,10 +11,10 @@ Deleting local working branch...
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
-> sudo -u mayadm git branch -D routine-2650c786-1722298849
-Branch routine-2650c786-1722298849 entfernt (war 2650c7864).
-Finished run 13879!
-Di 30. Jul 02:20:58 CEST 2024
+> sudo -u mayadm git branch -D routine-2650c786-1722301286
+Branch routine-2650c786-1722301286 entfernt (war 2650c7864).
+Finished run 13880!
+Di 30. Jul 03:01:33 CEST 2024
 %%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
 elapsed time:   0s
 =====================================================================================================
