@@ -556,7 +556,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 		all_valves_off();
 
-		landscape.Felix().Klee2024().turn_on(); // 20min
+		//landscape.Felix().Klee2024().turn_on(); // 20min
 		landscape.Lucas().Heidelbeeren2024().turn_on(); // 50min
 
 		wait_for(20 * 60);
@@ -980,7 +980,7 @@ int main(int argc, char** argv) {
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
 
-	constexpr bool global_watering_enable{ true };
+	constexpr bool global_watering_enable{ false };
 
 	const bool START_WATERING{ MANUAL_TEST || (global_watering_enable && is_time_for_watering) };
 
