@@ -942,5 +942,22 @@ int main(int argc, char** argv) {
 		}
 	}
 
+
+	{
+
+	auto now = time_helper::get_seconds_since_epoch_now();
+
+	if (1723036667 + 4 * 60 * 60 < now && now < 1723036667 + 5 * 60 * 60)
+	{
+		send_mayson(1);
+
+		garden.Lucas().BohnenFlieder2024().turn_on();
+		wait_for(60 * 60);
+		garden.Lucas().turn_off();
+
+		send_mayson(0);
+	}
+	}
+
 	return 0;
 }
