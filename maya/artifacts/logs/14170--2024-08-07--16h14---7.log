@@ -2,38 +2,34 @@
 %%%%%%%%%%     [6] Uploading logs and go sleeping...
 > sudo -u mayadm git checkout artifacts
 Bereits auf 'artifacts'
-D	maya/artifacts/logs/14167--2024-08-07--14h11---7.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---1.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---2.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---3.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---4.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---5.log
-D	maya/artifacts/logs/14168--2024-08-07--14h52---6.log
+D	maya/artifacts/logs/14168--2024-08-07--14h52---7.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---1.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---2.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---3.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---4.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---5.log
+D	maya/artifacts/logs/14169--2024-08-07--15h33---6.log
 Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
 > sudo -u mayadm git pull
 Bereits aktuell.
 > sudo -u mayadm git merge maya-productive
-Merge made by the 'recursive' strategy.
- maya/src/main.cpp         | 90 +++++++++++------------------------------------
- maya/src/valve_patching.h | 70 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+), 70 deletions(-)
- create mode 100644 maya/src/valve_patching.h
+Bereits aktuell.
 > sudo -u mayadm git add "../artifacts/logs/*.log" -f
 > sudo -u mayadm git add -u
-> sudo -u mayadm git commit -m "logs at 2024-08-07--15h33"
-[artifacts 3bbd63c15] logs at 2024-08-07--15h33
- 8 files changed, 108 insertions(+), 93 deletions(-)
- delete mode 100644 maya/artifacts/logs/14168--2024-08-07--14h52---4.log
- rename maya/artifacts/logs/{14167--2024-08-07--14h11---7.log => 14168--2024-08-07--14h52---7.log} (61%)
- rename maya/artifacts/logs/{14168--2024-08-07--14h52---1.log => 14169--2024-08-07--15h33---1.log} (90%)
- rename maya/artifacts/logs/{14168--2024-08-07--14h52---2.log => 14169--2024-08-07--15h33---2.log} (50%)
- rename maya/artifacts/logs/{14168--2024-08-07--14h52---3.log => 14169--2024-08-07--15h33---3.log} (88%)
- create mode 100644 maya/artifacts/logs/14169--2024-08-07--15h33---4.log
- rename maya/artifacts/logs/{14168--2024-08-07--14h52---5.log => 14169--2024-08-07--15h33---5.log} (72%)
- rename maya/artifacts/logs/{14168--2024-08-07--14h52---6.log => 14169--2024-08-07--15h33---6.log} (100%)
+> sudo -u mayadm git commit -m "logs at 2024-08-07--16h14"
+[artifacts 3c2b8fa3d] logs at 2024-08-07--16h14
+ 8 files changed, 97 insertions(+), 101 deletions(-)
+ delete mode 100644 maya/artifacts/logs/14169--2024-08-07--15h33---4.log
+ rename maya/artifacts/logs/{14168--2024-08-07--14h52---7.log => 14169--2024-08-07--15h33---7.log} (57%)
+ rename maya/artifacts/logs/{14169--2024-08-07--15h33---1.log => 14170--2024-08-07--16h14---1.log} (89%)
+ rename maya/artifacts/logs/{14169--2024-08-07--15h33---2.log => 14170--2024-08-07--16h14---2.log} (55%)
+ rename maya/artifacts/logs/{14169--2024-08-07--15h33---3.log => 14170--2024-08-07--16h14---3.log} (95%)
+ create mode 100644 maya/artifacts/logs/14170--2024-08-07--16h14---4.log
+ rename maya/artifacts/logs/{14169--2024-08-07--15h33---5.log => 14170--2024-08-07--16h14---5.log} (77%)
+ rename maya/artifacts/logs/{14169--2024-08-07--15h33---6.log => 14170--2024-08-07--16h14---6.log} (100%)
 > sudo -u mayadm git push
 To https://github.com/Necktschnagge/wired-watering
-   81a73e951..3bbd63c15  artifacts -> artifacts
+   3bbd63c15..3c2b8fa3d  artifacts -> artifacts
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
@@ -55,12 +51,12 @@ Everything up-to-date
 ##############################################################
 > rtcwake -m mem -s 2400
 rtcwake: RTC wird als UTC interpretiert …
-rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Wed Aug  7 14:14:34 2024
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Wed Aug  7 14:55:42 2024
 ##############################################################
 #######                                                #######
 #######            just waked up from sleep            #######
 #######                                                #######
 ##############################################################
 %%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
-elapsed time:   2417s
+elapsed time:   2418s
 =====================================================================================================
