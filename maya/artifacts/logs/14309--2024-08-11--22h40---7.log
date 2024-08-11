@@ -2,38 +2,40 @@
 %%%%%%%%%%     [6] Uploading logs and go sleeping...
 > sudo -u mayadm git checkout artifacts
 Bereits auf 'artifacts'
-D	maya/artifacts/logs/14306--2024-08-11--20h37---7.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---1.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---2.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---3.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---4.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---5.log
-D	maya/artifacts/logs/14307--2024-08-11--21h18---6.log
-Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+D	maya/artifacts/logs/14307--2024-08-11--21h18---7.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---1.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---2.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---3.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---4.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---5.log
+D	maya/artifacts/logs/14308--2024-08-11--21h59---6.log
+Ihr Branch ist 1 Commit vor 'origin/artifacts'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
 > sudo -u mayadm git pull
-fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+Bereits aktuell.
 > sudo -u mayadm git merge maya-productive
 Bereits aktuell.
 > sudo -u mayadm git add "../artifacts/logs/*.log" -f
 > sudo -u mayadm git add -u
-> sudo -u mayadm git commit -m "logs at 2024-08-11--21h59"
-[artifacts ec265502c] logs at 2024-08-11--21h59
- 8 files changed, 87 insertions(+), 87 deletions(-)
- delete mode 100644 maya/artifacts/logs/14307--2024-08-11--21h18---4.log
- rename maya/artifacts/logs/{14306--2024-08-11--20h37---7.log => 14307--2024-08-11--21h18---7.log} (62%)
- rename maya/artifacts/logs/{14307--2024-08-11--21h18---1.log => 14308--2024-08-11--21h59---1.log} (91%)
- rename maya/artifacts/logs/{14307--2024-08-11--21h18---2.log => 14308--2024-08-11--21h59---2.log} (97%)
- rename maya/artifacts/logs/{14307--2024-08-11--21h18---3.log => 14308--2024-08-11--21h59---3.log} (95%)
- create mode 100644 maya/artifacts/logs/14308--2024-08-11--21h59---4.log
- rename maya/artifacts/logs/{14307--2024-08-11--21h18---5.log => 14308--2024-08-11--21h59---5.log} (77%)
- rename maya/artifacts/logs/{14307--2024-08-11--21h18---6.log => 14308--2024-08-11--21h59---6.log} (100%)
+> sudo -u mayadm git commit -m "logs at 2024-08-11--22h40"
+[artifacts 57722d7ce] logs at 2024-08-11--22h40
+ 8 files changed, 93 insertions(+), 93 deletions(-)
+ delete mode 100644 maya/artifacts/logs/14308--2024-08-11--21h59---4.log
+ rename maya/artifacts/logs/{14307--2024-08-11--21h18---7.log => 14308--2024-08-11--21h59---7.log} (55%)
+ rename maya/artifacts/logs/{14308--2024-08-11--21h59---1.log => 14309--2024-08-11--22h40---1.log} (91%)
+ rename maya/artifacts/logs/{14308--2024-08-11--21h59---2.log => 14309--2024-08-11--22h40---2.log} (100%)
+ rename maya/artifacts/logs/{14308--2024-08-11--21h59---3.log => 14309--2024-08-11--22h40---3.log} (94%)
+ create mode 100644 maya/artifacts/logs/14309--2024-08-11--22h40---4.log
+ rename maya/artifacts/logs/{14308--2024-08-11--21h59---5.log => 14309--2024-08-11--22h40---5.log} (77%)
+ rename maya/artifacts/logs/{14308--2024-08-11--21h59---6.log => 14309--2024-08-11--22h40---6.log} (72%)
 > sudo -u mayadm git push
-fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+To https://github.com/Necktschnagge/wired-watering
+   e8eade36e..57722d7ce  artifacts -> artifacts
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
 > sudo -u mayadm git push
-fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
+Everything up-to-date
 ##############################################################
 ###################                        ###################
 ###################     GOING TO SLEEP     ###################
@@ -50,12 +52,12 @@ fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugre
 ##############################################################
 > rtcwake -m mem -s 2400
 rtcwake: RTC wird als UTC interpretiert …
-rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sun Aug 11 20:40:09 2024
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Sun Aug 11 21:20:55 2024
 ##############################################################
 #######                                                #######
 #######            just waked up from sleep            #######
 #######                                                #######
 ##############################################################
 %%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
-elapsed time:   2431s
+elapsed time:   2418s
 =====================================================================================================
