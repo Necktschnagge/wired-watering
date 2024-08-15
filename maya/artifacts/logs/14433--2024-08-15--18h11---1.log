@@ -4,16 +4,16 @@ mkdir: das Verzeichnis »../../../entire_logs“ kann nicht angelegt werden: Die
 mkdir: das Verzeichnis »../../../logs“ kann nicht angelegt werden: Die Datei existiert bereits
 =====================================================================================================
 =====================================================================================================
-===     Starting with run #14432...
+===     Starting with run #14433...
 =====================================================================================================
 =====================================================================================================
 > ls -la ../../..
 insgesamt 2224
 drwxrwxr-x 7 mayadm mayadm    4096 Jun 16 10:30 .
-drwxr-xr-x 6 mayadm mayadm    4096 Aug 15 16:50 ..
+drwxr-xr-x 6 mayadm mayadm    4096 Aug 15 17:31 ..
 drwxrwxr-x 4 mayadm mayadm    4096 Jun 19  2022 double
 drwxrwxr-x 3 mayadm mayadm    4096 Jun 16 10:32 entire_logs
-drwxrwxr-x 3 mayadm mayadm 2248704 Aug 15 17:31 logs
+drwxrwxr-x 3 mayadm mayadm 2248704 Aug 15 18:11 logs
 drwxrwxr-x 2 mayadm mayadm    4096 Mai 21  2023 secrets
 drwxrwxr-x 6 mayadm mayadm    4096 Jul 23 10:28 wired-watering
 > ls -la ../../../secrets
@@ -21,14 +21,15 @@ insgesamt 12
 drwxrwxr-x 2 mayadm mayadm 4096 Mai 21  2023 .
 drwxrwxr-x 7 mayadm mayadm 4096 Jun 16 10:30 ..
 -rw-rw-r-- 1 mayadm mayadm  103 Mai 21  2023 telegram_secrets.json
-> echo "14432" | sudo -u mayadm tee ../../../logs/counter.info
-14432
+> echo "14433" | sudo -u mayadm tee ../../../logs/counter.info
+14433
 > date
-Do 15. Aug 17:31:08 CEST 2024
+Do 15. Aug 18:12:00 CEST 2024
 > dig +short txt ch whoami.cloudflare @1.0.0.1
 "176.6.133.30"
 > ./maya_connect_internet_usb0.sh
-Connecting to internet via usb0 tethering FAILED
+RTNETLINK answers: File exists
+Connecting to internet via usb0 tethering successful.
 =====================================================================================================
 %%%%%%%%%%     [1] Cleaning working directory...
 > sudo -u mayadm git branch
@@ -54,5 +55,5 @@ Checking if there are uncommitted changes...
 > sudo -u mayadm git reset --hard;
 HEAD ist jetzt bei 9bc280cab once watering
 %%%%%%%%%%     [1] Cleaning working directory   ...DONE!
-elapsed time:   2s
+elapsed time:   1s
 =====================================================================================================
