@@ -524,8 +524,18 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 		wait_for(30 * 60);
 	}
 
-	// END OF WATERING
 
+
+
+	landscape.Felix().turn_off();
+	landscape.James().turn_off();
+	landscape.Lucas().turn_off();
+	
+	landscape.Felix().Klee2024().turn_on();
+	wait_for(60 * 60);
+	landscape.Felix().turn_off();
+
+	// END OF WATERING
 	landscape.Felix().turn_off();
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
@@ -940,20 +950,6 @@ int main(int argc, char** argv) {
 		}
 		catch (...) {
 		}
-	}
-
-
-	{
-
-	//auto now = time_helper::get_seconds_since_epoch_now();
-
-		send_mayson(1);
-
-		garden.Felix().Klee2024().turn_on();
-		wait_for(60 * 60);
-		garden.Felix().turn_off();
-
-		send_mayson(0);
 	}
 
 	return 0;
