@@ -2,13 +2,9 @@
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
 > sudo -u mayadm git checkout maya-productive
 Bereits auf 'maya-productive'
-Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
-  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
 > sudo -u mayadm git pull
-Aktualisiere 45efe0495..73ce59913
-Fast-forward
- maya/src/main.cpp | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+Bereits aktuell.
 Pulling maya-productive successfully!
 Last commit is:   73ce59913ef184ad0a198156a6ae4b983ffc4025
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
