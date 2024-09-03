@@ -882,7 +882,7 @@ int64_t load_timestamp_file() {
 	return previous_timestamp;
 }
 
-bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp, uint64_t minute_intraday_start, uint64_t valid_window_minutes) {
+bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp, int64_t minute_intraday_start, int64_t valid_window_minutes) {
 	bool result{ false };
 
 	if (
@@ -969,8 +969,8 @@ int main(int argc, char** argv) {
 
 	const int64_t previous_timestamp = load_timestamp_file();
 
-	uint64_t minute_intraday_start = (5 - 2) * 60 + 1; // 5:01 // -2 == UTC 
-	uint64_t valid_window_minutes = 5* 60;
+	int64_t minute_intraday_start = (5 - 2) * 60 + 1; // 5:01 // -2 == UTC 
+	int64_t valid_window_minutes = 5* 60;
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp, minute_intraday_start, valid_window_minutes);
 
