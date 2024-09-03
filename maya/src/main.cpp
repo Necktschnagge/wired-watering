@@ -436,6 +436,51 @@ void wait_for(int64_t duration_in_seconds) {
 }
 
 
+void watering_evening(const time_helper& start_time, k1::landscape& landscape) {
+	(void)start_time;
+
+	const auto all_valves_off{
+		[&]() {
+		landscape.James().turn_off();
+		landscape.Lucas().turn_off();
+		landscape.Felix().turn_off();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+	};
+
+	//pumpe an
+	auto drain_valve{ landscape.Lucas().Heidelbeeren2024() };
+
+	drain_valve.turn_on();
+	std::this_thread::sleep_for(std::chrono::seconds(30));
+	send_mayson(1, 1);
+	std::this_thread::sleep_for(std::chrono::seconds(60));
+
+	all_valves_off();
+	
+	landscape.Felix().Klee2024().turn_on();
+	wait_for(60 * 45);
+	landscape.Felix().turn_off();
+
+	// END OF WATERING
+	all_valves_off();
+
+
+	// wait for pressure reached
+	wait_for(30);
+	//pumpe aus
+	send_mayson(0);
+
+
+	// let capacitor run dry:
+	//landscape.Felix().Klee2024().turn_on();
+	drain_valve.turn_on();
+	wait_for(60 * 2);
+
+	all_valves_off();
+
+}
+
 void watering(const time_helper& start_time, k1::landscape& landscape) {
 	(void)start_time;
 
@@ -835,12 +880,13 @@ int64_t load_timestamp_file() {
 	return previous_timestamp;
 }
 
-bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp) {
+bool check_if_in_watering_time_window(const time_helper& start_time, int64_t previous_timestamp, int64_t minute_intraday_start, int64_t valid_window_minutes) {
 	bool result{ false };
+
 	if (
-		(start_time.get_minute_intra_day() > (5 - 2) * 60 + 1) // 5:01 // -2 == UTC 
-		&& (start_time.get_minute_intra_day() < (12 - 2) * 60 + 1) // 12:01
-		&& (previous_timestamp + 10 * 60 + 1 < start_time.get_minutes_since_epoch()) // 10 hours gone since last watering
+		(start_time.get_minute_intra_day() >= minute_intraday_start) 
+		&& (start_time.get_minute_intra_day() < minute_intraday_start + valid_window_minutes)
+		&& (previous_timestamp + valid_window_minutes + 10 < start_time.get_minutes_since_epoch()) // do not start twice in valid window
 		)
 	{
 		// save last timestamp:
@@ -921,7 +967,10 @@ int main(int argc, char** argv) {
 
 	const int64_t previous_timestamp = load_timestamp_file();
 
-	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp);
+	int64_t minute_intraday_start = (5 - 2) * 60 + 1; // 5:01 // -2 == UTC 
+	int64_t valid_window_minutes = 5* 60;
+
+	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp, minute_intraday_start, valid_window_minutes);
 
 	constexpr bool global_watering_enable{ true };
 
@@ -936,6 +985,19 @@ int main(int argc, char** argv) {
 		}
 		watering(start_time, garden);
 	}
+
+	if (global_watering_enable && check_if_in_watering_time_window(start_time, previous_timestamp, (18 - 2) * 60, 5 * 60)) {
+
+		try {
+			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Start watering now\\!");
+		}
+		catch (...)
+		{
+		}
+		watering_evening(start_time, garden);
+	}
+
+
 
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
 
