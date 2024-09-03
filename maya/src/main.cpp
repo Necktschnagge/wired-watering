@@ -449,8 +449,6 @@ void watering_evening(const time_helper& start_time, k1::landscape& landscape) {
 	};
 
 	//pumpe an
-	send_mayson(0, 0, 0);
-
 	auto drain_valve{ landscape.Lucas().Heidelbeeren2024() };
 
 	drain_valve.turn_on();
