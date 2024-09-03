@@ -1,0 +1,73 @@
+=====================================================================================================
+%%%%%%%%%%     [6] Uploading logs and go sleeping...
+> sudo -u mayadm git checkout artifacts
+Bereits auf 'artifacts'
+D	maya/artifacts/logs/15045--2024-09-03--19h21---7.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---1.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---2.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---3.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---4.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---5.log
+D	maya/artifacts/logs/15046--2024-09-03--20h02---6.log
+Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
+> sudo -u mayadm git pull
+Von https://github.com/Necktschnagge/wired-watering
+   73ce59913..7be677c66  maya-productive -> origin/maya-productive
+Bereits aktuell.
+> sudo -u mayadm git merge maya-productive
+Bereits aktuell.
+> sudo -u mayadm git add "../artifacts/logs/*.log" -f
+> sudo -u mayadm git add -u
+> sudo -u mayadm git commit -m "logs at 2024-09-03--20h43"
+[artifacts 7d020a399] logs at 2024-09-03--20h43
+ 8 files changed, 89 insertions(+), 89 deletions(-)
+ delete mode 100644 maya/artifacts/logs/15046--2024-09-03--20h02---4.log
+ rename maya/artifacts/logs/{15045--2024-09-03--19h21---7.log => 15046--2024-09-03--20h02---7.log} (62%)
+ rename maya/artifacts/logs/{15046--2024-09-03--20h02---1.log => 15047--2024-09-03--20h43---1.log} (91%)
+ rename maya/artifacts/logs/{15046--2024-09-03--20h02---2.log => 15047--2024-09-03--20h43---2.log} (97%)
+ rename maya/artifacts/logs/{15046--2024-09-03--20h02---3.log => 15047--2024-09-03--20h43---3.log} (94%)
+ create mode 100644 maya/artifacts/logs/15047--2024-09-03--20h43---4.log
+ rename maya/artifacts/logs/{15046--2024-09-03--20h02---5.log => 15047--2024-09-03--20h43---5.log} (77%)
+ rename maya/artifacts/logs/{15046--2024-09-03--20h02---6.log => 15047--2024-09-03--20h43---6.log} (100%)
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+   65820a926..7d020a399  artifacts -> artifacts
+> sudo -u mayadm git checkout maya-productive
+Zu Zweig »maya-productive« gewechselt
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+> sudo -u mayadm git push
+To https://github.com/Necktschnagge/wired-watering
+ ! [rejected]            maya-productive -> maya-productive (non-fast-forward)
+error: Fehler beim Versenden einiger Referenzen nach 'https://github.com/Necktschnagge/wired-watering'
+Hinweis: Aktualisierungen wurden zurückgewiesen, weil die Spitze Ihres aktuellen
+Hinweis: Branches hinter seinem externen Gegenstück zurückgefallen ist. Führen Sie
+Hinweis: die externen Änderungen zusammen (z. B. 'git pull ...') bevor Sie "push"
+Hinweis: erneut ausführen.
+Hinweis: Siehe auch die Sektion 'Note about fast-forwards' in 'git push --help'
+Hinweis: für weitere Details.
+##############################################################
+###################                        ###################
+###################     GOING TO SLEEP     ###################
+###################                        ###################
+##############################################################
+#######                                                #######
+#######   Press CTRL + C NOW to abort script safely!   #######
+#######                                                #######
+##############################################################
+##############################################################
+#######                                                #######
+#######               NOW GOING TO SLEEP               #######
+#######                                                #######
+##############################################################
+> rtcwake -m mem -s 2400
+rtcwake: RTC wird als UTC interpretiert …
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Tue Sep  3 19:24:33 2024
+##############################################################
+#######                                                #######
+#######            just waked up from sleep            #######
+#######                                                #######
+##############################################################
+%%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
+elapsed time:   2419s
+=====================================================================================================

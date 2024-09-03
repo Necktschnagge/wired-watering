@@ -2,7 +2,8 @@
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin...
 > sudo -u mayadm git checkout maya-productive
 Bereits auf 'maya-productive'
-Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
+Ihr Branch ist 1 Commit hinter 'origin/maya-productive', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
 > sudo -u mayadm git pull
 fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
 Pulling maya-productive failed!
