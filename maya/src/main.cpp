@@ -986,7 +986,7 @@ int main(int argc, char** argv) {
 		watering(start_time, garden);
 	}
 
-	if (global_watering_enable && check_if_in_watering_time_window(start_time, previous_timestamp, (18 - 2) * 60, 3 * 60)) {
+	if (global_watering_enable && check_if_in_watering_time_window(start_time, previous_timestamp, (18 - 2) * 60, 5 * 60)) {
 
 		try {
 			if (tel) tel.value().sendMessage(tel_config.value().main_chat_id, "Start watering now\\!");
