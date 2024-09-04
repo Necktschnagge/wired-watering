@@ -184,6 +184,14 @@ namespace k1 {
 			return table;
 		}
 
+		bool has_non_zero_duration_table() const {
+			for (const auto& dur : accumulated_ms) {
+				if (dur.count() > 0)
+					return true;
+			}
+			return false;
+		}
+
 		void send(bool enable_log = true) {
 			send_valves(ip_address, valves_state, enable_log);
 		}
@@ -412,6 +420,17 @@ namespace k1 {
 			return table;
 		}
 
+		bool has_non_zero_duration_table() const {
+			return std::accumulate(
+				stations.cbegin(),
+				stations.cend(),
+				false,
+				[](bool acc, const valve_station& station)->bool {
+					return acc || station.has_non_zero_duration_table();
+				}
+			);
+		}
+
 	};
 
 }
@@ -457,7 +476,7 @@ void watering_evening(const time_helper& start_time, k1::landscape& landscape) {
 	std::this_thread::sleep_for(std::chrono::seconds(60));
 
 	all_valves_off();
-	
+
 	landscape.Felix().Klee2024().turn_on();
 	wait_for(60 * 45);
 	landscape.Felix().turn_off();
@@ -575,7 +594,7 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 	landscape.Felix().turn_off();
 	landscape.James().turn_off();
 	landscape.Lucas().turn_off();
-	
+
 	landscape.Felix().Klee2024().turn_on();
 	wait_for(60 * 60);
 	landscape.Felix().turn_off();
@@ -884,7 +903,7 @@ bool check_if_in_watering_time_window(const time_helper& start_time, int64_t pre
 	bool result{ false };
 
 	if (
-		(start_time.get_minute_intra_day() >= minute_intraday_start) 
+		(start_time.get_minute_intra_day() >= minute_intraday_start)
 		&& (start_time.get_minute_intra_day() < minute_intraday_start + valid_window_minutes)
 		&& (previous_timestamp + valid_window_minutes + 10 < start_time.get_minutes_since_epoch()) // do not start twice in valid window
 		)
@@ -968,7 +987,7 @@ int main(int argc, char** argv) {
 	const int64_t previous_timestamp = load_timestamp_file();
 
 	int64_t minute_intraday_start = (5 - 2) * 60 + 1; // 5:01 // -2 == UTC 
-	int64_t valid_window_minutes = 5* 60;
+	int64_t valid_window_minutes = 5 * 60;
 
 	const bool is_time_for_watering = check_if_in_watering_time_window(start_time, previous_timestamp, minute_intraday_start, valid_window_minutes);
 
@@ -1002,7 +1021,7 @@ int main(int argc, char** argv) {
 	standard_logger()->info(std::string("Accumulated watering times:\n\n") + garden.get_duration_table());
 
 	if (tel
-		&& START_WATERING
+		&& garden.has_non_zero_duration_table()
 		) {
 		try {
 			std::string message{ "Finished watering now\\!\n\n```\n" };
