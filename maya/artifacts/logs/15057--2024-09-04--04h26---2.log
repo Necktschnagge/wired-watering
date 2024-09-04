@@ -4,11 +4,8 @@
 Bereits auf 'maya-productive'
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
 > sudo -u mayadm git pull
-fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
-Pulling maya-productive failed!
-Will build last commit on local branch maya-productive
-> sudo -u mayadm git reset --hard
-HEAD ist jetzt bei ff7465cb8 5 hours evening time window
+Bereits aktuell.
+Pulling maya-productive successfully!
 Last commit is:   ff7465cb8048bd8c77b01ef21b53569199322a85
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
 elapsed time:   1s
