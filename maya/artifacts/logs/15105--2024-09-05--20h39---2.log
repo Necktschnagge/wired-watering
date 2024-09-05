@@ -11,5 +11,5 @@ Will build last commit on local branch maya-productive
 HEAD ist jetzt bei 4b0ca7933 change condition for accumultion table print
 Last commit is:   4b0ca793396b93e119b51a207967625cae874198
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
-elapsed time:   10s
+elapsed time:   1s
 =====================================================================================================
