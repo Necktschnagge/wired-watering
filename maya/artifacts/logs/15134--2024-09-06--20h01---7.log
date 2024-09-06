@@ -2,34 +2,34 @@
 %%%%%%%%%%     [6] Uploading logs and go sleeping...
 > sudo -u mayadm git checkout artifacts
 Bereits auf 'artifacts'
-D	maya/artifacts/logs/15131--2024-09-06--17h08---7.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---1.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---2.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---3.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---4.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---5.log
-D	maya/artifacts/logs/15132--2024-09-06--17h49---6.log
+D	maya/artifacts/logs/15132--2024-09-06--17h49---7.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---1.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---2.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---3.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---4.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---5.log
+D	maya/artifacts/logs/15133--2024-09-06--18h30---6.log
 Ihr Branch ist auf demselben Stand wie 'origin/artifacts'.
 > sudo -u mayadm git pull
-Bereits aktuell.
+fatal: konnte nicht auf 'https://github.com/Necktschnagge/wired-watering/' zugreifen: Could not resolve host: github.com
 > sudo -u mayadm git merge maya-productive
 Bereits aktuell.
 > sudo -u mayadm git add "../artifacts/logs/*.log" -f
 > sudo -u mayadm git add -u
-> sudo -u mayadm git commit -m "logs at 2024-09-06--18h30"
-[artifacts 3682b46cc] logs at 2024-09-06--18h30
- 8 files changed, 274 insertions(+), 99 deletions(-)
- delete mode 100644 maya/artifacts/logs/15132--2024-09-06--17h49---4.log
- rename maya/artifacts/logs/{15131--2024-09-06--17h08---7.log => 15132--2024-09-06--17h49---7.log} (61%)
- rename maya/artifacts/logs/{15132--2024-09-06--17h49---1.log => 15133--2024-09-06--18h30---1.log} (90%)
- rename maya/artifacts/logs/{15132--2024-09-06--17h49---2.log => 15133--2024-09-06--18h30---2.log} (65%)
- rename maya/artifacts/logs/{15132--2024-09-06--17h49---3.log => 15133--2024-09-06--18h30---3.log} (93%)
- create mode 100644 maya/artifacts/logs/15133--2024-09-06--18h30---4.log
- rename maya/artifacts/logs/{15132--2024-09-06--17h49---5.log => 15133--2024-09-06--18h30---5.log} (78%)
- rename maya/artifacts/logs/{15132--2024-09-06--17h49---6.log => 15133--2024-09-06--18h30---6.log} (100%)
+> sudo -u mayadm git commit -m "logs at 2024-09-06--20h01"
+[artifacts 61f308165] logs at 2024-09-06--20h01
+ 8 files changed, 107 insertions(+), 274 deletions(-)
+ delete mode 100644 maya/artifacts/logs/15133--2024-09-06--18h30---4.log
+ rename maya/artifacts/logs/{15132--2024-09-06--17h49---7.log => 15133--2024-09-06--18h30---7.log} (61%)
+ rename maya/artifacts/logs/{15133--2024-09-06--18h30---1.log => 15134--2024-09-06--20h01---1.log} (90%)
+ rename maya/artifacts/logs/{15133--2024-09-06--18h30---2.log => 15134--2024-09-06--20h01---2.log} (100%)
+ rename maya/artifacts/logs/{15133--2024-09-06--18h30---3.log => 15134--2024-09-06--20h01---3.log} (93%)
+ create mode 100644 maya/artifacts/logs/15134--2024-09-06--20h01---4.log
+ rename maya/artifacts/logs/{15133--2024-09-06--18h30---5.log => 15134--2024-09-06--20h01---5.log} (76%)
+ rename maya/artifacts/logs/{15133--2024-09-06--18h30---6.log => 15134--2024-09-06--20h01---6.log} (100%)
 > sudo -u mayadm git push
 To https://github.com/Necktschnagge/wired-watering
-   eda0bd820..3682b46cc  artifacts -> artifacts
+   3682b46cc..61f308165  artifacts -> artifacts
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
@@ -51,12 +51,12 @@ Everything up-to-date
 ##############################################################
 > rtcwake -m mem -s 2400
 rtcwake: RTC wird als UTC interpretiert …
-rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Fri Sep  6 18:00:54 2024
+rtcwake: aufwachen von „mem“ durch /dev/rtc0 bei Fri Sep  6 18:42:51 2024
 ##############################################################
 #######                                                #######
 #######            just waked up from sleep            #######
 #######                                                #######
 ##############################################################
 %%%%%%%%%%     [6] Uploading logs and go sleeping   ...DONE!
-elapsed time:   2422s
+elapsed time:   2434s
 =====================================================================================================
