@@ -3,7 +3,7 @@
 > sudo -u mayadm git add -u
 > sudo -u mayadm git add *
 > sudo -u mayadm git status
-Auf Branch routine-4b0ca793-1725663079
+Auf Branch routine-4b0ca793-1725665552
 nichts zu committen, Arbeitsverzeichnis unverändert
 > sudo -u mayadm git reset --hard
 HEAD ist jetzt bei 4b0ca7933 change condition for accumultion table print
@@ -11,10 +11,10 @@ Deleting local working branch...
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
-> sudo -u mayadm git branch -D routine-4b0ca793-1725663079
-Branch routine-4b0ca793-1725663079 entfernt (war 4b0ca7933).
-Finished run 15141!
-Sa 7. Sep 00:51:26 CEST 2024
+> sudo -u mayadm git branch -D routine-4b0ca793-1725665552
+Branch routine-4b0ca793-1725665552 entfernt (war 4b0ca7933).
+Finished run 15142!
+Sa 7. Sep 01:32:40 CEST 2024
 %%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
-elapsed time:   0s
+elapsed time:   1s
 =====================================================================================================
