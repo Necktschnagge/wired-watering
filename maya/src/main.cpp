@@ -12,6 +12,46 @@
 
 #include <fstream>
 #include <optional>
+#include <vector>
+
+/*
+
+model: d : \mathbb{R} \to bool
+
+d satisfies f \in LCTL ...
+
+
+
+f \in LCTL \iff
+
+f ::= true | f1 or f2 | not f1 | f1 @g | f1 UNTIL f2
+
+d sat @g :
+	true  for t==g
+	false for f!=g
+d sat (f1 @ g)  \iff
+	d con (x |-> x-g) sat f1
+	
+f1 UNTIL f2:
+	true  for 
+	false for f!=g
+
+
+true UNTIL @x						°°°°°°°°°°__________
+									          x
+(true UNTIL @3) or @3				°°°°°°°°°°°_________
+
+not ((true UNTIL @3) or @3)			___________°°°°°°°°°
+									          x
+not ((true UNTIL @3) )				__________°°°°°°°°°°
+
+
+g \in LCTP \iff 
+
+g ::= x \in \mathbb{R} | 
+
+
+*/
 
 #include <sstream>
 #include <iomanip>
@@ -620,18 +660,69 @@ void watering(const time_helper& start_time, k1::landscape& landscape) {
 
 #if false
 class valve {
-	std::string ip_address;
-	std::string name;
 	std::string label;
 	uint8_t index;
+
+	uint8_t station_id;
+
+public:
+	valve(
+		const std::string& label,
+		uint8_t index,
+		uint8_t station_id
+	) : label(label), index(index), station_id(station_id) {
+
+	}
+
 };
 
-class repetition_policy {
-	// bestimmte wochentage (+x days)     1.1.1970 = Thursday(!)
-	// 
-	// bestimmte zahl an minuten 
-	// allow overlapping...
+class valve_station {
+
+	std::string ip_address;
+	std::string name;
+	bool enabled;
+
+	std::vector<valve> valves;
+
+public:
+	valve_station(
+		const std::string& ip_address,
+		const std::string& name,
+		bool enabled,
+		std::vector<valve>&& valves
+	) : ip_address(ip_address), name(name), enabled(enabled), valves(std::move(valves))
+	{
+		/* log valve station created */
+	}
 };
+
+class landscape {
+
+	/* no singleton pattern, just create your instance in main code and pass it through... */
+
+	std::vector<valve_station> valve_stations;
+
+	landscape() : valve_stations() {
+		/* load from json ...*/
+		/* log landscape created */
+	}
+
+public:
+
+
+};
+
+
+class repetition_policy {
+
+	// 0 SU, 1 MO, 2 TU, 3 WE, 4 TH, 5 FR, 6 SA
+	// 1.1.1970 = Thursday(!)
+	std::vector<uint8_t> days_of_the_week;
+
+	std::chrono::seconds const_period;
+};
+
+	// allow overlapping...
 
 class interrupted_watering_specification {
 
