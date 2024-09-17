@@ -67,7 +67,8 @@ include_directories(SYSTEM extern/json/include)
 #include_directories(SYSTEM extern/cpr/include)
 #include_directories(SYSTEM build/_deps/curl-src/include)
 add_subdirectory(extern/googletest)
-#add_subdirectory(extern/td)
+
+add_subdirectory(extern/td)
 
 #add_subdirectory(extern/cpr)
 

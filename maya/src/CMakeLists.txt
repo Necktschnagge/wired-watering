@@ -23,6 +23,7 @@ if(LINUX)
 	target_link_libraries(${PROJECT_NAME} PUBLIC pthread )
 endif()
 
+target_link_libraries(${PROJECT_NAME} PRIVATE Td::TdStatic)
 
 
 ############### Linking libraries for target ${PROJECT_NAME}_lib ###############
