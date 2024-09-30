@@ -1,0 +1,258 @@
+=====================================================================================================
+%%%%%%%%%%     [4] Run the executable...
+>Please note:  Even if all builds failed, the last built executable is still there and will be started!
+> sudo -u mayadm ./ur-unix-run.sh
+[2024-09-30 17:01:43.416] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:01:43.514] [main] [info] Pump Server ping OK!
+[2024-09-30 17:01:43.514] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:01:43.514] [main] [info] Pinging all valve stations...
+[2024-09-30 17:01:52.722] [main] [error] Fatal: James not available!
+[2024-09-30 17:01:52.722] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:01:52.722] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:01:52.722] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:01:52.722] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:01:55.794] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:01:55.794] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:01:55.794] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:01:55.886] [main] [info] Pump Server ping OK!
+[2024-09-30 17:01:55.886] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:01:55.886] [main] [info] Pinging all valve stations...
+[2024-09-30 17:02:05.106] [main] [error] Fatal: James not available!
+[2024-09-30 17:02:05.106] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:02:05.106] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:02:05.106] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:02:05.106] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:02:08.178] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:02:08.178] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:02:08.178] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:02:08.381] [main] [info] Pump Server ping OK!
+[2024-09-30 17:02:08.381] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:02:08.381] [main] [info] Pinging all valve stations...
+[2024-09-30 17:02:17.586] [main] [error] Fatal: James not available!
+[2024-09-30 17:02:17.586] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:02:17.586] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:02:17.586] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:02:17.586] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:02:20.658] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:02:20.658] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:02:20.658] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:02:20.762] [main] [info] Pump Server ping OK!
+[2024-09-30 17:02:20.762] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:02:20.762] [main] [info] Pinging all valve stations...
+[2024-09-30 17:02:29.970] [main] [error] Fatal: James not available!
+[2024-09-30 17:02:29.970] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:02:29.970] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:02:29.970] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:02:29.970] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:02:33.042] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:02:33.042] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:02:33.042] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:02:33.144] [main] [info] Pump Server ping OK!
+[2024-09-30 17:02:33.144] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:02:33.144] [main] [info] Pinging all valve stations...
+[2024-09-30 17:02:42.354] [main] [error] Fatal: James not available!
+[2024-09-30 17:02:42.354] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:02:42.354] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:02:42.354] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:02:42.354] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:02:45.426] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:02:45.426] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:02:45.426] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:02:45.541] [main] [info] Pump Server ping OK!
+[2024-09-30 17:02:45.541] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:02:45.541] [main] [info] Pinging all valve stations...
+[2024-09-30 17:02:54.770] [main] [error] Fatal: James not available!
+[2024-09-30 17:02:54.770] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:02:54.770] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:02:54.770] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:02:54.770] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:02:57.842] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:02:57.842] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:02:57.842] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:02:57.932] [main] [info] Pump Server ping OK!
+[2024-09-30 17:02:57.932] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:02:57.932] [main] [info] Pinging all valve stations...
+[2024-09-30 17:03:07.154] [main] [error] Fatal: James not available!
+[2024-09-30 17:03:07.154] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:03:07.154] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:03:07.154] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:03:07.154] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:03:10.226] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:03:10.226] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:03:10.226] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:03:10.310] [main] [info] Pump Server ping OK!
+[2024-09-30 17:03:10.310] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:03:10.310] [main] [info] Pinging all valve stations...
+[2024-09-30 17:03:19.538] [main] [error] Fatal: James not available!
+[2024-09-30 17:03:19.538] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:03:19.538] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:03:19.538] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:03:19.538] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:03:22.610] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:03:22.610] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:03:22.610] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:03:22.709] [main] [info] Pump Server ping OK!
+[2024-09-30 17:03:22.709] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:03:22.709] [main] [info] Pinging all valve stations...
+[2024-09-30 17:03:31.922] [main] [error] Fatal: James not available!
+[2024-09-30 17:03:31.922] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:03:31.922] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:03:31.922] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:03:31.922] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:03:34.994] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:03:34.994] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:03:34.994] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:03:35.101] [main] [info] Pump Server ping OK!
+[2024-09-30 17:03:35.101] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:03:35.101] [main] [info] Pinging all valve stations...
+[2024-09-30 17:03:44.306] [main] [error] Fatal: James not available!
+[2024-09-30 17:03:44.306] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:03:44.306] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:03:44.306] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:03:44.306] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:03:47.378] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:03:47.378] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:03:47.378] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:03:47.477] [main] [info] Pump Server ping OK!
+[2024-09-30 17:03:47.477] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:03:47.477] [main] [info] Pinging all valve stations...
+[2024-09-30 17:03:56.690] [main] [error] Fatal: James not available!
+[2024-09-30 17:03:56.690] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:03:56.690] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:03:56.690] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:03:56.690] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:03:59.762] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:03:59.762] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:03:59.762] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:03:59.870] [main] [info] Pump Server ping OK!
+[2024-09-30 17:03:59.870] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:03:59.870] [main] [info] Pinging all valve stations...
+[2024-09-30 17:04:09.074] [main] [error] Fatal: James not available!
+[2024-09-30 17:04:09.074] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:04:09.074] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:04:09.074] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:04:09.074] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:04:12.146] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:04:12.146] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:04:12.146] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:04:12.251] [main] [info] Pump Server ping OK!
+[2024-09-30 17:04:12.251] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:04:12.251] [main] [info] Pinging all valve stations...
+[2024-09-30 17:04:21.458] [main] [error] Fatal: James not available!
+[2024-09-30 17:04:21.458] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:04:21.458] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:04:21.458] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:04:21.458] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:04:24.530] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:04:24.530] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:04:24.530] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:04:24.637] [main] [info] Pump Server ping OK!
+[2024-09-30 17:04:24.637] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:04:24.637] [main] [info] Pinging all valve stations...
+[2024-09-30 17:04:33.842] [main] [error] Fatal: James not available!
+[2024-09-30 17:04:33.842] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:04:33.842] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:04:33.842] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:04:33.842] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:04:36.914] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:04:36.914] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:04:36.914] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:04:37.028] [main] [info] Pump Server ping OK!
+[2024-09-30 17:04:37.028] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:04:37.028] [main] [info] Pinging all valve stations...
+[2024-09-30 17:04:46.226] [main] [error] Fatal: James not available!
+[2024-09-30 17:04:46.226] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:04:46.226] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:04:46.226] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:04:46.226] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:04:49.298] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:04:49.298] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:04:49.298] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:04:49.412] [main] [info] Pump Server ping OK!
+[2024-09-30 17:04:49.412] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:04:49.412] [main] [info] Pinging all valve stations...
+[2024-09-30 17:04:58.610] [main] [error] Fatal: James not available!
+[2024-09-30 17:04:58.610] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:04:58.610] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:04:58.610] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:04:58.610] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:05:01.682] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:05:01.682] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:05:01.682] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:05:01.795] [main] [info] Pump Server ping OK!
+[2024-09-30 17:05:01.795] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:05:01.795] [main] [info] Pinging all valve stations...
+[2024-09-30 17:05:10.994] [main] [error] Fatal: James not available!
+[2024-09-30 17:05:10.994] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:05:10.994] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:05:10.994] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:05:10.994] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:05:14.066] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:05:14.066] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:05:14.066] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:05:14.290] [main] [info] Pump Server ping OK!
+[2024-09-30 17:05:14.290] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:05:14.290] [main] [info] Pinging all valve stations...
+[2024-09-30 17:05:23.506] [main] [error] Fatal: James not available!
+[2024-09-30 17:05:23.506] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:05:23.506] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:05:23.506] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:05:23.506] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:05:26.578] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:05:26.578] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:05:26.578] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:05:26.677] [main] [info] Pump Server ping OK!
+[2024-09-30 17:05:26.677] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:05:26.677] [main] [info] Pinging all valve stations...
+[2024-09-30 17:05:35.890] [main] [error] Fatal: James not available!
+[2024-09-30 17:05:35.890] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:05:35.890] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:05:35.890] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:05:35.890] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:05:38.962] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:05:38.962] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:05:38.962] [main] [info] Pinging Pump Server Mayson...
+[2024-09-30 17:05:39.073] [main] [info] Pump Server ping OK!
+[2024-09-30 17:05:39.073] [main] [info] Pinging Pump Server Mayson   ...DONE!
+[2024-09-30 17:05:39.073] [main] [info] Pinging all valve stations...
+[2024-09-30 17:05:48.274] [main] [error] Fatal: James not available!
+[2024-09-30 17:05:48.274] [main] [error] Fatal: Lucas not available!
+[2024-09-30 17:05:48.274] [main] [error] Fatal: Felix not available!
+[2024-09-30 17:05:48.274] [main] [info] Pinging all valve stations   ...DONE!
+[2024-09-30 17:05:48.274] [main] [info] Pinging Non-Existing Test Server...
+[2024-09-30 17:05:51.346] [main] [info] Pinging Non-Existing Test Server OK!
+[2024-09-30 17:05:51.346] [main] [info] Pinging Non-Existing Test Server   ...DONE!
+[2024-09-30 17:05:51.805] [main] [info] Creating Landscape...
+[2024-09-30 17:05:51.805] [main] [info] Creating Landscape...
+[2024-09-30 17:05:51.805] [main] [info] Creating Felix...
+[2024-09-30 17:05:51.805] [main] [info] Creating James...
+[2024-09-30 17:05:51.805] [main] [info] Creating Lucas...
+[2024-09-30 17:05:51.805] [main] [info] Fetching timestamp...
+std::chrono::system_clock::now().time_since_epoch()   :   1727708751805263738
+get_seconds_since_epoch_now(bool verbose /* true */)   :   1727708751
+minutes since epoch   :   28795145
+minute of day   :   905
+minute of hour   :   5
+hour of day   :   15
+[2024-09-30 17:05:51.805] [main] [info] Checking timestamp.txt...
+[2024-09-30 17:05:51.805] [main] [debug] The timestamp.txt is always written when watering is triggered. It is read to check if I was already done with watering some minutes ago.
+previous time_stamp:   28794451
+[2024-09-30 17:05:51.805] [main] [info] Checking timestamp.txt   ...DONE!
+[2024-09-30 17:05:51.805] [main] [info] It's not time for watering now!
+[2024-09-30 17:05:51.806] [main] [info] Minute Intraday:   905
+[2024-09-30 17:05:51.806] [main] [info] Days since Epoch:   19996
+[2024-09-30 17:05:51.806] [main] [info] Accumulated watering times:
+
+Felix   :           Klee Feld  :      0.00 min
+Felix   :          Eiben Klee  :      0.00 min
+James   :              Erbsen  :      0.00 min
+James   :          Kartoffeln  :      0.00 min
+James   :              Gurken  :      0.00 min
+James   :        Tomaten+Mara  :      0.00 min
+Lucas   :      Bohnen-Flieder  :      0.00 min
+Lucas   :        Heidelbeeren  :      0.00 min
+Lucas   :            Karotten  :      0.00 min
+
+%%%%%%%%%%     [4] Run the executable   ...DONE!
+elapsed time:   248s
+=====================================================================================================
