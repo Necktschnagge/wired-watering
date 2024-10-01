@@ -11,5 +11,5 @@ Will build last commit on local branch maya-productive
 HEAD ist jetzt bei bafee2046 disable maya
 Last commit is:   bafee204676fdf3e87dae46e1553f06079a8b1c7
 %%%%%%%%%%     [2] Loading source branch, pulling updates from origin   ...DONE!
-elapsed time:   0s
+elapsed time:   4s
 =====================================================================================================
