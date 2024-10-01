@@ -3,7 +3,7 @@
 > sudo -u mayadm git add -u
 > sudo -u mayadm git add *
 > sudo -u mayadm git status
-Auf Branch routine-bafee204-1727803104
+Auf Branch routine-bafee204-1727805880
 nichts zu committen, Arbeitsverzeichnis unverändert
 > sudo -u mayadm git reset --hard
 HEAD ist jetzt bei bafee2046 disable maya
@@ -11,10 +11,10 @@ Deleting local working branch...
 > sudo -u mayadm git checkout maya-productive
 Zu Zweig »maya-productive« gewechselt
 Ihr Branch ist auf demselben Stand wie 'origin/maya-productive'.
-> sudo -u mayadm git branch -D routine-bafee204-1727803104
-Branch routine-bafee204-1727803104 entfernt (war bafee2046).
-Finished run 15970!
-Di 1. Okt 19:22:38 CEST 2024
+> sudo -u mayadm git branch -D routine-bafee204-1727805880
+Branch routine-bafee204-1727805880 entfernt (war bafee2046).
+Finished run 15971!
+Di 1. Okt 20:09:09 CEST 2024
 %%%%%%%%%%     [5] Cleaning git working directory   ...DONE!
 elapsed time:   0s
 =====================================================================================================
