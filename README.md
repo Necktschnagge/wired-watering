@@ -1,3 +1,13 @@
+# Development Setup
+
+## HowTo compile maya
+
+### Debian (Bookworm)
+
+* sudo apt-get install cmake libssl-dev
+
+
+
 
 ## HowTo compile esp-device
 1. Set-up build environment like [described in Wiki](https://github.com/Necktschnagge/wired-watering/wiki/Toolchain-SETUP-(ESP8266)-(on-Windows)).
